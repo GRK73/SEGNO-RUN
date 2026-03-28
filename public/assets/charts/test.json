@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "test",
-    "artist": "Artist",
+    "title": "MVP_easy",
+    "artist": "한세긴, 송밤, 나비",
     "bpm": 98,
     "offset": 0,
     "roster": [
@@ -769,37 +769,15 @@
     {
       "time": 63673.46938775511,
       "lane": 0,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 63979.5918367347,
-      "lane": 0,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 64132.6530612245,
-      "lane": 0,
-      "type": "normal",
+      "type": "long",
+      "duration": 459.1836734693861,
       "characterId": 3
     },
     {
       "time": 64285.71428571429,
       "lane": 1,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 64591.83673469388,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 64744.897959183676,
-      "lane": 1,
-      "type": "normal",
+      "type": "long",
+      "duration": 459.1836734693861,
       "characterId": 3
     },
     {
@@ -809,45 +787,25 @@
       "characterId": 3
     },
     {
-      "time": 65051.02040816327,
-      "lane": 0,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
       "time": 65204.08163265307,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 65357.14285714286,
-      "lane": 1,
+      "lane": 0,
       "type": "normal",
       "characterId": 3
     },
     {
       "time": 65510.20408163266,
-      "lane": 0,
-      "type": "long",
-      "duration": 306.1224489795859,
-      "characterId": 3
-    },
-    {
-      "time": 65816.32653061225,
-      "lane": 1,
-      "type": "long",
-      "duration": 306.12244897960045,
-      "characterId": 3
-    },
-    {
-      "time": 67040.81632653062,
       "lane": 1,
       "type": "normal",
       "characterId": 3
     },
     {
-      "time": 67193.87755102041,
+      "time": 65816.32653061225,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 67040.81632653062,
       "lane": 1,
       "type": "normal",
       "characterId": 3
@@ -862,62 +820,28 @@
     {
       "time": 68571.42857142858,
       "lane": 1,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 68877.55102040817,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 69030.61224489796,
-      "lane": 1,
-      "type": "normal",
+      "type": "long",
+      "duration": 459.18367346937885,
       "characterId": 3
     },
     {
       "time": 69183.67346938777,
       "lane": 0,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 69489.79591836735,
-      "lane": 0,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 69642.85714285714,
-      "lane": 0,
-      "type": "normal",
+      "type": "long",
+      "duration": 459.18367346937885,
       "characterId": 3
     },
     {
       "time": 69795.91836734695,
       "lane": 1,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 70102.04081632654,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 3
-    },
-    {
-      "time": 70255.10204081633,
-      "lane": 1,
-      "type": "normal",
+      "type": "long",
+      "duration": 459.18367346937885,
       "characterId": 3
     },
     {
       "time": 70408.16326530612,
       "lane": 0,
-      "type": "long",
-      "duration": 306.12244897960045,
+      "type": "normal",
       "characterId": 3
     },
     {
@@ -945,12 +869,6 @@
     },
     {
       "time": 71938.77551020408,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 72091.83673469389,
       "lane": 1,
       "type": "normal",
       "characterId": 1
@@ -992,12 +910,6 @@
       "characterId": 1
     },
     {
-      "time": 74540.81632653062,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
       "time": 74693.87755102041,
       "lane": 1,
       "type": "normal",
@@ -1016,12 +928,6 @@
       "characterId": 1
     },
     {
-      "time": 75765.306122449,
-      "lane": 0,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
       "time": 75918.36734693879,
       "lane": 1,
       "type": "long",
@@ -1030,24 +936,12 @@
     },
     {
       "time": 76530.61224489797,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 76683.67346938777,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 76836.73469387756,
       "lane": 0,
       "type": "normal",
       "characterId": 1
     },
     {
-      "time": 76989.79591836735,
+      "time": 76836.73469387756,
       "lane": 0,
       "type": "normal",
       "characterId": 1
@@ -1066,74 +960,26 @@
       "characterId": 1
     },
     {
-      "time": 77755.10204081633,
-      "lane": 0,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 77908.16326530612,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 78061.22448979593,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 78214.28571428572,
-      "lane": 0,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
       "time": 78367.34693877552,
-      "lane": 0,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 78520.40816326531,
       "lane": 1,
       "type": "normal",
       "characterId": 1
     },
     {
       "time": 78673.4693877551,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 78826.53061224491,
       "lane": 0,
       "type": "normal",
       "characterId": 1
     },
     {
       "time": 78979.5918367347,
-      "lane": 0,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 79132.6530612245,
-      "lane": 0,
+      "lane": 1,
       "type": "normal",
       "characterId": 1
     },
     {
       "time": 79285.71428571429,
       "lane": 0,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 79438.77551020408,
-      "lane": 1,
       "type": "normal",
       "characterId": 1
     },
@@ -1145,12 +991,6 @@
     },
     {
       "time": 79897.95918367348,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 80204.08163265306,
       "lane": 0,
       "type": "normal",
       "characterId": 1
@@ -1186,7 +1026,7 @@
       "characterId": 1
     },
     {
-      "time": 81581.63265306123,
+      "time": 81428.57142857143,
       "lane": 0,
       "type": "normal",
       "characterId": 1
@@ -1204,19 +1044,7 @@
       "characterId": 1
     },
     {
-      "time": 82193.87755102041,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
       "time": 82346.9387755102,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 82500.00000000001,
       "lane": 1,
       "type": "normal",
       "characterId": 1
@@ -1228,7 +1056,7 @@
       "characterId": 1
     },
     {
-      "time": 82806.1224489796,
+      "time": 82653.06122448981,
       "lane": 0,
       "type": "normal",
       "characterId": 1
@@ -1246,19 +1074,7 @@
       "characterId": 1
     },
     {
-      "time": 83418.36734693879,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
       "time": 83571.42857142858,
-      "lane": 1,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 83724.48979591837,
       "lane": 1,
       "type": "normal",
       "characterId": 1
@@ -1266,13 +1082,18 @@
     {
       "time": 83877.55102040817,
       "lane": 1,
-      "type": "long",
-      "duration": 153.0612244898075,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 83877.55102040817,
+      "lane": 0,
+      "type": "normal",
       "characterId": 1
     },
     {
       "time": 84183.67346938777,
-      "lane": 1,
+      "lane": 0,
       "type": "normal",
       "characterId": 1
     },
@@ -1295,8 +1116,8 @@
       "characterId": 1
     },
     {
-      "time": 85255.10204081633,
-      "lane": 1,
+      "time": 85102.04081632654,
+      "lane": 0,
       "type": "normal",
       "characterId": 1
     },
@@ -1325,18 +1146,6 @@
       "lane": 1,
       "type": "long",
       "duration": 306.1224489795859,
-      "characterId": 1
-    },
-    {
-      "time": 86632.6530612245,
-      "lane": 0,
-      "type": "normal",
-      "characterId": 1
-    },
-    {
-      "time": 86785.71428571429,
-      "lane": 0,
-      "type": "normal",
       "characterId": 1
     },
     {
@@ -1383,6 +1192,1215 @@
       "lane": 1,
       "type": "normal",
       "characterId": 1
+    },
+    {
+      "time": 90612.24489795919,
+      "lane": 1,
+      "type": "long",
+      "duration": 459.1836734693934,
+      "characterId": 1
+    },
+    {
+      "time": 91071.42857142858,
+      "lane": 0,
+      "type": "long",
+      "duration": 459.1836734693934,
+      "characterId": 1
+    },
+    {
+      "time": 91530.61224489797,
+      "lane": 1,
+      "type": "long",
+      "duration": 612.2448979591718,
+      "characterId": 1
+    },
+    {
+      "time": 92448.97959183675,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 92755.10204081633,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 93061.22448979593,
+      "lane": 0,
+      "type": "long",
+      "duration": 459.18367346937885,
+      "characterId": 1
+    },
+    {
+      "time": 93520.40816326531,
+      "lane": 1,
+      "type": "long",
+      "duration": 459.1836734693934,
+      "characterId": 1
+    },
+    {
+      "time": 93979.5918367347,
+      "lane": 0,
+      "type": "long",
+      "duration": 612.2448979591863,
+      "characterId": 1
+    },
+    {
+      "time": 94897.95918367348,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 95204.08163265308,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 95510.20408163266,
+      "lane": 1,
+      "type": "long",
+      "duration": 459.1836734693934,
+      "characterId": 1
+    },
+    {
+      "time": 95969.38775510206,
+      "lane": 0,
+      "type": "long",
+      "duration": 459.18367346937885,
+      "characterId": 1
+    },
+    {
+      "time": 96428.57142857143,
+      "lane": 1,
+      "type": "long",
+      "duration": 612.2448979591863,
+      "characterId": 1
+    },
+    {
+      "time": 97346.9387755102,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 97653.06122448981,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 97959.1836734694,
+      "lane": 0,
+      "type": "long",
+      "duration": 459.1836734693934,
+      "characterId": 1
+    },
+    {
+      "time": 98418.36734693879,
+      "lane": 1,
+      "type": "long",
+      "duration": 459.18367346937885,
+      "characterId": 1
+    },
+    {
+      "time": 98877.55102040817,
+      "lane": 0,
+      "type": "long",
+      "duration": 612.2448979591863,
+      "characterId": 1
+    },
+    {
+      "time": 99795.91836734695,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 100102.04081632654,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 100408.16326530614,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 100867.34693877552,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 101020.40816326531,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 101938.7755102041,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 102244.89795918368,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 102857.14285714287,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 103316.32653061225,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 103469.38775510206,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 104387.75510204083,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 104693.87755102041,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 105306.1224489796,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 105765.306122449,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 105918.36734693879,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 106836.73469387756,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 107142.85714285716,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 107755.10204081633,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 108214.28571428572,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 108367.34693877552,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 109132.6530612245,
+      "lane": 1,
+      "type": "long",
+      "duration": 459.1836734693934,
+      "characterId": 1
+    },
+    {
+      "time": 109438.7755102041,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 110204.08163265308,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 110510.20408163266,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 110816.32653061225,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 111122.44897959185,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 111428.57142857143,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 111734.69387755104,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 112040.81632653062,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 112346.93877551022,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 112653.06122448981,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 112959.1836734694,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 113265.306122449,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 113571.42857142858,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 113877.55102040818,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 114183.67346938777,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 114489.79591836735,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 114795.91836734695,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 115102.04081632654,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 115408.16326530614,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 115714.28571428572,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 116020.40816326531,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 116326.53061224491,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 116632.6530612245,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 116938.7755102041,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 117244.89795918368,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 117551.02040816328,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 117857.14285714287,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 118163.26530612246,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 118469.38775510206,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 118775.51020408164,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 119081.63265306124,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 119387.75510204083,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 119387.75510204083,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 119693.87755102041,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 119693.87755102041,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 120000.00000000001,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 120306.1224489796,
+      "lane": 1,
+      "type": "long",
+      "duration": 612.2448979591863,
+      "characterId": 1
+    },
+    {
+      "time": 121224.48979591837,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 121530.61224489797,
+      "lane": 0,
+      "type": "long",
+      "duration": 612.2448979591863,
+      "characterId": 1
+    },
+    {
+      "time": 122448.97959183675,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 122755.10204081633,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 123061.22448979593,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 123367.34693877552,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 123673.46938775512,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 123979.5918367347,
+      "lane": 0,
+      "type": "long",
+      "duration": 612.2448979591863,
+      "characterId": 1
+    },
+    {
+      "time": 124897.95918367348,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 125204.08163265308,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 125510.20408163266,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 125816.32653061226,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 126122.44897959185,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 126428.57142857143,
+      "lane": 0,
+      "type": "long",
+      "duration": 612.2448979591863,
+      "characterId": 1
+    },
+    {
+      "time": 127346.93877551022,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 127653.06122448981,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 127959.1836734694,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 127959.1836734694,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 128265.306122449,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 128265.306122449,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 128571.42857142858,
+      "lane": 1,
+      "type": "long",
+      "duration": 612.2448979591863,
+      "characterId": 1
+    },
+    {
+      "time": 128571.42857142858,
+      "lane": 0,
+      "type": "long",
+      "duration": 612.2448979591863,
+      "characterId": 1
+    },
+    {
+      "time": 129489.79591836735,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 129795.91836734695,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 130102.04081632654,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.12244897960045,
+      "characterId": 2
+    },
+    {
+      "time": 130408.16326530614,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 131020.40816326533,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 131326.5306122449,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 132244.8979591837,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 132551.02040816328,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 132857.14285714287,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 133469.38775510204,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 133775.51020408166,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 134693.8775510204,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 135000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 135306.12244897962,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 135612.2448979592,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 135918.3673469388,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 136224.48979591837,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 136836.73469387757,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 137142.85714285716,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 137448.97959183675,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 137755.10204081633,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 138061.22448979592,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 138367.34693877553,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 138673.46938775512,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 139285.7142857143,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 139285.7142857143,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 139591.8367346939,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 139897.9591836735,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 140204.08163265308,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 140816.32653061225,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 141122.44897959186,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 142040.81632653062,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 142346.9387755102,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.122448979615,
+      "characterId": 2
+    },
+    {
+      "time": 142653.06122448982,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 143265.306122449,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 143571.42857142858,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 144489.79591836737,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 144795.91836734695,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 145102.04081632654,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 145714.28571428574,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 146020.40816326533,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 146938.77551020408,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.122448979615,
+      "characterId": 2
+    },
+    {
+      "time": 147244.8979591837,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 147551.02040816328,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 2
+    },
+    {
+      "time": 147857.14285714287,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 148010.20408163266,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 148775.51020408166,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 149693.8775510204,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 3
+    },
+    {
+      "time": 150000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 150918.3673469388,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 3
+    },
+    {
+      "time": 151224.48979591837,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 152142.85714285716,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 152448.97959183675,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 152755.10204081633,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 153367.34693877553,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 153673.46938775512,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 3
+    },
+    {
+      "time": 154591.8367346939,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 154897.9591836735,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 3
+    },
+    {
+      "time": 155816.32653061225,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 156122.44897959186,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 3
+    },
+    {
+      "time": 157040.81632653062,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 157346.9387755102,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.122448979615,
+      "characterId": 3
+    },
+    {
+      "time": 158265.306122449,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 158571.42857142858,
+      "lane": 1,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 3
+    },
+    {
+      "time": 158571.42857142858,
+      "lane": 0,
+      "type": "long",
+      "duration": 306.1224489795859,
+      "characterId": 3
+    },
+    {
+      "time": 159489.79591836737,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 159795.91836734695,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 160102.04081632654,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 160408.16326530612,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 160714.28571428574,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 161020.40816326533,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 161326.5306122449,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 161632.6530612245,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 161938.77551020408,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 162244.8979591837,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 162551.02040816328,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 162857.14285714287,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 163163.26530612246,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 163469.38775510207,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 163775.51020408166,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 164081.63265306124,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 164387.75510204083,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 164693.8775510204,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 165000.00000000003,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 165306.12244897962,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 165612.2448979592,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 165918.3673469388,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 166224.48979591837,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 166530.612244898,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 167142.85714285716,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 167142.85714285716,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 167448.97959183675,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 167448.97959183675,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 3
+    },
+    {
+      "time": 167755.10204081633,
+      "lane": 1,
+      "type": "long",
+      "duration": 612.2448979592009,
+      "characterId": 3
+    },
+    {
+      "time": 167755.10204081633,
+      "lane": 0,
+      "type": "long",
+      "duration": 612.2448979592009,
+      "characterId": 3
+    },
+    {
+      "time": 168979.5918367347,
+      "lane": "any",
+      "type": "switch_up"
     }
   ]
 }

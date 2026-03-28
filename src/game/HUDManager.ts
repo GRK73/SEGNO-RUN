@@ -1,4 +1,4 @@
-import { Container, Graphics, Text, TextStyle, AnimatedSprite, Texture, Assets } from 'pixi.js';
+import { Container, Graphics, Text, TextStyle, AnimatedSprite, Texture, Assets, Sprite } from 'pixi.js';
 import { CharacterManager } from './CharacterManager';
 
 export class HUDManager {
@@ -36,10 +36,19 @@ export class HUDManager {
   private judgmentLineX: number = 250;
   private characterManager: CharacterManager;
 
+  // Floor scrolling
+  private floorSprites: Sprite[] = [];
+  private floorScrollSpeed: number = 0.5;
+  private floorTileW: number = 0;
+  private floorContainer: Container;
+
   constructor(parent: Container, characterManager: CharacterManager) {
     this.characterManager = characterManager;
     this.container = new Container();
     parent.addChild(this.container);
+
+    this.floorContainer = new Container();
+    this.container.addChildAt(this.floorContainer, 0); // behind everything
 
     this.gearGraphics = new Graphics();
     this.container.addChild(this.gearGraphics);
@@ -67,18 +76,6 @@ export class HUDManager {
   private initGear() {
     const g = this.gearGraphics;
     g.clear();
-    
-    // Lower Lane (Keyboard)
-    g.rect(0, 395, 2000, 10);
-    g.fill({ color: 0x00aaff, alpha: 0.3 });
-    
-    // Upper Lane (Mouse)
-    g.rect(0, 195, 2000, 10);
-    g.fill({ color: 0xff4400, alpha: 0.3 });
-
-    // Judgment Line (Shifted to 250)
-    g.rect(this.judgmentLineX, 150, 4, 300);
-    g.fill(0xffffff);
 
     // Upper Lane Hit Circle
     g.circle(this.judgmentLineX + 2, 200, 24);
@@ -179,14 +176,35 @@ export class HUDManager {
     // Update floating judgments
     for (let i = this.activeJudgments.length - 1; i >= 0; i--) {
       const item = this.activeJudgments[i];
-      item.time += 16.6 * _delta; // rough ms estimation based on 60fps
-      item.text.y -= 1.0 * _delta; // float up
-      item.text.alpha = Math.max(0, 1 - item.time / 500); // fade out over 500ms
+      item.time += 16.6 * _delta;
+      item.text.y -= 1.0 * _delta;
+      item.text.alpha = Math.max(0, 1 - item.time / 500);
       
       if (item.time >= 500) {
         this.container.removeChild(item.text);
         item.text.destroy();
         this.activeJudgments.splice(i, 1);
+      }
+    }
+
+    // Scroll floor
+    if (this.floorTileW > 0) {
+      const scrollDelta = this.floorScrollSpeed * 16.6 * _delta;
+      for (const fs of this.floorSprites) {
+        fs.x -= scrollDelta;
+      }
+      // Reposition tiles that scrolled off-screen left
+      for (const fs of this.floorSprites) {
+        if (fs.x + this.floorTileW <= 0) {
+          let maxX = -Infinity;
+          for (const other of this.floorSprites) {
+            if (other !== fs) {
+              const rightEdge = other.x + this.floorTileW;
+              if (rightEdge > maxX) maxX = rightEdge;
+            }
+          }
+          fs.x = maxX;
+        }
       }
     }
   }
@@ -196,7 +214,7 @@ export class HUDManager {
     this.comboText.x = this.judgmentLineX - this.comboText.width / 2;
   }
 
-  public initAvatar() {
+  public async initAvatar() {
     const baseUrl = import.meta.env.BASE_URL;
     const prefixes = ['segin', 'songbam', 'navi'];
     const baseW = 960;
@@ -257,6 +275,73 @@ export class HUDManager {
       this.avatarSprite.animationSpeed = 0.5;
       this.avatarSprite.loop = true;
       this.avatarSprite.play();
+    }
+
+    // Load floor texture (sprite sheet with 3 frames side-by-side)
+    const floorTex = Assets.cache.get(`${baseUrl}assets/images/floor.png`);
+    if (!floorTex) {
+      await Assets.load(`${baseUrl}assets/images/floor.png`);
+    }
+    const floorTexture = Assets.cache.get(`${baseUrl}assets/images/floor.png`);
+    if (floorTexture) {
+      // Slice sprite sheet into individual frame textures, trimming transparent edges
+      const sheetWidth = floorTexture.width;
+      const sheetHeight = floorTexture.height;
+      const frameCount = 3;
+      const frameW = Math.floor(sheetWidth / frameCount);
+      
+      const frameTextures: Texture[] = [];
+      for (let i = 0; i < frameCount; i++) {
+        // Draw full frame to temp canvas
+        const tmpCanvas = document.createElement('canvas');
+        tmpCanvas.width = frameW;
+        tmpCanvas.height = sheetHeight;
+        const tmpCtx = tmpCanvas.getContext('2d')!;
+        const img = floorTexture.source.resource as CanvasImageSource;
+        tmpCtx.drawImage(img, i * frameW, 0, frameW, sheetHeight, 0, 0, frameW, sheetHeight);
+        
+        // Find non-transparent bounds
+        const imageData = tmpCtx.getImageData(0, 0, frameW, sheetHeight);
+        const { data } = imageData;
+        let minX = frameW, maxX = 0;
+        for (let y = 0; y < sheetHeight; y++) {
+          for (let x = 0; x < frameW; x++) {
+            const alpha = data[(y * frameW + x) * 4 + 3];
+            if (alpha > 10) {
+              if (x < minX) minX = x;
+              if (x > maxX) maxX = x;
+            }
+          }
+        }
+        
+        // Crop to trimmed bounds
+        const trimW = maxX - minX + 1;
+        const canvas = document.createElement('canvas');
+        canvas.width = trimW;
+        canvas.height = sheetHeight;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(tmpCanvas, minX, 0, trimW, sheetHeight, 0, 0, trimW, sheetHeight);
+        frameTextures.push(Texture.from(canvas));
+      }
+
+      const floorY = 415;
+      const floorH = 100;
+      // Use first frame's trimmed width for tile size
+      const trimmedFrameW = frameTextures[0].width;
+      const trimmedFrameH = frameTextures[0].height;
+      this.floorTileW = Math.round(floorH * (trimmedFrameW / trimmedFrameH));
+      const totalTiles = Math.ceil(2400 / this.floorTileW) + 2;
+      
+      for (let i = 0; i < totalTiles; i++) {
+        const tex = frameTextures[i % frameTextures.length];
+        const fs = new Sprite(tex);
+        fs.y = floorY;
+        fs.width = this.floorTileW;
+        fs.height = floorH;
+        fs.x = i * this.floorTileW;
+        this.floorContainer.addChild(fs);
+        this.floorSprites.push(fs);
+      }
     }
   }
 
