@@ -8,6 +8,7 @@
 게임의 라이프사이클을 관리하는 싱글톤 클래스입니다.
 - `init(container)`: PixiJS Application 생성 및 렌더링 레이어(Game, HUD, Effects) 설정.
 - `startSong(audioUrl, chartUrl)`: 에셋 로드 후 `AudioManager`와 `NoteManager`를 동기화하여 게임 시작.
+- `setOffset(offset)`: `AudioManager.setOffset()`로 위임하여 전역 오디오 오프셋 설정. `localStorage`에서 읽은 값을 게임 시작 전에 적용.
 - `gameLoop(delta)`: 델타 타임을 이용한 프레임 독립적 업데이트. 노트 생성 및 시스템 갱신 트리거.
 
 ### `InputManager.ts`
@@ -18,7 +19,8 @@
 
 ### `AudioManager.ts`
 Web Audio API 기반의 정밀 타이머입니다.
-- `getCurrentTimeMS()`: `audioContext.currentTime`을 기준으로 곡의 현재 진행 위치를 ms 단위로 반환.
+- `getCurrentTimeMS()`: `audioContext.currentTime`을 기준으로 곡의 현재 진행 위치를 ms 단위로 반환. 오프셋이 설정된 경우 자동 적용되어 모든 하위 시스템(노트 스폰, 판정, HUD)이 동일한 보정 시간을 사용.
+- `setOffset(ms)`: 오디오 오프셋을 ms 단위로 설정. 양수 = 판정 늦게, 음수 = 판정 빠르게.
 - 시각적 싱크를 위해 모든 판정 로직은 이 함수가 반환하는 시간을 절대적 기준으로 삼습니다.
 
 ---
@@ -58,6 +60,16 @@ PixiJS Graphics/Text를 이용한 실시간 UI 피드백.
 ### `ChartEditor.tsx`
 React 기반의 비주얼 채보 편집기입니다.
 - **오디오 플레이어:** 초기 재생 시 HTML Audio의 태생적인 버퍼링 스터터링 렉 방지를 위해, 에디터 내부의 오디오 또한 **Web Audio API (`AudioContext`)**로 메모리에 디코딩한 뒤 `AudioBufferSourceNode`를 통해 정밀하게 컨트롤.
+- **동적 타임라인:** 오디오 파일의 실제 길이(`audioBufferRef.current.duration`)를 기준으로 타임라인 자동 확장.
+- **노트 사운드 피드백:** `OscillatorNode`를 이용한 프로그래메틱 비프음 생성. 상단레인 1000Hz, 하단레인 700Hz로 구분. 롱노트는 `duration` 길이만큼 지속음 출력. 시커가 노트를 **지난 후에만** 트리거(80ms lookback, 미리 재생 방지).
+- **메트로놈:** `square` 파형의 메트로놈 틱. 4박 첫 비트는 1800Hz(강), 나머지는 1400Hz(약)로 구분. `lastMetronomeBeatRef`로 박자 추적.
+- **BPM 리캘큘레이션:** Old BPM과 현재 BPM의 그리드 스텝(16분음표) 비율로 모든 노트의 `time`과 `duration`을 재계산. 적용 후 `oldBpm`이 자동 갱신.
 - **Import/Export:** `FileReader`와 `Blob` API를 이용해 로컬 JSON 파일을 불러오거나 저장.
-- **Note Placement & Color:** 클릭 위치를 BPM 그리드(1/16박)에 스냅(Snap)하여 배치. 배치 시 `characterId` 부여와 함께 인게임과 완전히 동일한 캐릭터 컬러를 적용.
-- **Metadata Editor:** 에디터 좌측 패널 UI를 통해 곡 정보(제목, 아티스트, BPM) 및 쉼표 구분자 형태의 로스터(Roster) 정보를 실시간 수정 (스크롤 지원).
+- **Note Placement & Color:** 클릭 위치를 BPM 그리드(1/16박)에 스냅(Snap)하여 배치. 배치 시 `characterId` 부여와 함께 인게임과 완전히 동일한 캐릭터 커러를 적용.
+- **Metadata Editor:** 에디터 좌측 패널 UI를 통해 곡 정보(제목, 아티스트, BPM) 및 쉼표 구분자 형태의 로스터(Roster) 정보를 실시간 수정.
+
+### `SettingsModal.tsx`
+오디오 오프셋 조절 및 캘리브레이션 모달입니다.
+- **수동 오프셋:** ±1ms/±5ms 버튼 및 슬라이더(-200ms~+200ms) 조절. `localStorage('audioOffset')`에 영구 저장.
+- **탭 캘리브레이션:** 120BPM 메트로놈(`setInterval` 1ms 해상도)을 재생하고, 사용자 TAP 시점과 기대 비트 시점의 차이를 평균 내어 오프셋 자동 계산.
+- **UI:** 반투명 백드롭 + `backdrop-filter: blur` 오버레이.
