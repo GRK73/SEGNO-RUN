@@ -1,15 +1,98 @@
 {
   "meta": {
-    "title": "Test Song",
-    "artist": "Gemini",
-    "bpm": 120,
+    "title": "test",
+    "artist": "Artist",
+    "bpm": 97.5,
     "offset": 0,
-    "roster": [0, 1, 2]
+    "roster": [
+      1,
+      2,
+      3
+    ]
   },
   "notes": [
-    { "time": 1000, "lane": 0, "type": "normal", "characterId": 0 },
-    { "time": 1500, "lane": 1, "type": "normal", "characterId": 0 },
-    { "time": 2000, "lane": "any", "type": "switch", "targetCharId": 1 },
-    { "time": 2500, "lane": 0, "type": "normal", "characterId": 1 }
+    {
+      "time": 2769.2307692307695,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 4769.2307692307695,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 5076.923076923078,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 7538.46153846154,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 9692.307692307693,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 10000.000000000002,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 10461.538461538463,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 10615.384615384617,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 10923.076923076924,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 11076.923076923078,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 11384.615384615387,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 12307.692307692309,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 12461.538461538463,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    },
+    {
+      "time": 12769.230769230771,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 2
+    }
   ]
 }

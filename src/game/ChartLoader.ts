@@ -8,8 +8,9 @@ export interface ChartMetadata {
 
 export interface NoteData {
   time: number;
-  lane: 0 | 1 | 'any'; // 0: Lower(Keyboard), 1: Upper(Mouse)
-  type: 'normal' | 'switch';
+  lane: 0 | 1 | 'any';
+  type: 'normal' | 'switch_up' | 'switch_down' | 'long'; // 'long' 타입 추가
+  duration?: number; // 롱노트 길이 (ms)
   characterId?: number;
   targetCharId?: number;
 }

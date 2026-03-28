@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
-import { GameEngine } from '../core/GameEngine';
+import React from 'react';
 
 interface SongSelectProps {
   onStart: (songUrl: string, chartUrl: string) => void;
 }
 
 const SongSelect: React.FC<SongSelectProps> = ({ onStart }) => {
+  const getAssetPath = (path: string) => {
+    // Ensure we don't have double slashes
+    const base = import.meta.env.BASE_URL.endsWith('/') 
+      ? import.meta.env.BASE_URL 
+      : `${import.meta.env.BASE_URL}/`;
+    return `${base}${path.startsWith('/') ? path.slice(1) : path}`;
+  };
+
   const testSong = {
     title: 'Test Song',
-    audio: '/assets/audio/test.mp3', // Note: Need actual file to play
-    chart: '/assets/charts/test.json'
+    audio: getAssetPath('assets/audio/test.mp3'),
+    chart: getAssetPath('assets/charts/test.json')
   };
 
   return (

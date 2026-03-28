@@ -5,12 +5,12 @@ const PixiCanvas: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-
     const engine = GameEngine.getInstance();
-    
+
     const initPixi = async () => {
-      await engine.init(containerRef.current!);
+      if (containerRef.current) {
+        await engine.init(containerRef.current);
+      }
     };
 
     initPixi();
