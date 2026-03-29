@@ -38,9 +38,12 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const requestRef = useRef<number | null>(null);
   const playedNotesRef = useRef<Set<number>>(new Set());
   const lastMetronomeBeatRef = useRef<number>(-1);
+  const playbackRateRef = useRef<number>(1.0);
+  const [playbackRate, setPlaybackRate] = useState(1.0);
 
   const msPerBeat = (60 / bpm) * 1000;
-  const gridStep = msPerBeat / 4; 
+  const stepsPerBeat = zoom >= 50 ? 8 : 4;
+  const gridStep = msPerBeat / stepsPerBeat; 
 
   const timeToX = (timeMs: number) => timeMs * (zoom / 100);
   const xToTime = (x: number) => x / (zoom / 100);
@@ -71,7 +74,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
   const updateLoop = () => {
     if (audioCtxRef.current && isPlaying && !isDragging) {
-      const elapsed = audioCtxRef.current.currentTime - startTimeRef.current;
+      const elapsed = (audioCtxRef.current.currentTime - startTimeRef.current) * playbackRateRef.current;
       let currentSec = pauseTimeRef.current + elapsed;
 
       if (audioBufferRef.current && currentSec >= audioBufferRef.current.duration) {
@@ -146,7 +149,28 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       if (audioCtxRef.current?.state === 'suspended') audioCtxRef.current.resume();
       requestRef.current = requestAnimationFrame(updateLoop);
     } else if (requestRef.current) cancelAnimationFrame(requestRef.current);
-  }, [isPlaying, isDragging, zoom]);
+  }, [isPlaying, isDragging, zoom, playbackRate]);
+
+  const changeRate = (rate: number) => {
+    if (isPlaying && audioCtxRef.current && audioBufferRef.current) {
+      const elapsed = (audioCtxRef.current.currentTime - startTimeRef.current) * playbackRateRef.current;
+      pauseTimeRef.current += elapsed;
+      if (sourceNodeRef.current) {
+         try { sourceNodeRef.current.stop(); } catch(e){}
+         sourceNodeRef.current.disconnect();
+      }
+      const ctx = audioCtxRef.current;
+      const source = ctx.createBufferSource();
+      source.buffer = audioBufferRef.current;
+      source.playbackRate.value = rate;
+      source.connect(ctx.destination);
+      source.start(0, pauseTimeRef.current);
+      startTimeRef.current = ctx.currentTime;
+      sourceNodeRef.current = source;
+    }
+    playbackRateRef.current = rate;
+    setPlaybackRate(rate);
+  };
 
   const togglePlay = () => {
     if (!audioCtxRef.current || !audioBufferRef.current) return;
@@ -157,7 +181,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         sourceNodeRef.current.disconnect();
         sourceNodeRef.current = null;
       }
-      const elapsed = audioCtxRef.current.currentTime - startTimeRef.current;
+      const elapsed = (audioCtxRef.current.currentTime - startTimeRef.current) * playbackRateRef.current;
       pauseTimeRef.current += elapsed;
     } else {
       if (audioCtxRef.current.state === 'suspended') audioCtxRef.current.resume();
@@ -167,6 +191,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       const ctx = audioCtxRef.current;
       const source = ctx.createBufferSource();
       source.buffer = audioBufferRef.current;
+      source.playbackRate.value = playbackRateRef.current;
       source.connect(ctx.destination);
       
       const offset = pauseTimeRef.current;
@@ -193,6 +218,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       const ctx = audioCtxRef.current;
       const source = ctx.createBufferSource();
       source.buffer = audioBufferRef.current;
+      source.playbackRate.value = playbackRateRef.current;
       source.connect(ctx.destination);
       
       source.start(0, newTimeSec);
@@ -325,6 +351,14 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         <button className={`metronome-btn ${metronomeOn ? 'active' : ''}`} onClick={() => setMetronomeOn(!metronomeOn)}>
           🔔 METRONOME {metronomeOn ? 'ON' : 'OFF'}
         </button>
+        <select className="speed-select" value={playbackRate} onChange={e => changeRate(Number(e.target.value))}>
+           <option value={0.5}>0.5x</option>
+           <option value={0.75}>0.75x</option>
+           <option value={1.0}>1.0x</option>
+           <option value={1.25}>1.25x</option>
+           <option value={1.5}>1.5x</option>
+           <option value={2.0}>2.0x</option>
+        </select>
         
         <div className="input-group">
           <label>Title</label>
@@ -422,10 +456,11 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
             {Array.from({ length: Math.ceil(totalDuration / gridStep) }).map((_, i) => {
               const time = i * gridStep;
-              const isBeat = i % 4 === 0;
-              const isBar = i % 16 === 0;
+              const isBeat = i % stepsPerBeat === 0;
+              const isBar = i % (stepsPerBeat * 4) === 0;
+              const isSubBeat = zoom >= 50 && (i % 2 !== 0);
               return (
-                <div key={i} className={`grid-line ${isBeat ? 'beat' : ''} ${isBar ? 'bar' : ''}`} style={{ left: timeToX(time) }}>
+                <div key={i} className={`grid-line ${isBeat ? 'beat' : ''} ${isBar ? 'bar' : ''} ${isSubBeat ? 'sub-beat' : ''}`} style={{ left: timeToX(time) }}>
                   {isBeat && <span className="time-label">{(time/1000).toFixed(1)}s</span>}
                 </div>
               );
@@ -500,6 +535,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         .time-display { font-size: 1.2rem; font-family: monospace; text-align: center; color: #00d2ff; background: #111; padding: 5px; border-radius: 4px; }
         .metronome-btn { padding: 7px; background: #3d3d3d; border: none; color: #aaa; cursor: pointer; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
         .metronome-btn.active { background: #e67e22; color: white; }
+        .speed-select { background: #3d3d3d; border: 1px solid #4d4d4d; color: white; padding: 7px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; outline: none; }
         .input-group { display: flex; flex-direction: column; gap: 2px; }
         .input-group label { font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: bold; }
         .input-group input { background: #3d3d3d; border: 1px solid #4d4d4d; color: white; padding: 5px; border-radius: 4px; font-size: 0.9rem; }
@@ -525,6 +561,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         .grid-line { position: absolute; top: 0; bottom: 0; width: 1px; background: #222; pointer-events: none; }
         .grid-line.beat { background: #333; width: 1px; }
         .grid-line.bar { background: #444; width: 2px; }
+        .grid-line.sub-beat { background: transparent; border-left: 1px dashed #333; width: 0; z-index: 0; }
         .time-label { position: absolute; top: 12px; left: 4px; font-size: 10px; color: #555; font-weight: bold; }
         .lane-click-area { position: absolute; left: 0; right: 0; height: 100px; cursor: crosshair; }
         .lane-click-area.upper { top: 40px; }

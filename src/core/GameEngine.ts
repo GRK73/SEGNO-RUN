@@ -27,6 +27,11 @@ export class GameEngine {
 
   private initialized: boolean = false;
   private initializing: boolean = false;
+  
+  // Intro Sequence State
+  private introPhase: boolean = false;
+  private introState: 'WAITING' | 'READY' | 'GO' | 'DONE' = 'DONE';
+  private introStartTime: number = 0;
 
   private constructor() {
     this.characterManager = new CharacterManager();
@@ -107,6 +112,9 @@ export class GameEngine {
       const prefixes = ['segin', 'songbam', 'navi'];
       const assetPromises: Promise<any>[] = [];
       
+      // Force font preload so READY? renders correctly in Canvas
+      assetPromises.push(document.fonts.load('120px "planb"').catch(() => null));
+      
       for (const p of prefixes) {
         assetPromises.push(Assets.load(`${baseUrl}assets/images/${p}_run.png`));
         assetPromises.push(Assets.load(`${baseUrl}assets/images/${p}_hit_1.png`));
@@ -121,7 +129,7 @@ export class GameEngine {
       
       try {
         await this.audioManager.loadAudio(songUrl);
-        this.audioManager.play();
+        // Will play main audio at 'GO!'
       } catch (e) {
         console.warn('Audio failed, starting in silent mode.');
       }
@@ -136,8 +144,16 @@ export class GameEngine {
       this.hudManager?.initAvatar();
 
       this.currentNoteIndex = 0;
-      this.startTime = performance.now();
       this.isPlaying = true;
+      
+      // Begin Intro Phase
+      this.introPhase = true;
+      this.introState = 'WAITING';
+      this.introStartTime = performance.now();
+      
+      this.audioManager.playIntro();
+      this.hudManager?.updateIntro(0);
+
     } catch (e) {
       console.error('Failed to start song:', e);
     }
@@ -146,9 +162,42 @@ export class GameEngine {
   private gameLoop(delta: number) {
     if (!this.isPlaying || !this.chart || !this.noteManager || !this.hudManager) return;
     
+    if (this.introPhase) {
+      const introElapsed = performance.now() - this.introStartTime;
+      
+      if (this.introState === 'WAITING') {
+        if (introElapsed >= 1000) {
+          this.introState = 'READY';
+          this.hudManager.setIntroText('READY?');
+        }
+      } else if (this.introState === 'READY') {
+        const readyElapsed = introElapsed - 1000;
+        this.hudManager.updateIntro(Math.min(1, readyElapsed / 1500));
+        
+        if (readyElapsed >= 1500) {
+          this.introState = 'GO';
+          this.hudManager.setIntroText('GO!');
+          this.audioManager.fadeOutIntro(500);
+          this.audioManager.play();
+          this.startTime = performance.now(); // reset game start time
+        }
+      } else if (this.introState === 'GO') {
+        if (introElapsed >= 3000) { // 2.5s + 0.5s = 3.0s
+          this.hudManager.hideIntroText();
+          this.introState = 'DONE';
+          this.introPhase = false; // Intro finished
+        }
+      }
+      
+      this.hudManager.update(delta);
+      
+      // Do not process notes during WAITING or READY
+      if (this.introState === 'WAITING' || this.introState === 'READY') return;
+    }
+
     // Use AudioManager time if available, otherwise fallback to performance.now()
     let currentTime = this.audioManager.getCurrentTimeMS();
-    if (currentTime === 0 && this.isPlaying) {
+    if (currentTime === 0 && this.isPlaying && !this.introPhase) {
       currentTime = performance.now() - this.startTime;
     }
     

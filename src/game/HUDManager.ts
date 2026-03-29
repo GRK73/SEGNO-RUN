@@ -28,7 +28,7 @@ export class HUDManager {
   // Render Offsets
   private baseAvatarX: number = 155;
   private baseAvatarY: number = 400;
-  private introOffsetX: number = -300;
+  private introOffsetX: number = 0;
   private attackSlideX: number = 0;
   private attackSlideY: number = 0;
   private switchOffsetY: number = 0;
@@ -41,6 +41,10 @@ export class HUDManager {
   private floorScrollSpeed: number = 0.5;
   private floorTileW: number = 0;
   private floorContainer: Container;
+
+  // Intro text
+  private introText: Text | null = null;
+  private introTextHiding: boolean = false;
 
   constructor(parent: Container, characterManager: CharacterManager) {
     this.characterManager = characterManager;
@@ -55,7 +59,7 @@ export class HUDManager {
 
     this.avatarSprite = new AnimatedSprite([Texture.EMPTY]);
     this.avatarSprite.anchor.set(0.5);
-    this.avatarSprite.x = this.baseAvatarX + this.introOffsetX;
+    this.avatarSprite.x = this.baseAvatarX;
     this.avatarSprite.y = this.baseAvatarY;
     this.container.addChild(this.avatarSprite);
 
@@ -93,7 +97,7 @@ export class HUDManager {
     else if (judgment === 'MISS') color = '#e2290a';
 
     const style = new TextStyle({
-      fontFamily: 'planb',
+      fontFamily: '"planb", sans-serif',
       fontSize: 32,
       fill: color,
       fontWeight: 'bold',
@@ -111,6 +115,55 @@ export class HUDManager {
 
     this.container.addChild(text);
     this.activeJudgments.push({ text, time: 0 });
+  }
+
+  public setIntroText(textStr: string) {
+    const isReady = textStr.includes('READY');
+    const textColor = isReady ? '#ff9400' : '#27ae60';
+
+    if (!this.introText) {
+      const style = new TextStyle({
+        fontFamily: '"planb", sans-serif',
+        fontSize: 90,
+        fill: textColor,
+        fontWeight: 'bold',
+        stroke: { color: '#2b2b2b', width: 12 },
+        dropShadow: { color: '#000000', alpha: 0.8, blur: 4, distance: 5 }
+      });
+      this.introText = new Text({ text: textStr, style });
+      this.introText.anchor.set(0.5);
+      this.introText.x = window.innerWidth / 2;
+      this.introText.y = window.innerHeight / 2;
+      this.container.addChild(this.introText);
+    } else {
+      this.introText.text = textStr;
+      if (this.introText.style) {
+        this.introText.style.fill = textColor;
+      }
+      this.introText.alpha = 1;
+      this.introText.scale.set(1.2); // slight pop on creation
+      this.introText.visible = true;
+      this.introTextHiding = false;
+    }
+  }
+
+  public hideIntroText() {
+    if (this.introText && this.introText.visible) {
+      this.introTextHiding = true;
+    }
+  }
+
+  public updateIntro(progress: number) {
+     const startOffset = -500;
+     const targetOffset = 0;
+     
+     if (progress <= 0) {
+       this.introOffsetX = startOffset;
+       return;
+     }
+
+     const easeOut = 1 - Math.pow(1 - progress, 4);
+     this.introOffsetX = startOffset + (targetOffset - startOffset) * Math.min(1, easeOut);
   }
 
   public update(_delta: number) {
@@ -159,18 +212,33 @@ export class HUDManager {
          this.holdTime = 0;
        }
 
-       if (this.introOffsetX < 0) {
-         this.introOffsetX += (0 - this.introOffsetX) * 0.1 * _delta;
-         if (this.introOffsetX > -1) this.introOffsetX = 0;
-       }
-
        if (this.switchOffsetY !== 0) {
          this.switchOffsetY += (0 - this.switchOffsetY) * 0.2 * _delta;
          if (Math.abs(this.switchOffsetY) < 1) this.switchOffsetY = 0;
        }
 
+       // Update Avatar Final Position
        this.avatarSprite.x = this.baseAvatarX + this.introOffsetX + this.attackSlideX;
        this.avatarSprite.y = this.baseAvatarY + this.attackSlideY + this.switchOffsetY + bobbingOffset;
+    }
+
+    if (this.introText && this.introText.visible) {
+       if (this.introText.text === 'GO!' && !this.introTextHiding) {
+          // shrink back the pop effect
+          if (this.introText.scale.x > 1.0) {
+             this.introText.scale.set(Math.max(1.0, this.introText.scale.x - 0.05 * _delta));
+          }
+       }
+       
+       if (this.introTextHiding) {
+          // "Pop" disappear effect (scale up and fade out quickly)
+          this.introText.scale.set(this.introText.scale.x + 0.1 * _delta);
+          this.introText.alpha -= 0.1 * _delta;
+          if (this.introText.alpha <= 0) {
+              this.introText.visible = false;
+              this.introTextHiding = false;
+          }
+       }
     }
 
     // Update floating judgments

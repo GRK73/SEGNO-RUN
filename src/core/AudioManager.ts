@@ -10,6 +10,11 @@ export class AudioManager {
   private sfxVolume: number = 0.8;
   private offset: number = 0;
 
+  // Intro Sequence
+  private introBuffer: AudioBuffer | null = null;
+  private introSource: AudioBufferSourceNode | null = null;
+  private introGain: GainNode | null = null;
+
   private constructor() {}
 
   public static getInstance(): AudioManager {
@@ -26,9 +31,47 @@ export class AudioManager {
   public async loadAudio(url: string) {
     if (!this.audioContext) this.init();
     
-    const response = await fetch(url);
-    const arrayBuffer = await response.arrayBuffer();
-    this.audioBuffer = await this.audioContext!.decodeAudioData(arrayBuffer);
+    // Load both main song and intro song concurrently
+    const [mainRes, introRes] = await Promise.all([
+      fetch(url).catch(() => null),
+      fetch(`${import.meta.env.BASE_URL}assets/audio/startsong.mp3`).catch(() => null)
+    ]);
+    
+    if (mainRes) {
+      const arrayBuffer = await mainRes.arrayBuffer();
+      this.audioBuffer = await this.audioContext!.decodeAudioData(arrayBuffer);
+    }
+    
+    if (introRes && !this.introBuffer) {
+      const arrayBuffer = await introRes.arrayBuffer();
+      this.introBuffer = await this.audioContext!.decodeAudioData(arrayBuffer);
+    }
+  }
+
+  public playIntro() {
+    if (!this.audioContext || !this.introBuffer) return;
+    
+    this.introSource = this.audioContext.createBufferSource();
+    this.introSource.buffer = this.introBuffer;
+    this.introGain = this.audioContext.createGain();
+    
+    this.introGain.gain.setValueAtTime(1, this.audioContext.currentTime);
+    this.introSource.connect(this.introGain);
+    this.introGain.connect(this.audioContext.destination);
+    
+    this.introSource.start(0);
+  }
+
+  public fadeOutIntro(durationMs: number = 500) {
+    if (!this.audioContext || !this.introGain || !this.introSource) return;
+    
+    const now = this.audioContext.currentTime;
+    this.introGain.gain.setValueAtTime(1, now);
+    this.introGain.gain.linearRampToValueAtTime(0, now + durationMs / 1000);
+    
+    setTimeout(() => {
+      try { this.introSource?.stop(); } catch(e){}
+    }, durationMs + 100);
   }
 
   public play() {
