@@ -26,7 +26,7 @@ export class InputManager {
     return InputManager.instance;
   }
 
-  public init(_container: HTMLElement) {
+  public init() {
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
     window.addEventListener('mousedown', this.handleMouseDown);
@@ -40,15 +40,15 @@ export class InputManager {
     this.trigger(InputType.KEYBOARD_ANY);
   };
 
-  private handleKeyUp = (_e: KeyboardEvent) => {
+  private handleKeyUp = () => {
     this.trigger(InputType.KEYBOARD_UP);
   };
 
-  private handleMouseDown = (_e: MouseEvent) => {
+  private handleMouseDown = () => {
     this.trigger(InputType.MOUSE_CLICK);
   };
 
-  private handleMouseUp = (_e: MouseEvent) => {
+  private handleMouseUp = () => {
     this.trigger(InputType.MOUSE_UP);
   };
 
@@ -69,7 +69,7 @@ export class InputManager {
     this.callbacks.push(callback);
   }
 
-  public destroy(_container: HTMLElement) {
+  public destroy() {
     window.removeEventListener('keydown', this.handleKeyDown);
     window.removeEventListener('keyup', this.handleKeyUp);
     window.removeEventListener('mousedown', this.handleMouseDown);

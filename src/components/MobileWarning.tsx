@@ -1,11 +1,5 @@
 import React from 'react';
 
-export const isMobile = () => {
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
-};
-
 const MobileWarning: React.FC = () => {
   return (
     <div className="mobile-warning">

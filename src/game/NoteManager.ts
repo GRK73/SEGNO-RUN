@@ -1,28 +1,47 @@
-import { Container, Graphics } from 'pixi.js';
+import { Container, Graphics, Sprite, Assets, Texture } from 'pixi.js';
 import type { NoteData } from './ChartLoader';
 import { ObjectPool } from '../core/ObjectPool';
+import { CHARACTERS } from './CharacterManager';
 
 export interface ActiveNote {
   id: string;
   data: NoteData;
-  sprite: Graphics;
+  sprite: Container;
   isHolding: boolean;
+}
+
+// Map characterId to note image index (1-based)
+function getNoteImageIndex(characterId?: number): number {
+  if (characterId === undefined) return 1;
+  // If characterId is 1~4, map to note_1~4.
+  // We can just use characterId directly, clamped between 1 and 4.
+  if (characterId === 0) return 1;
+  return ((characterId - 1) % 4) + 1;
+}
+
+function getCharacterColor(characterId?: number): number {
+  if (characterId === undefined) return 0xffffff;
+  const char = CHARACTERS.find(c => c.id === characterId);
+  return char ? char.color : 0xffffff;
 }
 
 export class NoteManager {
   private container: Container;
   private effectLayer: Container;
   private activeNotes: ActiveNote[] = [];
-  private notePool: ObjectPool<Graphics>;
   private effectPool: ObjectPool<Graphics>;
   
   private scrollSpeed: number = 0.5;
   private judgmentLineX: number = 250;
   private laneY: { [key: number | string]: number } = {
-    0: 400, // Lower (Mouse)
-    1: 200, // Upper (Keyboard)
-    'any': 300,
+    0: 450, // Lower (Mouse)
+    1: 250, // Upper (Keyboard)
+    'any': 350,
   };
+
+  // Pre-cached note textures
+  private noteTextures: Map<number, Texture> = new Map();
+  private texturesLoaded: boolean = false;
 
   constructor(parent: Container) {
     this.container = new Container();
@@ -30,65 +49,173 @@ export class NoteManager {
     parent.addChild(this.container);
     parent.addChild(this.effectLayer);
 
-    this.notePool = new ObjectPool<Graphics>(
-      () => new Graphics(),
-      (g) => { g.clear(); g.visible = false; g.alpha = 1; },
-      20
-    );
-
     this.effectPool = new ObjectPool<Graphics>(
       () => new Graphics(),
       (g) => { g.clear(); g.visible = false; g.alpha = 1; },
       20
     );
+
+    this.loadNoteTextures();
+  }
+
+  private async loadNoteTextures() {
+    const baseUrl = import.meta.env.BASE_URL;
+    try {
+      for (let i = 1; i <= 4; i++) {
+        const tex = await Assets.load(`${baseUrl}assets/images/note_${i}.png`);
+        this.noteTextures.set(i, tex);
+      }
+      this.texturesLoaded = true;
+    } catch (e) {
+      console.warn('Failed to load note textures:', e);
+    }
+  }
+
+  private createNoteContainer(data: NoteData, isHolding: boolean): Container {
+    const noteContainer = new Container();
+    const imgIdx = getNoteImageIndex(data.characterId);
+    const color = getCharacterColor(data.characterId);
+    const tex = this.noteTextures.get(imgIdx);
+    const noteSize = 50;
+
+    if (data.type === 'normal') {
+      if (tex && this.texturesLoaded) {
+        const sp = new Sprite(tex);
+        sp.anchor.set(0.5);
+        sp.width = noteSize;
+        sp.height = noteSize;
+        noteContainer.addChild(sp);
+      } else {
+        const g = new Graphics();
+        g.rect(-20, -20, 40, 40);
+        g.fill(color);
+        noteContainer.addChild(g);
+      }
+    } else if (data.type === 'long') {
+      const bodyWidth = (data.duration || 0) * this.scrollSpeed;
+      const holdColor = isHolding ? 0xffff00 : color;
+      const bodyAlpha = isHolding ? 0.7 : 0.5;
+
+      // Long note body (colored bar)
+      const body = new Graphics();
+      body.roundRect(0, -12, bodyWidth, 24, 8);
+      body.fill({ color: holdColor, alpha: bodyAlpha });
+      body.label = 'body';
+      noteContainer.addChild(body);
+
+      // Head sprite
+      if (tex && this.texturesLoaded) {
+        const head = new Sprite(tex);
+        head.anchor.set(0.5);
+        head.width = noteSize;
+        head.height = noteSize;
+        head.label = 'head';
+        noteContainer.addChild(head);
+      } else {
+        const head = new Graphics();
+        head.rect(-20, -20, 40, 40);
+        head.fill(holdColor);
+        head.label = 'head';
+        noteContainer.addChild(head);
+      }
+
+      // Tail sprite
+      if (tex && this.texturesLoaded) {
+        const tail = new Sprite(tex);
+        tail.anchor.set(0.5);
+        tail.width = noteSize * 0.8;
+        tail.height = noteSize * 0.8;
+        tail.x = bodyWidth;
+        tail.label = 'tail';
+        noteContainer.addChild(tail);
+      } else {
+        const tail = new Graphics();
+        tail.rect(bodyWidth - 10, -20, 20, 40);
+        tail.fill(holdColor);
+        tail.label = 'tail';
+        noteContainer.addChild(tail);
+      }
+    } else if (data.type === 'switch_up') {
+      const g = new Graphics();
+      g.poly([-25, 15, 25, 15, 0, -20]);
+      g.fill(0x00ff00);
+      g.stroke({ width: 2, color: 0xffffff });
+      noteContainer.addChild(g);
+    } else if (data.type === 'switch_down') {
+      const g = new Graphics();
+      g.poly([-25, -15, 25, -15, 0, 20]);
+      g.fill(0xff00ff);
+      g.stroke({ width: 2, color: 0xffffff });
+      noteContainer.addChild(g);
+    }
+
+    return noteContainer;
   }
 
   public spawnNote(data: NoteData) {
-    const sprite = this.notePool.acquire();
-    sprite.visible = true;
+    const noteContainer = this.createNoteContainer(data, false);
+    noteContainer.visible = true;
+    noteContainer.x = 2000;
+    noteContainer.y = this.laneY[data.lane] || 300;
 
-    this.drawNote(sprite, data, false);
-    
-    sprite.x = 2000;
-    sprite.y = this.laneY[data.lane] || 300;
-
-    this.container.addChild(sprite);
+    this.container.addChild(noteContainer);
     this.activeNotes.push({ 
       id: Math.random().toString(36).substr(2, 9), 
       data, 
-      sprite, 
+      sprite: noteContainer, 
       isHolding: false 
     });
   }
 
-  private drawNote(sprite: Graphics, data: NoteData, isHolding: boolean) {
-    sprite.clear();
-    if (data.type === 'normal') {
-      sprite.rect(-20, -20, 40, 40);
-      sprite.fill(0xffffff);
-    } else if (data.type === 'long') {
-      const bodyWidth = (data.duration || 0) * this.scrollSpeed;
-      
-      // 롱노트 몸통 (길이만큼 그리기)
-      // 홀딩 중이면 현재 시간부터 끝까지 그림
-      sprite.rect(0, -15, bodyWidth, 30);
-      sprite.fill({ color: isHolding ? 0xffff00 : 0xffffff, alpha: 0.5 });
-      
-      // 롱노트 머리
-      sprite.rect(-20, -20, 40, 40);
-      sprite.fill(isHolding ? 0xffff00 : 0xffffff);
-      
-      // 롱노트 꼬리
-      sprite.rect(bodyWidth - 10, -20, 20, 40);
-      sprite.fill(isHolding ? 0xffff00 : 0xffffff);
-    } else if (data.type === 'switch_up') {
-      sprite.poly([-25, 15, 25, 15, 0, -20]);
-      sprite.fill(0x00ff00);
-      sprite.stroke({ width: 2, color: 0xffffff });
-    } else if (data.type === 'switch_down') {
-      sprite.poly([-25, -15, 25, -15, 0, 20]);
-      sprite.fill(0xff00ff);
-      sprite.stroke({ width: 2, color: 0xffffff });
+  private redrawLongNote(noteContainer: Container, data: NoteData, remainingDuration: number, isHolding: boolean) {
+    // Remove existing children
+    while (noteContainer.children.length > 0) {
+      noteContainer.removeChildAt(0);
+    }
+
+    const imgIdx = getNoteImageIndex(data.characterId);
+    const color = getCharacterColor(data.characterId);
+    const tex = this.noteTextures.get(imgIdx);
+    const noteSize = 50;
+    const bodyWidth = remainingDuration * this.scrollSpeed;
+    const holdColor = isHolding ? 0xffff00 : color;
+    const bodyAlpha = isHolding ? 0.7 : 0.5;
+
+    // Body
+    const body = new Graphics();
+    body.roundRect(0, -12, Math.max(0, bodyWidth), 24, 8);
+    body.fill({ color: holdColor, alpha: bodyAlpha });
+    noteContainer.addChild(body);
+
+    // Head
+    if (tex && this.texturesLoaded) {
+      const head = new Sprite(tex);
+      head.anchor.set(0.5);
+      head.width = noteSize;
+      head.height = noteSize;
+      if (isHolding) head.tint = 0xffff00;
+      noteContainer.addChild(head);
+    } else {
+      const head = new Graphics();
+      head.rect(-20, -20, 40, 40);
+      head.fill(holdColor);
+      noteContainer.addChild(head);
+    }
+
+    // Tail
+    if (tex && this.texturesLoaded) {
+      const tail = new Sprite(tex);
+      tail.anchor.set(0.5);
+      tail.width = noteSize * 0.8;
+      tail.height = noteSize * 0.8;
+      tail.x = Math.max(0, bodyWidth);
+      if (isHolding) tail.tint = 0xffff00;
+      noteContainer.addChild(tail);
+    } else {
+      const tail = new Graphics();
+      tail.rect(Math.max(0, bodyWidth) - 10, -20, 20, 40);
+      tail.fill(holdColor);
+      noteContainer.addChild(tail);
     }
   }
 
@@ -100,19 +227,14 @@ export class NoteManager {
       if (isHolding) {
         // 홀딩 중이면 머리는 판정선에 고정
         sprite.x = this.judgmentLineX;
-        // 몸통 길이를 현재 시간에 맞춰 다시 그림 (단순화를 위해 매 프레임 다시 그림)
+        // 몸통 길이를 현재 시간에 맞춰 다시 그림
         const remainingDuration = noteEndTime - currentTime;
-        const bodyWidth = remainingDuration * this.scrollSpeed;
         
-        sprite.clear();
-        sprite.rect(0, -15, bodyWidth, 30);
-        sprite.fill({ color: 0xffff00, alpha: 0.5 });
-        sprite.rect(-20, -20, 40, 40);
-        sprite.fill(0xffff00);
-        sprite.rect(bodyWidth - 10, -20, 20, 40);
-        sprite.fill(0xffff00);
+        if (data.type === 'long') {
+          this.redrawLongNote(sprite, data, remainingDuration, true);
+        }
 
-        // 끝 시간이 지나면 자동 완료 (판정 시스템에서 처리할 것이지만 안전장치)
+        // 끝 시간이 지나면 자동 완료
         if (remainingDuration <= 0) {
           // JudgmentSystem에서 처리하도록 함
         }
@@ -148,7 +270,7 @@ export class NoteManager {
     if (!this.activeNotes[index]) return;
     const { sprite } = this.activeNotes[index];
     this.container.removeChild(sprite);
-    this.notePool.release(sprite);
+    sprite.destroy({ children: true });
     this.activeNotes.splice(index, 1);
   }
 
@@ -163,8 +285,9 @@ export class NoteManager {
     effect.alpha = 1;
     effect.scale.set(1);
 
+    const color = getCharacterColor(note.data.characterId);
     effect.circle(0, 0, 30);
-    effect.fill(isMiss ? 0x444444 : 0xffaa00);
+    effect.fill(isMiss ? 0x444444 : color);
     effect.stroke({ width: 4, color: isMiss ? 0x888888 : 0xffffff });
 
     this.effectLayer.addChild(effect);

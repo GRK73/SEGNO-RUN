@@ -41,6 +41,32 @@ export class JudgmentSystem {
     InputManager.getInstance().onInput(this.handleInput);
   }
 
+  public stats = {
+    perfect: 0,
+    great: 0,
+    miss: 0,
+    maxCombo: 0,
+    totalDeviation: 0,
+    totalHits: 0
+  };
+
+  private recordJudgment(judgment: Judgment, diff: number = 0) {
+    if (judgment === Judgment.PERFECT) {
+      this.stats.perfect++;
+      this.stats.totalHits++;
+      this.stats.totalDeviation += Math.abs(diff);
+    } else if (judgment === Judgment.GREAT) {
+      this.stats.great++;
+      this.stats.totalHits++;
+      this.stats.totalDeviation += Math.abs(diff);
+    } else if (judgment === Judgment.MISS) {
+      this.stats.miss++;
+      this.stats.totalHits++;
+      this.stats.totalDeviation += 150; // Use 150ms penalty for miss
+    }
+    this.stats.maxCombo = Math.max(this.stats.maxCombo, this.combo);
+  }
+
   public update() {
     const currentTime = this.audioManager.getCurrentTimeMS();
     const activeNotes = this.noteManager.getActiveNotes();
@@ -95,6 +121,7 @@ export class JudgmentSystem {
         console.log(`MISS! (Timed out)`);
         this.combo = 0;
         this.noteManager.explodeNote(i, true);
+        this.recordJudgment(Judgment.MISS, diff);
         if (this.onJudgment) this.onJudgment(data.lane, Judgment.MISS, data.type);
       }
     }
@@ -109,7 +136,7 @@ export class JudgmentSystem {
     const isMouseRelease = type === InputType.MOUSE_UP;
 
     if (isKeyboardRelease || isMouseRelease) {
-      let targetHoldId: string | null = isKeyboardRelease ? this.keyboardHoldNoteId : this.mouseHoldNoteId;
+      const targetHoldId: string | null = isKeyboardRelease ? this.keyboardHoldNoteId : this.mouseHoldNoteId;
       
       if (targetHoldId) {
         const holdNoteIndex = activeNotes.findIndex(n => n.id === targetHoldId);
@@ -180,18 +207,20 @@ export class JudgmentSystem {
           }
           this.noteManager.setHolding(bestNoteIndex, true);
           this.combo++;
+          this.recordJudgment(judgment, minDiff);
           if (this.onJudgment) this.onJudgment(note.lane, judgment, note.type);
           if (this.onHoldStart) this.onHoldStart(note.lane as number);
         } else {
           this.combo++;
           this.noteManager.explodeNote(bestNoteIndex, false);
-          
+          this.recordJudgment(judgment, minDiff);
           if (this.onJudgment) this.onJudgment(note.lane, judgment, note.type);
         }
       } else {
         console.log(`MISS! (Bad timing/Character)`);
         this.combo = 0;
         this.noteManager.explodeNote(bestNoteIndex, true);
+        this.recordJudgment(Judgment.MISS, minDiff);
         if (this.onJudgment) this.onJudgment(note.lane, Judgment.MISS, note.type);
       }
     } else {

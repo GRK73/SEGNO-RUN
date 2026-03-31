@@ -11,7 +11,7 @@
   height: 100vh;
   position: relative;
   overflow: hidden;
-  background-color: #000;
+  background-color: transparent;
   margin: 0;
   padding: 0;
 }
@@ -123,3 +123,83 @@
   pointer-events: auto;
 }
 
+.loading-screen h1 {
+  font-family: 'planb', sans-serif;
+  font-size: 4rem;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255,255,255,0.5);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Pause Menu */
+.pause-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.pause-content {
+  text-align: center;
+  background: rgba(20, 20, 20, 0.9);
+  padding: 3rem 5rem;
+  border-radius: 20px;
+  border: 2px solid #4abeff;
+  box-shadow: 0 0 30px rgba(74, 190, 255, 0.3);
+}
+
+.pause-content h1 {
+  font-family: 'planb', sans-serif;
+  font-size: 4rem;
+  color: #4abeff;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 15px rgba(74, 190, 255, 0.5);
+}
+
+.pause-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.pause-buttons button {
+  font-family: 'planb', sans-serif;
+  font-size: 1.8rem;
+  padding: 1rem 3rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #333;
+  color: #fff;
+}
+
+.pause-buttons button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.2);
+}
+
+.pause-buttons .resume-btn {
+  background: #27ae60;
+}
+
+.pause-buttons .retry-btn {
+  background: #2980b9;
+}
+
+.pause-buttons .quit-btn {
+  background: #c0392b;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
+}

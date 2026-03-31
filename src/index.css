@@ -9,7 +9,7 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden; /* 스크롤바 제거 */
-  background-color: #000;
+  background-color: transparent;
   user-select: none; /* 텍스트 선택 방지 */
 }
 

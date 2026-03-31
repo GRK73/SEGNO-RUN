@@ -44,6 +44,7 @@ const SONGS: Song[] = [
 
 const SongSelect: React.FC<SongSelectProps> = ({ onStart }) => {
   const [selectedSong, setSelectedSong] = useState<Song>(SONGS[0]);
+  const [selectedDifficulty, setSelectedDifficulty] = useState<'easy' | 'hard' | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const targetAudioRef = useRef<string | null>(null);
 
@@ -65,6 +66,10 @@ const SongSelect: React.FC<SongSelectProps> = ({ onStart }) => {
       audioRef.current = newAudio;
       
       newAudio.play().then(() => {
+        if (!targetAudioRef.current) {
+          newAudio.pause();
+          return;
+        }
         let vol = 0;
         const fade = setInterval(() => {
           vol += 0.05;
@@ -110,40 +115,65 @@ const SongSelect: React.FC<SongSelectProps> = ({ onStart }) => {
     };
   }, []);
 
-  const handlePlay = (difficulty: 'easy' | 'hard') => {
-    onStart(
-      getAssetPath(selectedSong.audio), 
-      getAssetPath(selectedSong.charts[difficulty])
-    );
-  };
-
   return (
-    <div className="song-select-container">
-      <div className="song-list-panel">
-        <div className="song-list">
-          {SONGS.map(song => (
-            <div 
-              key={song.id} 
-              className={`song-item ${selectedSong.id === song.id ? 'active' : ''}`}
-              onClick={() => setSelectedSong(song)}
-            >
-              <div className="song-item-title">{song.title}</div>
-              <div className="song-item-artist">{song.artist}</div>
-            </div>
-          ))}
+    <div 
+      className="song-select-wrapper" 
+      style={{ backgroundImage: `url("${getAssetPath('assets/images/backgroud.png')}")` }} 
+    >
+      <div className="song-select-container">
+        <div className="song-list-panel">
+          <div className="song-list">
+            {SONGS.map(song => (
+              <div 
+                key={song.id} 
+                className={`song-item ${selectedSong.id === song.id ? 'active' : ''}`}
+                onClick={() => {
+                  setSelectedSong(song);
+                  setSelectedDifficulty(null);
+                }}
+              >
+                <div className="song-item-title">{song.title}</div>
+                <div className="song-item-artist">{song.artist}</div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-      
-      <div className="song-detail-panel">
-        <div className="album-cover-wrapper">
-          <img src={getAssetPath(selectedSong.cover)} alt="Cover" className="album-cover" />
-        </div>
-        <h2 className="detail-title">{selectedSong.title}</h2>
-        <div className="detail-artist">{selectedSong.artist}</div>
         
-        <div className="difficulty-buttons">
-          <button className="diff-btn easy" onClick={() => handlePlay('easy')}>EASY</button>
-          <button className="diff-btn hard" onClick={() => handlePlay('hard')}>HARD</button>
+        <div className="song-detail-panel">
+          <div className="album-cover-wrapper">
+            <img src={getAssetPath(selectedSong.cover)} alt="Cover" className="album-cover" />
+          </div>
+          <h2 className="detail-title">{selectedSong.title}</h2>
+          
+          <div className="difficulty-buttons">
+            <button 
+              className={`diff-btn easy ${selectedDifficulty === 'easy' ? 'selected' : ''}`} 
+              onClick={() => setSelectedDifficulty('easy')}
+            >
+              EASY
+            </button>
+            <button 
+              className={`diff-btn hard ${selectedDifficulty === 'hard' ? 'selected' : ''}`} 
+              onClick={() => setSelectedDifficulty('hard')}
+            >
+              HARD
+            </button>
+          </div>
+
+          <button 
+            className={`start-game-btn ${selectedDifficulty ? 'ready' : ''}`}
+            disabled={!selectedDifficulty}
+            onClick={() => {
+              if (selectedDifficulty) {
+                onStart(
+                  getAssetPath(selectedSong.audio), 
+                  getAssetPath(selectedSong.charts[selectedDifficulty])
+                );
+              }
+            }}
+          >
+            GAME START!
+          </button>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import type { ChartData, NoteData } from '../game/ChartLoader';
 
 const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
@@ -25,6 +25,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [metronomeOn, setMetronomeOn] = useState(false);
+  const [audioDurationMs, setAudioDurationMs] = useState(120000);
 
   const audioCtxRef = useRef<AudioContext | null>(null);
   const audioBufferRef = useRef<AudioBuffer | null>(null);
@@ -45,43 +46,21 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const stepsPerBeat = zoom >= 50 ? 8 : 4;
   const gridStep = msPerBeat / stepsPerBeat; 
 
-  const timeToX = (timeMs: number) => timeMs * (zoom / 100);
-  const xToTime = (x: number) => x / (zoom / 100);
+  const timeToX = useCallback((timeMs: number) => timeMs * (zoom / 100), [zoom]);
+  const xToTime = useCallback((x: number) => x / (zoom / 100), [zoom]);
 
-  useEffect(() => {
-    const ctx = new window.AudioContext();
-    audioCtxRef.current = ctx;
-    
-    fetch(`${import.meta.env.BASE_URL}assets/audio/test.mp3`)
-      .then(res => res.arrayBuffer())
-      .then(buf => ctx.decodeAudioData(buf))
-      .then(decoded => {
-        audioBufferRef.current = decoded;
-      })
-      .catch(e => console.error('Audio load failed:', e));
+  const updateLoopRef = useRef<() => void>(() => {});
 
-
-
-    return () => {
-      if (sourceNodeRef.current) {
-        try { sourceNodeRef.current.stop(); } catch(e) {}
-        sourceNodeRef.current.disconnect();
-      }
-      ctx.close();
-      if (requestRef.current) cancelAnimationFrame(requestRef.current);
-    };
-  }, []);
-
-  const updateLoop = () => {
+  const updateLoop = useCallback(() => {
     if (audioCtxRef.current && isPlaying && !isDragging) {
       const elapsed = (audioCtxRef.current.currentTime - startTimeRef.current) * playbackRateRef.current;
-      let currentSec = pauseTimeRef.current + elapsed;
+      const currentSec = pauseTimeRef.current + elapsed;
 
       if (audioBufferRef.current && currentSec >= audioBufferRef.current.duration) {
         setIsPlaying(false);
         pauseTimeRef.current = 0;
         if (sourceNodeRef.current) {
-          try { sourceNodeRef.current.stop(); } catch(e) {}
+          try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
           sourceNodeRef.current.disconnect();
           sourceNodeRef.current = null;
         }
@@ -140,23 +119,50 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         }
       }
 
-      requestRef.current = requestAnimationFrame(updateLoop);
+      requestRef.current = requestAnimationFrame(updateLoopRef.current);
     }
-  };
+  }, [isPlaying, isDragging, notes, metronomeOn, msPerBeat, timeToX]);
+
+  useEffect(() => {
+    updateLoopRef.current = updateLoop;
+  }, [updateLoop]);
 
   useEffect(() => {
     if (isPlaying && !isDragging) {
       if (audioCtxRef.current?.state === 'suspended') audioCtxRef.current.resume();
       requestRef.current = requestAnimationFrame(updateLoop);
     } else if (requestRef.current) cancelAnimationFrame(requestRef.current);
-  }, [isPlaying, isDragging, zoom, playbackRate]);
+  }, [isPlaying, isDragging, updateLoop]);
+
+  useEffect(() => {
+    const ctx = new window.AudioContext();
+    audioCtxRef.current = ctx;
+    
+    fetch(`${import.meta.env.BASE_URL}assets/audio/test.mp3`)
+      .then(res => res.arrayBuffer())
+      .then(buf => ctx.decodeAudioData(buf))
+      .then(decoded => {
+        audioBufferRef.current = decoded;
+        setAudioDurationMs(decoded.duration * 1000);
+      })
+      .catch(err => console.error('Audio load failed:', err));
+
+    return () => {
+      if (sourceNodeRef.current) {
+        try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
+        sourceNodeRef.current.disconnect();
+      }
+      ctx.close();
+      if (requestRef.current) cancelAnimationFrame(requestRef.current);
+    };
+  }, []);
 
   const changeRate = (rate: number) => {
     if (isPlaying && audioCtxRef.current && audioBufferRef.current) {
       const elapsed = (audioCtxRef.current.currentTime - startTimeRef.current) * playbackRateRef.current;
       pauseTimeRef.current += elapsed;
       if (sourceNodeRef.current) {
-         try { sourceNodeRef.current.stop(); } catch(e){}
+         try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
          sourceNodeRef.current.disconnect();
       }
       const ctx = audioCtxRef.current;
@@ -177,7 +183,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     
     if (isPlaying) {
       if (sourceNodeRef.current) {
-        try { sourceNodeRef.current.stop(); } catch(e) {}
+        try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
         sourceNodeRef.current.disconnect();
         sourceNodeRef.current = null;
       }
@@ -202,7 +208,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     setIsPlaying(!isPlaying);
   };
 
-  const handleSeek = (e: React.MouseEvent | MouseEvent) => {
+  const handleSeek = useCallback((e: React.MouseEvent | MouseEvent) => {
     if (!scrollRef.current || !audioCtxRef.current || !audioBufferRef.current) return;
     const containerRect = scrollRef.current.getBoundingClientRect();
     const x = e.clientX - containerRect.left + scrollRef.current.scrollLeft;
@@ -212,7 +218,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     newTimeSec = Math.min(newTimeSec, audioBufferRef.current.duration);
     
     if (isPlaying && sourceNodeRef.current) {
-      try { sourceNodeRef.current.stop(); } catch(e) {}
+      try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
       sourceNodeRef.current.disconnect();
       
       const ctx = audioCtxRef.current;
@@ -233,7 +239,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     
     if (seekerRef.current) seekerRef.current.style.transform = `translateX(${timeToX(newTimeSec * 1000)}px)`;
     if (timeDisplayRef.current) timeDisplayRef.current.innerText = newTimeSec.toFixed(2) + 's';
-  };
+  }, [isPlaying, msPerBeat, timeToX, xToTime]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -254,11 +260,11 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [isDragging]);
+  }, [isDragging, handleSeek]);
 
-  const removeNoteAt = (time: number, lane: 0 | 1 | 'any') => {
+  const removeNoteAt = useCallback((time: number, lane: 0 | 1 | 'any') => {
     setNotes(prev => prev.filter(n => !(Math.abs(n.time - time) < 10 && (n.lane === lane || n.lane === 'any'))));
-  };
+  }, []);
 
   const handleGridClick = (time: number, lane: 0 | 1 | 'any') => {
     if (selectedNoteType === 'eraser') {
@@ -337,7 +343,6 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     reader.readAsText(file);
   };
 
-  const audioDurationMs = audioBufferRef.current ? audioBufferRef.current.duration * 1000 : 120000;
   const totalDuration = Math.max(audioDurationMs + 5000, ...notes.map(n => n.time + (n.duration || 0) + 10000));
 
   return (
@@ -502,7 +507,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                          backgroundColor: noteColor ? `${noteColor}4D` : undefined
                        }}
                        onClick={(e) => {
-                         if (selectedNoteType === 'eraser') { e.stopPropagation(); removeNoteAt(note.time, note.lane as any); }
+                         if (selectedNoteType === 'eraser') { e.stopPropagation(); removeNoteAt(note.time, note.lane as NoteData['lane']); }
                        }}>
                     <div className="long-body" style={{ backgroundColor: noteColor }} />
                   </div>
@@ -516,7 +521,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                        boxShadow: note.type === 'normal' && noteColor ? `0 0 5px ${noteColor}` : undefined
                      }}
                      onClick={(e) => {
-                       if (selectedNoteType === 'eraser') { e.stopPropagation(); removeNoteAt(note.time, note.lane as any); }
+                       if (selectedNoteType === 'eraser') { e.stopPropagation(); removeNoteAt(note.time, note.lane as NoteData['lane']); }
                      }}>
                   {note.type === 'switch_up' ? '▲' : note.type === 'switch_down' ? '▼' : ''}
                 </div>

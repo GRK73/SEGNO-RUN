@@ -6,6 +6,7 @@ export class HUDManager {
   private gearGraphics: Graphics;
   private avatarSprite: AnimatedSprite;
   private comboText: Text;
+  private scoreText: Text;
   private activeJudgments: { text: Text, time: number }[] = [];
 
   private runFrames: Texture[] = [];
@@ -23,11 +24,12 @@ export class HUDManager {
   private attackTimeoutId: ReturnType<typeof setTimeout> | null = null;
   private activeHoldLane: number | null = null;
   private switchBounce: number = 1.0;
+  private comboBounce: number = 1.0;
   private holdTime: number = 0;
 
   // Render Offsets
   private baseAvatarX: number = 155;
-  private baseAvatarY: number = 400;
+  private baseAvatarY: number = 450; 
   private introOffsetX: number = 0;
   private attackSlideX: number = 0;
   private attackSlideY: number = 0;
@@ -64,17 +66,36 @@ export class HUDManager {
     this.container.addChild(this.avatarSprite);
 
     const style = new TextStyle({
-      fontFamily: 'Arial',
-      fontSize: 48,
+      fontFamily: '"planb", sans-serif',
+      fontSize: 40,
       fill: '#ffffff',
       fontWeight: 'bold',
+      stroke: { color: '#000000', width: 6 },
     });
     this.comboText = new Text({ text: '', style });
-    this.comboText.x = this.judgmentLineX;
-    this.comboText.y = 50;
+    this.comboText.anchor.set(0.5); 
+    this.comboText.x = window.innerWidth / 2; 
+    this.comboText.y = 120;
     this.container.addChild(this.comboText);
 
+    const scoreStyle = new TextStyle({
+      fontFamily: '"planb", sans-serif',
+      fontSize: 36,
+      fill: '#ffffff',
+      fontWeight: 'bold',
+      stroke: { color: '#000000', width: 4 },
+    });
+    this.scoreText = new Text({ text: '000,000', style: scoreStyle });
+    this.scoreText.anchor.set(1, 0); // Top-right anchor
+    this.scoreText.x = window.innerWidth - 30;
+    this.scoreText.y = 30;
+    this.container.addChild(this.scoreText);
+
     this.initGear();
+  }
+
+  public updateScore(score: number) {
+    this.scoreText.text = score.toLocaleString('en-US', { minimumIntegerDigits: 6, useGrouping: true });
   }
 
   private initGear() {
@@ -82,11 +103,11 @@ export class HUDManager {
     g.clear();
 
     // Upper Lane Hit Circle
-    g.circle(this.judgmentLineX + 2, 200, 24);
+    g.circle(this.judgmentLineX + 2, 250, 24);
     g.stroke({ width: 3, color: 0xffffff, alpha: 0.8 });
 
     // Lower Lane Hit Circle
-    g.circle(this.judgmentLineX + 2, 400, 24);
+    g.circle(this.judgmentLineX + 2, 450, 24);
     g.stroke({ width: 3, color: 0xffffff, alpha: 0.8 });
   }
 
@@ -109,9 +130,9 @@ export class HUDManager {
     // Center X
     text.x = this.judgmentLineX - text.width / 2;
     // Y slightly above the judgment lines
-    if (lane === 1) text.y = 200 - 40; 
-    else if (lane === 0) text.y = 400 - 40; 
-    else text.y = 300 - 40; 
+    if (lane === 1) text.y = 250 - 40; 
+    else if (lane === 0) text.y = 450 - 40; 
+    else text.y = 350 - 40; 
 
     this.container.addChild(text);
     this.activeJudgments.push({ text, time: 0 });
@@ -167,6 +188,9 @@ export class HUDManager {
   }
 
   public update(_delta: number) {
+    this.comboBounce = 1.0 + (this.comboBounce - 1.0) * Math.pow(0.8, _delta);
+    this.comboText.scale.set(this.comboBounce);
+
     // Update Avatar View
     const character = this.characterManager.getActiveCharacter();
     
@@ -278,8 +302,15 @@ export class HUDManager {
   }
 
   public updateCombo(combo: number) {
-    this.comboText.text = combo > 0 ? `${combo} COMBO` : '';
-    this.comboText.x = this.judgmentLineX - this.comboText.width / 2;
+    const oldText = this.comboText.text;
+    const newText = combo > 0 ? `${combo} COMBO` : '';
+    
+    if (newText !== oldText) {
+      this.comboText.text = newText;
+      if (newText !== '') {
+        this.comboBounce = 1.3;
+      }
+    }
   }
 
   public async initAvatar() {
@@ -392,7 +423,7 @@ export class HUDManager {
         frameTextures.push(Texture.from(canvas));
       }
 
-      const floorY = 415;
+      const floorY = 465; // Shifted from 495
       const floorH = 100;
       // Use first frame's trimmed width for tile size
       const trimmedFrameW = frameTextures[0].width;
@@ -418,12 +449,12 @@ export class HUDManager {
     if (this.activeHoldLane !== null) return; // Prevent attack animation from overriding hold
     
     const prevY = this.baseAvatarY;
-    const newY = (lane === 1) ? 200 : 400;
+    const newY = (lane === 1) ? 250 : 450;
     this.baseAvatarY = newY;
     
-    if (prevY === 400 && newY === 200) {
+    if (prevY === 450 && newY === 250) {
       this.attackSlideY = 7;   // Starts lower, slides UP
-    } else if (prevY === 200 && newY === 400) {
+    } else if (prevY === 250 && newY === 450) {
       this.attackSlideY = -5;  // Starts higher, slides DOWN
     } else {
       this.attackSlideY = 0;
@@ -445,7 +476,7 @@ export class HUDManager {
     
     this.attackTimeoutId = setTimeout(() => {
       if (this.avatarSprite && this.activeHoldLane === null) {
-        this.baseAvatarY = 400;
+        this.baseAvatarY = 450;
         this.attackSlideY = 0;
         this.attackSlideX = 0;
         this.avatarSprite.textures = this.runFrames;
@@ -463,9 +494,9 @@ export class HUDManager {
     this.attackSlideY = 0;
     this.attackSlideX = 0;
     if (lane === 1) {
-      this.baseAvatarY = 200;
+      this.baseAvatarY = 250;
     } else {
-      this.baseAvatarY = 400;
+      this.baseAvatarY = 450;
     }
     
     this.avatarSprite.textures = [this.holdFrame];
@@ -482,7 +513,7 @@ export class HUDManager {
     if (this.activeHoldLane === lane) {
       this.activeHoldLane = null;
       if (this.avatarSprite) {
-        this.baseAvatarY = 400;
+        this.baseAvatarY = 450;
         this.attackSlideY = 0;
         this.attackSlideX = 0;
         this.avatarSprite.textures = this.runFrames;
