@@ -4,6 +4,8 @@ import { CharacterManager } from './CharacterManager';
 export class HUDManager {
   private container: Container;
   private gearGraphics: Graphics;
+  private arcGraphics: Graphics;
+  private arcRotation: number = 0;
   private avatarSprite: AnimatedSprite;
   private comboText: Text;
   private scoreText: Text;
@@ -51,13 +53,19 @@ export class HUDManager {
   constructor(parent: Container, characterManager: CharacterManager) {
     this.characterManager = characterManager;
     this.container = new Container();
-    parent.addChild(this.container);
 
     this.floorContainer = new Container();
     this.container.addChildAt(this.floorContainer, 0); // behind everything
 
+    // 판정 원은 노트보다 아래 레이어에 추가
     this.gearGraphics = new Graphics();
-    this.container.addChild(this.gearGraphics);
+    parent.addChildAt(this.gearGraphics, 0);
+
+    this.arcGraphics = new Graphics();
+    parent.addChildAt(this.arcGraphics, 0);
+
+    // HUD 메인 컨테이너(아바타, 텍스트 등)는 노트 위에 추가
+    parent.addChild(this.container);
 
     this.avatarSprite = new AnimatedSprite([Texture.EMPTY]);
     this.avatarSprite.anchor.set(0.5);
@@ -102,13 +110,33 @@ export class HUDManager {
     const g = this.gearGraphics;
     g.clear();
 
-    // Upper Lane Hit Circle
-    g.circle(this.judgmentLineX + 2, 250, 24);
-    g.stroke({ width: 3, color: 0xffffff, alpha: 0.8 });
+    // Upper Lane - 중심 원
+    g.circle(this.judgmentLineX + 2, 250, 7);
+    g.fill({ color: 0xffffff, alpha: 0.9 });
 
-    // Lower Lane Hit Circle
-    g.circle(this.judgmentLineX + 2, 450, 24);
-    g.stroke({ width: 3, color: 0xffffff, alpha: 0.8 });
+    // Lower Lane - 중심 원
+    g.circle(this.judgmentLineX + 2, 450, 7);
+    g.fill({ color: 0xffffff, alpha: 0.9 });
+  }
+
+  private drawArcs() {
+    const g = this.arcGraphics;
+    g.clear();
+
+    const cx = this.judgmentLineX + 2;
+    const lanes = [250, 450];
+    const radius = 20;
+    const arcSpan = (Math.PI * 2 / 3) * 0.72; // 120° 중 72% = 약 86°
+    const gap = Math.PI * 2 / 3;
+
+    for (const cy of lanes) {
+      for (let i = 0; i < 3; i++) {
+        const startAngle = this.arcRotation + gap * i;
+        const endAngle = startAngle + arcSpan;
+        g.arc(cx, cy, radius, startAngle, endAngle);
+        g.stroke({ width: 3, color: 0xffffff, alpha: 0.85 });
+      }
+    }
   }
 
   public showJudgment(lane: number | string, judgment: string) {
@@ -126,13 +154,12 @@ export class HUDManager {
     });
 
     const text = new Text({ text: judgment, style });
-    
-    // Center X
-    text.x = this.judgmentLineX - text.width / 2;
-    // Y slightly above the judgment lines
-    if (lane === 1) text.y = 250 - 40; 
-    else if (lane === 0) text.y = 450 - 40; 
-    else text.y = 350 - 40; 
+    text.anchor.set(0.5);
+    text.x = this.judgmentLineX;
+    if (lane === 1) text.y = 250 - 40;
+    else if (lane === 0) text.y = 450 - 40;
+    else text.y = 350 - 40;
+    text.scale.set(1.5);
 
     this.container.addChild(text);
     this.activeJudgments.push({ text, time: 0 });
@@ -188,6 +215,9 @@ export class HUDManager {
   }
 
   public update(_delta: number) {
+    this.arcRotation += 0.025 * _delta;
+    this.drawArcs();
+
     this.comboBounce = 1.0 + (this.comboBounce - 1.0) * Math.pow(0.8, _delta);
     this.comboText.scale.set(this.comboBounce);
 
@@ -211,9 +241,8 @@ export class HUDManager {
       }
     }
 
-    // Character Avatar Tint Update
     if (this.avatarSprite) {
-       this.avatarSprite.tint = 0xffffff; // Remove custom tint
+       if (this.avatarSprite.tint !== 0xffffff) this.avatarSprite.tint = 0xffffff;
        
        if (this.attackSlideY !== 0) {
          this.attackSlideY += (0 - this.attackSlideY) * 0.3 * _delta;
@@ -271,6 +300,8 @@ export class HUDManager {
       item.time += 16.6 * _delta;
       item.text.y -= 1.0 * _delta;
       item.text.alpha = Math.max(0, 1 - item.time / 500);
+      const bounce = 1.0 + 0.55 * Math.exp(-item.time / 55) * Math.cos(item.time / 32);
+      item.text.scale.set(Math.max(0.1, bounce));
       
       if (item.time >= 500) {
         this.container.removeChild(item.text);
@@ -284,9 +315,6 @@ export class HUDManager {
       const scrollDelta = this.floorScrollSpeed * 16.6 * _delta;
       for (const fs of this.floorSprites) {
         fs.x -= scrollDelta;
-      }
-      // Reposition tiles that scrolled off-screen left
-      for (const fs of this.floorSprites) {
         if (fs.x + this.floorTileW <= 0) {
           let maxX = -Infinity;
           for (const other of this.floorSprites) {
@@ -315,7 +343,7 @@ export class HUDManager {
 
   public async initAvatar() {
     const baseUrl = import.meta.env.BASE_URL;
-    const prefixes = ['segin', 'songbam', 'navi'];
+    const prefixes = ['bver', 'segin', 'songbam', 'navi', 'kanghee'];
     const baseW = 960;
     const baseH = 960;
 
@@ -383,64 +411,71 @@ export class HUDManager {
     }
     const floorTexture = Assets.cache.get(`${baseUrl}assets/images/floor.png`);
     if (floorTexture) {
-      // Slice sprite sheet into individual frame textures, trimming transparent edges
       const sheetWidth = floorTexture.width;
       const sheetHeight = floorTexture.height;
-      const frameCount = 3;
-      const frameW = Math.floor(sheetWidth / frameCount);
+      const floorFrameCount = 3;
+      const floorFrameW = Math.floor(sheetWidth / floorFrameCount);
       
-      const frameTextures: Texture[] = [];
-      for (let i = 0; i < frameCount; i++) {
-        // Draw full frame to temp canvas
+      const floorFrameTextures: Texture[] = [];
+      for (let fi = 0; fi < floorFrameCount; fi++) {
         const tmpCanvas = document.createElement('canvas');
-        tmpCanvas.width = frameW;
+        tmpCanvas.width = floorFrameW;
         tmpCanvas.height = sheetHeight;
         const tmpCtx = tmpCanvas.getContext('2d')!;
-        const img = floorTexture.source.resource as CanvasImageSource;
-        tmpCtx.drawImage(img, i * frameW, 0, frameW, sheetHeight, 0, 0, frameW, sheetHeight);
+        const floorImg = floorTexture.source.resource as CanvasImageSource;
+        tmpCtx.drawImage(floorImg, fi * floorFrameW, 0, floorFrameW, sheetHeight, 0, 0, floorFrameW, sheetHeight);
         
-        // Find non-transparent bounds
-        const imageData = tmpCtx.getImageData(0, 0, frameW, sheetHeight);
-        const { data } = imageData;
-        let minX = frameW, maxX = 0;
-        for (let y = 0; y < sheetHeight; y++) {
-          for (let x = 0; x < frameW; x++) {
-            const alpha = data[(y * frameW + x) * 4 + 3];
+        const imageData = tmpCtx.getImageData(0, 0, floorFrameW, sheetHeight);
+        const { data: pixelData } = imageData;
+        let floorMinX = floorFrameW, floorMaxX = 0;
+        for (let py = 0; py < sheetHeight; py++) {
+          for (let px = 0; px < floorFrameW; px++) {
+            const alpha = pixelData[(py * floorFrameW + px) * 4 + 3];
             if (alpha > 10) {
-              if (x < minX) minX = x;
-              if (x > maxX) maxX = x;
+              if (px < floorMinX) floorMinX = px;
+              if (px > floorMaxX) floorMaxX = px;
             }
           }
         }
         
-        // Crop to trimmed bounds
-        const trimW = maxX - minX + 1;
-        const canvas = document.createElement('canvas');
-        canvas.width = trimW;
-        canvas.height = sheetHeight;
-        const ctx = canvas.getContext('2d')!;
-        ctx.drawImage(tmpCanvas, minX, 0, trimW, sheetHeight, 0, 0, trimW, sheetHeight);
-        frameTextures.push(Texture.from(canvas));
+        const trimW = floorMaxX - floorMinX + 1;
+        const cropCanvas = document.createElement('canvas');
+        cropCanvas.width = trimW;
+        cropCanvas.height = sheetHeight;
+        const cropCtx = cropCanvas.getContext('2d')!;
+        cropCtx.drawImage(tmpCanvas, floorMinX, 0, trimW, sheetHeight, 0, 0, trimW, sheetHeight);
+        floorFrameTextures.push(Texture.from(cropCanvas));
       }
 
-      const floorY = 465; // Shifted from 495
+      const floorY = 465;
       const floorH = 100;
-      // Use first frame's trimmed width for tile size
-      const trimmedFrameW = frameTextures[0].width;
-      const trimmedFrameH = frameTextures[0].height;
+      const trimmedFrameW = floorFrameTextures[0].width;
+      const trimmedFrameH = floorFrameTextures[0].height;
       this.floorTileW = Math.round(floorH * (trimmedFrameW / trimmedFrameH));
-      const totalTiles = Math.ceil(2400 / this.floorTileW) + 2;
+      const totalFloorTiles = Math.ceil(2400 / this.floorTileW) + 2;
       
-      for (let i = 0; i < totalTiles; i++) {
-        const tex = frameTextures[i % frameTextures.length];
-        const fs = new Sprite(tex);
+      for (let ti = 0; ti < totalFloorTiles; ti++) {
+        const ftex = floorFrameTextures[ti % floorFrameTextures.length];
+        const fs = new Sprite(ftex);
         fs.y = floorY;
         fs.width = this.floorTileW;
         fs.height = floorH;
-        fs.x = i * this.floorTileW;
+        fs.x = ti * this.floorTileW;
         this.floorContainer.addChild(fs);
         this.floorSprites.push(fs);
       }
+    }
+  }
+
+  public pauseAvatar() {
+    if (this.avatarSprite) {
+      this.avatarSprite.stop();
+    }
+  }
+
+  public resumeAvatar() {
+    if (this.avatarSprite) {
+      this.avatarSprite.play();
     }
   }
 
@@ -475,14 +510,7 @@ export class HUDManager {
     }
     
     this.attackTimeoutId = setTimeout(() => {
-      if (this.avatarSprite && this.activeHoldLane === null) {
-        this.baseAvatarY = 450;
-        this.attackSlideY = 0;
-        this.attackSlideX = 0;
-        this.avatarSprite.textures = this.runFrames;
-        this.avatarSprite.loop = true;
-        this.avatarSprite.play();
-      }
+      if (this.activeHoldLane === null) this.resetToRun();
       this.attackTimeoutId = null;
     }, 300);
   }
@@ -512,15 +540,18 @@ export class HUDManager {
   public endHold(lane: number) {
     if (this.activeHoldLane === lane) {
       this.activeHoldLane = null;
-      if (this.avatarSprite) {
-        this.baseAvatarY = 450;
-        this.attackSlideY = 0;
-        this.attackSlideX = 0;
-        this.avatarSprite.textures = this.runFrames;
-        this.avatarSprite.loop = true;
-        this.avatarSprite.play();
-      }
+      this.resetToRun();
     }
+  }
+
+  private resetToRun() {
+    if (!this.avatarSprite) return;
+    this.baseAvatarY = 450;
+    this.attackSlideY = 0;
+    this.attackSlideX = 0;
+    this.avatarSprite.textures = this.runFrames;
+    this.avatarSprite.loop = true;
+    this.avatarSprite.play();
   }
 
   public triggerSwitch(type?: string) {

@@ -79,65 +79,45 @@ export class AudioManager {
     }, durationMs + 100);
   }
 
-  public async play() {
+  // delaySeconds 후 재생 예약. isPlaying=true로 설정하므로 getCurrentTimeMS()가
+  // 즉시 음수값을 반환하기 시작해 점프 없는 seamless 전환을 보장함.
+  public playScheduled(delaySeconds: number) {
     if (!this.audioContext || !this.audioBuffer) return;
-    await this.resume();
-    
-    // Ensure mainGain exists
+
     if (!this.mainGain) {
       this.mainGain = this.audioContext.createGain();
       this.mainGain.connect(this.audioContext.destination);
     }
-    
-    // Reset volume to max before playing
+
     const now = this.audioContext.currentTime;
     this.mainGain.gain.cancelScheduledValues(now);
-    this.mainGain.gain.value = 1;
     this.mainGain.gain.setValueAtTime(1, now);
-    
+
     this.source = this.audioContext.createBufferSource();
     this.source.buffer = this.audioBuffer;
     this.source.connect(this.mainGain);
-    
-    this.startTime = now;
-    this.source.start(0);
+
+    this.startTime = now + delaySeconds;
+    this.source.start(this.startTime);
     this.isPlaying = true;
   }
 
   public fadeOutMain(durationMs: number = 3000) {
     if (!this.mainGain || !this.source || !this.audioContext) return;
-    
-    const steps = 30;
-    const stepTime = durationMs / steps;
-    let currentStep = 0;
-    
-    // Clear any existing fade
-    if (this.fadeInterval) clearInterval(this.fadeInterval);
-    
-    const targetGain = this.mainGain.gain;
-    const targetSource = this.source;
-    
-    // CRITICAL: Cancel scheduled values so manual .value assignment works!
-    targetGain.cancelScheduledValues(0);
-    
-    this.fadeInterval = setInterval(() => {
-      currentStep++;
-      const newVolume = Math.max(0, 1 - (currentStep / steps));
-      
-      // Update volume safely
-      try {
-        targetGain.value = newVolume;
-      } catch { /* ignore */ }
-      
-      if (currentStep >= steps) {
-        if (this.fadeInterval) clearInterval(this.fadeInterval);
-        try { 
-          targetSource.stop(); 
-          targetSource.disconnect();
-        } catch { /* ignore */ }
-        this.isPlaying = false;
-      }
-    }, stepTime);
+    if (this.fadeInterval) { clearInterval(this.fadeInterval); this.fadeInterval = null; }
+
+    const now = this.audioContext.currentTime;
+    const end = now + durationMs / 1000;
+    this.mainGain.gain.cancelScheduledValues(now);
+    this.mainGain.gain.setValueAtTime(this.mainGain.gain.value, now);
+    this.mainGain.gain.linearRampToValueAtTime(0, end);
+
+    const source = this.source;
+    this.fadeInterval = setTimeout(() => {
+      this.fadeInterval = null;
+      try { source.stop(); source.disconnect(); } catch { /* ignore */ }
+      this.isPlaying = false;
+    }, durationMs) as unknown as ReturnType<typeof setInterval>;
   }
 
   public async loadSFX(name: string, url: string) {
@@ -154,16 +134,15 @@ export class AudioManager {
 
   public playSFX(name: string) {
     if (!this.audioContext || !this.sfxBuffers.has(name)) return;
-    
+
+    const gainNode = this.audioContext.createGain();
+    gainNode.gain.value = this.sfxVolume;
+    gainNode.connect(this.audioContext.destination);
+
     const source = this.audioContext.createBufferSource();
     source.buffer = this.sfxBuffers.get(name)!;
-    
-    const gainNode = this.audioContext.createGain();
-    gainNode.gain.value = this.sfxVolume; // Set volume to 80%
-    
     source.connect(gainNode);
-    gainNode.connect(this.audioContext.destination);
-    
+    source.onended = () => { source.disconnect(); gainNode.disconnect(); };
     source.start(0);
   }
 
@@ -190,12 +169,20 @@ export class AudioManager {
 
   public stop() {
     if (this.fadeInterval) {
-      clearInterval(this.fadeInterval);
+      clearTimeout(this.fadeInterval as unknown as ReturnType<typeof setTimeout>);
       this.fadeInterval = null;
     }
     if (this.source) {
-      try { this.source.stop(); } catch { /* ignore */ }
+      try { this.source.stop(); this.source.disconnect(); } catch { /* ignore */ }
       this.isPlaying = false;
+    }
+    if (this.introSource) {
+      try { this.introSource.stop(); this.introSource.disconnect(); } catch { /* ignore */ }
+      this.introSource = null;
+    }
+    if (this.introGain) {
+      try { this.introGain.disconnect(); } catch { /* ignore */ }
+      this.introGain = null;
     }
   }
 }

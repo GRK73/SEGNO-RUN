@@ -8,11 +8,11 @@ export interface CharacterInfo {
 }
 
 export const CHARACTERS: CharacterInfo[] = [
-  { id: 0, name: '빕어', color: 0xcacdd1, assetPrefix: 'segin' },
+  { id: 0, name: '빕어', color: 0x888888, assetPrefix: 'bver' },
   { id: 1, name: '한세긴', color: 0x4abeff, assetPrefix: 'segin' },
   { id: 2, name: '송밤', color: 0xbec8fd, assetPrefix: 'songbam' },
-  { id: 3, name: '나비', color: 0xffa670, assetPrefix: 'navi' },
-  { id: 4, name: '크앙희', color: 0xc296e8, assetPrefix: 'segin' },
+  { id: 3, name: '나비', color: 0xec9a67, assetPrefix: 'navi' },
+  { id: 4, name: '크앙희', color: 0xc292e8, assetPrefix: 'kanghee' },
 ];
 
 export class CharacterManager {

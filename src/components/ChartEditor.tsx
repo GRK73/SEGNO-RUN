@@ -1,5 +1,38 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import type { ChartData, NoteData } from '../game/ChartLoader';
+
+const SONG_LIST = [
+  { id: 'planb',       title: 'Plan B',           artist: 'Plan B(한세긴, 나비, 송밤)', roster: '1, 3, 2', audio: 'assets/audio/Plan B.mp3' },
+  { id: 'snaptime',    title: 'SNAP TIME',         artist: 'Plan B(한세긴, 나비, 송밤)', roster: '1, 3, 2', audio: 'assets/audio/SNAP TIME.mp3' },
+  { id: 'mvp',         title: 'MVP',               artist: 'Plan B(한세긴, 나비, 송밤)', roster: '1, 3, 2', audio: 'assets/audio/MVP.mp3' },
+  { id: 'monthly1',    title: '월간싸이퍼 Vol.1',  artist: '빕어, 한세긴, 나비, 송밤',   roster: '0, 1, 3, 2', audio: 'assets/audio/월간싸이퍼 Vol.1.mp3' },
+  { id: 'monthly2',    title: '월간싸이퍼 Vol.2',  artist: '빕어, 한세긴, 나비, 송밤',   roster: '0, 1, 3, 2', audio: 'assets/audio/월간싸이퍼 Vol.2.mp3' },
+  { id: 'monthly3',    title: '월간싸이퍼 Vol.3',  artist: '빕어, 한세긴, 나비, 송밤',   roster: '0, 1, 3, 2', audio: 'assets/audio/월간싸이퍼 Vol.3.mp3' },
+  { id: 'monthly4',    title: '월간싸이퍼 Vol.4',  artist: '빕어, 한세긴, 나비, 크앙희', roster: '0, 1, 3, 4', audio: 'assets/audio/월간싸이퍼 Vol.4.mp3' },
+  { id: 'monthly5',    title: '월간싸이퍼 Vol.5',  artist: '빕어, 한세긴, 나비, 크앙희', roster: '0, 1, 3, 4', audio: 'assets/audio/월간싸이퍼 Vol.5.mp3' },
+  { id: 'saynomore',   title: 'Say No More',       artist: '나비',                       roster: '3',          audio: 'assets/audio/Say No More.mp3' },
+  { id: 'switch',      title: 'SWITCH',            artist: '한세긴',                     roster: '1',          audio: 'assets/audio/SWITCH.mp3' },
+  { id: 'convergence', title: '수렴',              artist: '빕어',                       roster: '0',          audio: 'assets/audio/수렴.mp3' },
+  { id: 'stamp',       title: '찍어내',            artist: '빕어',                       roster: '0',          audio: 'assets/audio/찍어내.mp3' },
+  { id: 'objective',   title: '객관',              artist: '빕어',                       roster: '0',          audio: 'assets/audio/객관.mp3' },
+  { id: 'finally',     title: '이제야',            artist: '빕어',                       roster: '0',          audio: 'assets/audio/이제야.mp3' },
+  { id: 'ramble',      title: '주절',              artist: '빕어',                       roster: '0',          audio: 'assets/audio/주절.mp3' },
+  { id: 'turning',     title: '전환점',            artist: '빕어',                       roster: '0',          audio: 'assets/audio/전환점.mp3' },
+  { id: 'worthy',      title: '마땅한가',          artist: '빕어',                       roster: '0',          audio: 'assets/audio/마땅한가.mp3' },
+  { id: 'jump',        title: '뛰어',              artist: '빕어',                       roster: '0',          audio: 'assets/audio/뛰어.mp3' },
+  { id: 'miserable',   title: '궁상',              artist: '빕어',                       roster: '0',          audio: 'assets/audio/궁상.mp3' },
+  { id: 'mainwork',    title: '본업행동',          artist: '빕어',                       roster: '0',          audio: 'assets/audio/본업행동.mp3' },
+];
+
+const LEAD_IN_MS = 1000;
+
+const CHAR_DATA = [
+  { id: 0, name: '빕어', color: '#cacdd1' },
+  { id: 1, name: '한세긴', color: '#4abeff' },
+  { id: 2, name: '송밤', color: '#bec8fd' },
+  { id: 3, name: '나비', color: '#ffa670' },
+  { id: 4, name: '크앙희', color: '#c296e8' },
+];
 
 const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [bpm, setBpm] = useState(120);
@@ -11,17 +44,16 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [selectedNoteType, setSelectedNoteType] = useState<NoteData['type'] | 'eraser'>('normal');
   const [selectedCharId, setSelectedCharId] = useState<number>(0);
   const [oldBpm, setOldBpm] = useState<number>(97.5);
-  
-  const CHAR_DATA = [
-    { id: 0, name: '빕어', color: '#cacdd1' },
-    { id: 1, name: '한세긴', color: '#4abeff' },
-    { id: 2, name: '송밤', color: '#bec8fd' },
-    { id: 3, name: '나비', color: '#ffa670' },
-    { id: 4, name: '크앙희', color: '#c296e8' },
-  ];
+  const [openSections, setOpenSections] = useState({ meta: true, tools: true, ops: false });
+  const toggleSection = (key: keyof typeof openSections) =>
+    setOpenSections(prev => ({ ...prev, [key]: !prev[key] }));
 
   const [pendingLongNote, setPendingLongNote] = useState<{ time: number, lane: 0 | 1 } | null>(null);
+  const [eraseRect, setEraseRect] = useState<{ left: number; width: number; lane: 0 | 1 | 'any' } | null>(null);
+  const eraseStartRef = useRef<{ x: number; lane: 0 | 1 | 'any' } | null>(null);
+  const eraseDidDragRef = useRef(false);
 
+  const [selectedSongId, setSelectedSongId] = useState<string>('');
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [metronomeOn, setMetronomeOn] = useState(false);
@@ -31,7 +63,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const audioBufferRef = useRef<AudioBuffer | null>(null);
   const sourceNodeRef = useRef<AudioBufferSourceNode | null>(null);
   const startTimeRef = useRef<number>(0);
-  const pauseTimeRef = useRef<number>(0);
+  const pauseTimeRef = useRef<number>(-LEAD_IN_MS / 1000);
   const seekerRef = useRef<HTMLDivElement>(null);
   const timeDisplayRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -42,12 +74,37 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const playbackRateRef = useRef<number>(1.0);
   const [playbackRate, setPlaybackRate] = useState(1.0);
 
-  const msPerBeat = (60 / bpm) * 1000;
-  const stepsPerBeat = zoom >= 50 ? 8 : 4;
-  const gridStep = msPerBeat / stepsPerBeat; 
+  const zoomRef = useRef(zoom);
+  useEffect(() => { zoomRef.current = zoom; }, [zoom]);
 
-  const timeToX = useCallback((timeMs: number) => timeMs * (zoom / 100), [zoom]);
-  const xToTime = useCallback((x: number) => x / (zoom / 100), [zoom]);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handleWheel = (e: WheelEvent) => {
+      if (e.shiftKey) return;
+      e.preventDefault();
+      const rect = el.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const currentZoom = zoomRef.current;
+      const timeAtMouse = (mouseX + el.scrollLeft) / (currentZoom / 100);
+      const newZoom = Math.min(100, Math.max(5, currentZoom + (e.deltaY < 0 ? 2 : -2)));
+      zoomRef.current = newZoom;
+      setZoom(newZoom);
+      requestAnimationFrame(() => {
+        el.scrollLeft = timeAtMouse * (newZoom / 100) - mouseX;
+      });
+    };
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, []);
+
+  const msPerBeat = useMemo(() => (60 / bpm) * 1000, [bpm]);
+  const stepsPerBeat = zoom >= 50 ? 8 : 4;
+  const gridStep = useMemo(() => msPerBeat / stepsPerBeat, [msPerBeat, stepsPerBeat]);
+
+  const timeToX = useCallback((timeMs: number) => (timeMs + LEAD_IN_MS) * (zoom / 100), [zoom]);
+  const xToTime = useCallback((x: number) => x / (zoom / 100) - LEAD_IN_MS, [zoom]);
+  const durationToW = useCallback((ms: number) => ms * (zoom / 100), [zoom]);
 
   const updateLoopRef = useRef<() => void>(() => {});
 
@@ -58,7 +115,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
       if (audioBufferRef.current && currentSec >= audioBufferRef.current.duration) {
         setIsPlaying(false);
-        pauseTimeRef.current = 0;
+        pauseTimeRef.current = -LEAD_IN_MS / 1000;
         if (sourceNodeRef.current) {
           try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
           sourceNodeRef.current.disconnect();
@@ -134,11 +191,35 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     } else if (requestRef.current) cancelAnimationFrame(requestRef.current);
   }, [isPlaying, isDragging, updateLoop]);
 
-  useEffect(() => {
-    const ctx = new window.AudioContext();
-    audioCtxRef.current = ctx;
-    
-    fetch(`${import.meta.env.BASE_URL}assets/audio/test.mp3`)
+  const stopSource = useCallback(() => {
+    if (!sourceNodeRef.current) return;
+    try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
+    sourceNodeRef.current.disconnect();
+    sourceNodeRef.current = null;
+  }, []);
+
+  const startSource = useCallback((ctx: AudioContext, buffer: AudioBuffer, offsetSec: number, rate: number) => {
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.playbackRate.value = rate;
+    source.connect(ctx.destination);
+    const audioDelay = offsetSec < 0 ? (-offsetSec) / rate : 0;
+    source.start(ctx.currentTime + audioDelay, Math.max(0, offsetSec));
+    startTimeRef.current = ctx.currentTime;
+    sourceNodeRef.current = source;
+  }, []);
+
+  const loadAudio = useCallback((audioPath: string) => {
+    const ctx = audioCtxRef.current;
+    if (!ctx) return;
+    if (isPlaying) {
+      stopSource();
+      setIsPlaying(false);
+    }
+    pauseTimeRef.current = 0;
+    audioBufferRef.current = null;
+    const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+    fetch(`${base}${audioPath}`)
       .then(res => res.arrayBuffer())
       .then(buf => ctx.decodeAudioData(buf))
       .then(decoded => {
@@ -146,12 +227,13 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         setAudioDurationMs(decoded.duration * 1000);
       })
       .catch(err => console.error('Audio load failed:', err));
+  }, [isPlaying]);
 
+  useEffect(() => {
+    const ctx = new window.AudioContext();
+    audioCtxRef.current = ctx;
     return () => {
-      if (sourceNodeRef.current) {
-        try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
-        sourceNodeRef.current.disconnect();
-      }
+      stopSource();
       ctx.close();
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
@@ -161,18 +243,8 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     if (isPlaying && audioCtxRef.current && audioBufferRef.current) {
       const elapsed = (audioCtxRef.current.currentTime - startTimeRef.current) * playbackRateRef.current;
       pauseTimeRef.current += elapsed;
-      if (sourceNodeRef.current) {
-         try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
-         sourceNodeRef.current.disconnect();
-      }
-      const ctx = audioCtxRef.current;
-      const source = ctx.createBufferSource();
-      source.buffer = audioBufferRef.current;
-      source.playbackRate.value = rate;
-      source.connect(ctx.destination);
-      source.start(0, pauseTimeRef.current);
-      startTimeRef.current = ctx.currentTime;
-      sourceNodeRef.current = source;
+      stopSource();
+      startSource(audioCtxRef.current, audioBufferRef.current, pauseTimeRef.current, rate);
     }
     playbackRateRef.current = rate;
     setPlaybackRate(rate);
@@ -182,28 +254,14 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     if (!audioCtxRef.current || !audioBufferRef.current) return;
     
     if (isPlaying) {
-      if (sourceNodeRef.current) {
-        try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
-        sourceNodeRef.current.disconnect();
-        sourceNodeRef.current = null;
-      }
       const elapsed = (audioCtxRef.current.currentTime - startTimeRef.current) * playbackRateRef.current;
       pauseTimeRef.current += elapsed;
+      stopSource();
     } else {
       if (audioCtxRef.current.state === 'suspended') audioCtxRef.current.resume();
       playedNotesRef.current.clear();
       lastMetronomeBeatRef.current = Math.floor((pauseTimeRef.current * 1000) / msPerBeat) - 1;
-      
-      const ctx = audioCtxRef.current;
-      const source = ctx.createBufferSource();
-      source.buffer = audioBufferRef.current;
-      source.playbackRate.value = playbackRateRef.current;
-      source.connect(ctx.destination);
-      
-      const offset = pauseTimeRef.current;
-      source.start(0, offset);
-      startTimeRef.current = ctx.currentTime;
-      sourceNodeRef.current = source;
+      startSource(audioCtxRef.current, audioBufferRef.current, pauseTimeRef.current, playbackRateRef.current);
     }
     setIsPlaying(!isPlaying);
   };
@@ -212,33 +270,21 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     if (!scrollRef.current || !audioCtxRef.current || !audioBufferRef.current) return;
     const containerRect = scrollRef.current.getBoundingClientRect();
     const x = e.clientX - containerRect.left + scrollRef.current.scrollLeft;
-    const newTimeMs = Math.max(0, xToTime(x));
-    let newTimeSec = newTimeMs / 1000;
-    
-    newTimeSec = Math.min(newTimeSec, audioBufferRef.current.duration);
-    
-    if (isPlaying && sourceNodeRef.current) {
-      try { sourceNodeRef.current.stop(); } catch { /* ignore */ }
-      sourceNodeRef.current.disconnect();
-      
-      const ctx = audioCtxRef.current;
-      const source = ctx.createBufferSource();
-      source.buffer = audioBufferRef.current;
-      source.playbackRate.value = playbackRateRef.current;
-      source.connect(ctx.destination);
-      
-      source.start(0, newTimeSec);
-      startTimeRef.current = ctx.currentTime;
+    let newTimeSec = xToTime(x) / 1000;
+    newTimeSec = Math.max(-LEAD_IN_MS / 1000, Math.min(newTimeSec, audioBufferRef.current.duration));
+
+    if (isPlaying) {
+      stopSource();
+      startSource(audioCtxRef.current, audioBufferRef.current, newTimeSec, playbackRateRef.current);
       pauseTimeRef.current = newTimeSec;
-      sourceNodeRef.current = source;
     } else {
       pauseTimeRef.current = newTimeSec;
     }
     playedNotesRef.current.clear();
-    lastMetronomeBeatRef.current = Math.floor((newTimeSec * 1000) / msPerBeat) - 1;
-    
+    lastMetronomeBeatRef.current = Math.floor((Math.max(0, newTimeSec) * 1000) / msPerBeat) - 1;
+
     if (seekerRef.current) seekerRef.current.style.transform = `translateX(${timeToX(newTimeSec * 1000)}px)`;
-    if (timeDisplayRef.current) timeDisplayRef.current.innerText = newTimeSec.toFixed(2) + 's';
+    if (timeDisplayRef.current) timeDisplayRef.current.innerText = Math.max(0, newTimeSec).toFixed(2) + 's';
   }, [isPlaying, msPerBeat, timeToX, xToTime]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -261,6 +307,55 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [isDragging, handleSeek]);
+
+  const handleLaneMouseDown = useCallback((e: React.MouseEvent, lane: 0 | 1 | 'any') => {
+    if (selectedNoteType !== 'eraser') return;
+    if (!scrollRef.current) return;
+    const rect = scrollRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left + scrollRef.current.scrollLeft;
+    eraseStartRef.current = { x, lane };
+    eraseDidDragRef.current = false;
+    setEraseRect({ left: x, width: 0, lane });
+  }, [selectedNoteType]);
+
+  useEffect(() => {
+    if (!eraseRect) return; // 드래그 활성 시에만 등록
+    const handleMove = (e: MouseEvent) => {
+      if (!eraseStartRef.current || !scrollRef.current) return;
+      const rect = scrollRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left + scrollRef.current.scrollLeft;
+      const start = eraseStartRef.current.x;
+      setEraseRect({ left: Math.min(start, x), width: Math.abs(x - start), lane: eraseStartRef.current.lane });
+    };
+    const handleUp = (e: MouseEvent) => {
+      if (!eraseStartRef.current || !scrollRef.current) return;
+      const rect = scrollRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left + scrollRef.current.scrollLeft;
+      const dist = Math.abs(x - eraseStartRef.current.x);
+      if (dist > 8) {
+        eraseDidDragRef.current = true;
+        const t1 = xToTime(Math.min(eraseStartRef.current.x, x));
+        const t2 = xToTime(Math.max(eraseStartRef.current.x, x));
+        const lane = eraseStartRef.current.lane;
+        setNotes(prev => prev.filter(n => {
+          const noteEnd = n.time + (n.duration || 0);
+          const overlaps = n.time <= t2 && noteEnd >= t1;
+          const laneMatch = n.lane === lane;
+          return !(overlaps && laneMatch);
+        }));
+      } else {
+        eraseDidDragRef.current = false;
+      }
+      eraseStartRef.current = null;
+      setEraseRect(null);
+    };
+    window.addEventListener('mousemove', handleMove);
+    window.addEventListener('mouseup', handleUp);
+    return () => {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('mouseup', handleUp);
+    };
+  }, [eraseRect, xToTime]);
 
   const removeNoteAt = useCallback((time: number, lane: 0 | 1 | 'any') => {
     setNotes(prev => prev.filter(n => !(Math.abs(n.time - time) < 10 && (n.lane === lane || n.lane === 'any'))));
@@ -343,106 +438,163 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     reader.readAsText(file);
   };
 
-  const totalDuration = Math.max(audioDurationMs + 5000, ...notes.map(n => n.time + (n.duration || 0) + 10000));
+  const totalDuration = useMemo(
+    () => Math.max(audioDurationMs + 5000, ...notes.map(n => n.time + (n.duration || 0) + 10000)),
+    [audioDurationMs, notes]
+  );
 
   return (
     <div className="editor-container">
       <div className="editor-sidebar">
+        {/* 상단 고정 컨트롤 */}
         <button className="back-to-lobby" onClick={onBack}>← Lobby</button>
-        <button className={`play-btn ${isPlaying ? 'playing' : ''}`} onClick={togglePlay}>
-          {isPlaying ? 'STOP' : 'PLAY'}
-        </button>
-        <div className="time-display" ref={timeDisplayRef}>0.00s</div>
-        <button className={`metronome-btn ${metronomeOn ? 'active' : ''}`} onClick={() => setMetronomeOn(!metronomeOn)}>
-          🔔 METRONOME {metronomeOn ? 'ON' : 'OFF'}
-        </button>
-        <select className="speed-select" value={playbackRate} onChange={e => changeRate(Number(e.target.value))}>
-           <option value={0.5}>0.5x</option>
-           <option value={0.75}>0.75x</option>
-           <option value={1.0}>1.0x</option>
-           <option value={1.25}>1.25x</option>
-           <option value={1.5}>1.5x</option>
-           <option value={2.0}>2.0x</option>
-        </select>
-        
-        <div className="input-group">
-          <label>Title</label>
-          <input type="text" value={title} onChange={e => setTitle(e.target.value)} />
-        </div>
-        <div className="input-group">
-          <label>Artist</label>
-          <input type="text" value={artist} onChange={e => setArtist(e.target.value)} />
-        </div>
-        <div className="input-group">
-          <label>Roster (IDs)</label>
-          <input type="text" value={roster} onChange={e => setRoster(e.target.value)} placeholder="0, 1, 2" />
-        </div>
-        <div className="input-group">
-          <label>BPM</label>
-          <input type="number" value={bpm} onChange={e => setBpm(Number(e.target.value))} />
-        </div>
-        <div className="input-group">
-          <label>Zoom</label>
-          <input type="range" min="5" max="100" value={zoom} onChange={e => setZoom(Number(e.target.value))} />
+        <div className="play-row">
+          <button className={`play-btn ${isPlaying ? 'playing' : ''}`} onClick={togglePlay}>
+            {isPlaying ? '⏹ STOP' : '▶ PLAY'}
+          </button>
+          <div className="time-display" ref={timeDisplayRef}>0.00s</div>
         </div>
 
-        <div className="tool-group">
-          <p>Target Character</p>
-          <div className="char-selector">
-            {CHAR_DATA.map(char => (
-              <button 
-                key={char.id} 
-                className={`char-btn ${selectedCharId === char.id ? 'active' : ''}`}
-                style={{ borderLeft: `4px solid ${char.color}` }}
-                onClick={() => setSelectedCharId(char.id)}
-              >
-                {char.name}
+        {/* 그룹 1: SONG META */}
+        <div className="accordion">
+          <button className="accordion-header" onClick={() => toggleSection('meta')}>
+            <span>SONG META</span><span>{openSections.meta ? '▲' : '▼'}</span>
+          </button>
+          {openSections.meta && (
+            <div className="accordion-body">
+              <table className="props-table">
+                <tbody>
+                  <tr>
+                    <td>Song</td>
+                    <td>
+                      <select value={selectedSongId} onChange={e => {
+                        const song = SONG_LIST.find(s => s.id === e.target.value);
+                        if (song) {
+                          setSelectedSongId(song.id);
+                          setTitle(song.title);
+                          setArtist(song.artist);
+                          setRoster(song.roster);
+                          loadAudio(song.audio);
+                        }
+                      }}>
+                        <option value="">-- 선택 --</option>
+                        {SONG_LIST.map(s => <option key={s.id} value={s.id}>{s.title}</option>)}
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Title</td>
+                    <td><input type="text" value={title} onChange={e => setTitle(e.target.value)} /></td>
+                  </tr>
+                  <tr>
+                    <td>Artist</td>
+                    <td><input type="text" value={artist} onChange={e => setArtist(e.target.value)} /></td>
+                  </tr>
+                  <tr>
+                    <td>Roster</td>
+                    <td><input type="text" value={roster} onChange={e => setRoster(e.target.value)} placeholder="0,1,2" /></td>
+                  </tr>
+                  <tr>
+                    <td>BPM</td>
+                    <td><input type="number" value={bpm} onChange={e => setBpm(Number(e.target.value))} /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+
+        {/* 그룹 2: EDIT TOOLS */}
+        <div className="accordion">
+          <button className="accordion-header" onClick={() => toggleSection('tools')}>
+            <span>EDIT TOOLS</span><span>{openSections.tools ? '▲' : '▼'}</span>
+          </button>
+          {openSections.tools && (
+            <div className="accordion-body">
+              <div className="props-label">Target Character</div>
+              <div className="char-selector">
+                {CHAR_DATA.map(char => (
+                  <button key={char.id}
+                    className={`char-btn ${selectedCharId === char.id ? 'active' : ''}`}
+                    style={{ borderLeft: `4px solid ${char.color}` }}
+                    onClick={() => setSelectedCharId(char.id)}>
+                    {char.name}
+                  </button>
+                ))}
+              </div>
+              <div className="props-label">Note Tools</div>
+              <div className="note-tools-grid">
+                {([['normal','Normal'],['long','Long'],['switch_up','Wheel↑'],['switch_down','Wheel↓'],['eraser','Eraser']] as [string, string][]).map(([type, label]) => (
+                  <button key={type}
+                    className={selectedNoteType === type ? 'active' : ''}
+                    onClick={() => { setSelectedNoteType(type as NoteData['type'] | 'eraser'); setPendingLongNote(null); }}>
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <div className="props-label">BPM Recalculate</div>
+              <table className="props-table">
+                <tbody>
+                  <tr>
+                    <td>Old BPM</td>
+                    <td><input type="number" step="0.1" value={oldBpm} onChange={e => setOldBpm(Number(e.target.value))} /></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button className="snap-btn" onClick={() => {
+                const oldGrid = (60 / oldBpm) * 1000 / 4;
+                const newGrid = gridStep;
+                setNotes(prev => prev.map(n => {
+                  const beatIndex = Math.round(n.time / oldGrid);
+                  const newTime = beatIndex * newGrid;
+                  let newDur = n.duration;
+                  if (n.duration) { const durBeats = Math.round(n.duration / oldGrid); newDur = durBeats * newGrid; }
+                  return { ...n, time: newTime, duration: newDur && newDur > 0 ? newDur : n.duration };
+                }).sort((a, b) => a.time - b.time));
+                setOldBpm(bpm);
+              }}>RECALC</button>
+            </div>
+          )}
+        </div>
+
+        {/* 그룹 3: PLAYBACK & FILE */}
+        <div className="accordion">
+          <button className="accordion-header" onClick={() => toggleSection('ops')}>
+            <span>PLAYBACK & FILE</span><span>{openSections.ops ? '▲' : '▼'}</span>
+          </button>
+          {openSections.ops && (
+            <div className="accordion-body">
+              <table className="props-table">
+                <tbody>
+                  <tr>
+                    <td>Speed</td>
+                    <td>
+                      <select value={playbackRate} onChange={e => changeRate(Number(e.target.value))}>
+                        <option value={0.5}>0.5x</option>
+                        <option value={0.75}>0.75x</option>
+                        <option value={1.0}>1.0x</option>
+                        <option value={1.25}>1.25x</option>
+                        <option value={1.5}>1.5x</option>
+                        <option value={2.0}>2.0x</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Zoom</td>
+                    <td><input type="range" min="5" max="100" value={zoom} onChange={e => setZoom(Number(e.target.value))} /></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button className={`metronome-btn ${metronomeOn ? 'active' : ''}`} onClick={() => setMetronomeOn(!metronomeOn)}>
+                🔔 METRONOME {metronomeOn ? 'ON' : 'OFF'}
               </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="tool-group">
-          <p>Note Tools</p>
-          <button className={selectedNoteType === 'normal' ? 'active' : ''} 
-                  onClick={() => { setSelectedNoteType('normal'); setPendingLongNote(null); }}>Normal Note</button>
-          <button className={selectedNoteType === 'long' ? 'active' : ''} 
-                  onClick={() => { setSelectedNoteType('long'); setPendingLongNote(null); }}>Long Note</button>
-          <button className={selectedNoteType === 'switch_up' ? 'active' : ''} 
-                  onClick={() => { setSelectedNoteType('switch_up'); setPendingLongNote(null); }}>Wheel Up</button>
-          <button className={selectedNoteType === 'switch_down' ? 'active' : ''} 
-                  onClick={() => { setSelectedNoteType('switch_down'); setPendingLongNote(null); }}>Wheel Down</button>
-          <button className={`eraser-btn ${selectedNoteType === 'eraser' ? 'active' : ''}`} 
-                  onClick={() => { setSelectedNoteType('eraser'); setPendingLongNote(null); }}>ERASER</button>
-        </div>
-        <div className="tool-group">
-          <p>BPM Recalculate</p>
-          <div className="input-group">
-            <label>Old BPM</label>
-            <input type="number" step="0.1" value={oldBpm} onChange={e => setOldBpm(Number(e.target.value))} />
-          </div>
-          <button className="snap-btn" onClick={() => {
-            const oldGrid = (60 / oldBpm) * 1000 / 4;
-            const newGrid = gridStep;
-            setNotes(prev => prev.map(n => {
-              const beatIndex = Math.round(n.time / oldGrid);
-              const newTime = beatIndex * newGrid;
-              let newDur = n.duration;
-              if (n.duration) {
-                const durBeats = Math.round(n.duration / oldGrid);
-                newDur = durBeats * newGrid;
-              }
-              return { ...n, time: newTime, duration: newDur && newDur > 0 ? newDur : n.duration };
-            }).sort((a, b) => a.time - b.time));
-            setOldBpm(bpm);
-          }}>RECALC</button>
-        </div>
-        <div className="file-ops">
-          <button className="export-btn" onClick={exportJSON}>EXPORT JSON</button>
-          <label className="import-label">
-            LOAD JSON
-            <input type="file" accept=".json" onChange={importJSON} style={{ display: 'none' }} />
-          </label>
+              <button className="export-btn" onClick={exportJSON}>EXPORT JSON</button>
+              <label className="import-label">
+                LOAD JSON
+                <input type="file" accept=".json" onChange={importJSON} style={{ display: 'none' }} />
+              </label>
+            </div>
+          )}
         </div>
       </div>
 
@@ -457,6 +609,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         <div className="timeline-scroll" ref={scrollRef}>
           <div className="timeline-grid" ref={timelineRef} onMouseDown={handleMouseDown} style={{ width: timeToX(totalDuration) }}>
             <div className="timeline-header" />
+            <div className="lead-in-zone" style={{ width: timeToX(0) }} />
             <div className="playback-seeker" ref={seekerRef} />
 
             {Array.from({ length: Math.ceil(totalDuration / gridStep) }).map((_, i) => {
@@ -471,21 +624,39 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               );
             })}
 
-            <div className="lane-click-area upper" onClick={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const time = Math.round(xToTime(e.clientX - rect.left) / gridStep) * gridStep;
-              handleGridClick(time, 1);
-            }} />
-            <div className="lane-click-area middle" onClick={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const time = Math.round(xToTime(e.clientX - rect.left) / gridStep) * gridStep;
-              handleGridClick(time, 'any');
-            }} />
-            <div className="lane-click-area lower" onClick={(e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              const time = Math.round(xToTime(e.clientX - rect.left) / gridStep) * gridStep;
-              handleGridClick(time, 0);
-            }} />
+            <div className="lane-click-area upper"
+              onMouseDown={e => handleLaneMouseDown(e, 1)}
+              onClick={(e) => {
+                if (eraseDidDragRef.current) { eraseDidDragRef.current = false; return; }
+                const rect = e.currentTarget.getBoundingClientRect();
+                const time = Math.max(0, Math.round(xToTime(e.clientX - rect.left) / gridStep) * gridStep);
+                handleGridClick(time, 1);
+              }} />
+            <div className="lane-click-area middle"
+              onMouseDown={e => handleLaneMouseDown(e, 'any')}
+              onClick={(e) => {
+                if (eraseDidDragRef.current) { eraseDidDragRef.current = false; return; }
+                const rect = e.currentTarget.getBoundingClientRect();
+                const time = Math.max(0, Math.round(xToTime(e.clientX - rect.left) / gridStep) * gridStep);
+                handleGridClick(time, 'any');
+              }} />
+            <div className="lane-click-area lower"
+              onMouseDown={e => handleLaneMouseDown(e, 0)}
+              onClick={(e) => {
+                if (eraseDidDragRef.current) { eraseDidDragRef.current = false; return; }
+                const rect = e.currentTarget.getBoundingClientRect();
+                const time = Math.max(0, Math.round(xToTime(e.clientX - rect.left) / gridStep) * gridStep);
+                handleGridClick(time, 0);
+              }} />
+
+            {eraseRect && (
+              <div className="erase-selection" style={{
+                left: eraseRect.left,
+                width: eraseRect.width,
+                top: eraseRect.lane === 1 ? 40 : eraseRect.lane === 0 ? 240 : 140,
+                height: 100,
+              }} />
+            )}
 
             {pendingLongNote && (
               <div className="note-marker long pending" style={{ left: timeToX(pendingLongNote.time), top: pendingLongNote.lane === 1 ? 78 : 278 }}>
@@ -500,8 +671,8 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 return (
                   <div key={i} className={`note-marker long ${laneClass} ${selectedNoteType === 'eraser' ? 'erasable' : ''}`}
                        style={{ 
-                         left: timeToX(note.time), 
-                         width: timeToX(note.duration || 0) + 24, 
+                         left: timeToX(note.time),
+                         width: durationToW(note.duration || 0) + 24,
                          marginLeft: -12,
                          borderColor: noteColor,
                          backgroundColor: noteColor ? `${noteColor}4D` : undefined
@@ -533,28 +704,36 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
       <style>{`
         .editor-container { display: flex; width: 100vw; height: 100vh; background: #1a1a1a; color: white; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
-        .editor-sidebar { width: 200px; padding: 12px; background: #2c2c2c; display: flex; flex-direction: column; gap: 8px; border-right: 1px solid #3d3d3d; z-index: 100; overflow-y: auto; flex-shrink: 0; }
-        .back-to-lobby { padding: 6px; background: #444; border: none; color: #fff; cursor: pointer; border-radius: 4px; font-size: 0.8rem; flex-shrink: 0; }
-        .play-btn { padding: 10px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 2px; flex-shrink: 0; }
+        .editor-sidebar { width: 210px; padding: 8px; background: #2c2c2c; display: flex; flex-direction: column; gap: 6px; border-right: 1px solid #3d3d3d; z-index: 100; overflow-y: auto; flex-shrink: 0; }
+        .back-to-lobby { padding: 5px 8px; background: #444; border: none; color: #ccc; cursor: pointer; border-radius: 4px; font-size: 0.75rem; }
+        .play-row { display: flex; gap: 5px; align-items: center; }
+        .play-btn { flex: 1; padding: 7px 4px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.78rem; }
         .play-btn.playing { background: #e74c3c; }
-        .time-display { font-size: 1.2rem; font-family: monospace; text-align: center; color: #00d2ff; background: #111; padding: 5px; border-radius: 4px; }
-        .metronome-btn { padding: 7px; background: #3d3d3d; border: none; color: #aaa; cursor: pointer; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
+        .time-display { flex: 1; font-size: 0.85rem; font-family: monospace; text-align: center; color: #00d2ff; background: #111; padding: 5px 3px; border-radius: 4px; }
+        .accordion { border: 1px solid #3a3a3a; border-radius: 4px; overflow: hidden; }
+        .accordion-header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: #353535; border: none; color: #bbb; cursor: pointer; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; }
+        .accordion-header:hover { background: #3e3e3e; }
+        .accordion-body { padding: 7px; background: #272727; display: flex; flex-direction: column; gap: 4px; }
+        .props-table { width: 100%; border-collapse: collapse; }
+        .props-table td { padding: 3px 3px; font-size: 0.72rem; vertical-align: middle; }
+        .props-table td:first-child { color: #777; width: 42%; white-space: nowrap; }
+        .props-table input, .props-table select { width: 100%; box-sizing: border-box; background: #3d3d3d; border: 1px solid #4d4d4d; color: white; padding: 3px 5px; border-radius: 3px; font-size: 0.78rem; outline: none; }
+        .props-label { font-size: 0.65rem; color: #555; font-weight: bold; text-transform: uppercase; letter-spacing: 0.06em; padding-top: 5px; border-top: 1px solid #333; margin-top: 2px; }
+        .props-label:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+        .char-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+        .char-btn { padding: 4px 5px; font-size: 0.68rem; background: #333; border: none; color: #bbb; cursor: pointer; border-radius: 3px; text-align: left; }
+        .char-btn.active { background: #484848; color: #fff; box-shadow: inset 0 0 4px rgba(255,255,255,0.15); }
+        .note-tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+        .note-tools-grid button { padding: 5px 4px; background: #3d3d3d; border: none; color: #bbb; cursor: pointer; border-radius: 3px; font-size: 0.68rem; text-align: center; }
+        .note-tools-grid button.active { background: #0088cc; color: white; }
+        .snap-btn { padding: 6px; background: #7d3cc8; border: none; color: white; cursor: pointer; border-radius: 3px; font-size: 0.75rem; font-weight: bold; width: 100%; }
+        .snap-btn:hover { background: #9050dd; }
+        .metronome-btn { padding: 6px; background: #3d3d3d; border: none; color: #aaa; cursor: pointer; border-radius: 3px; font-size: 0.72rem; font-weight: bold; width: 100%; }
         .metronome-btn.active { background: #e67e22; color: white; }
-        .speed-select { background: #3d3d3d; border: 1px solid #4d4d4d; color: white; padding: 7px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; outline: none; }
-        .input-group { display: flex; flex-direction: column; gap: 2px; }
-        .input-group label { font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: bold; }
-        .input-group input { background: #3d3d3d; border: 1px solid #4d4d4d; color: white; padding: 5px; border-radius: 4px; font-size: 0.9rem; }
-        .tool-group { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
-        .tool-group p { font-size: 0.75rem; color: #888; margin: 0; font-weight: bold; text-transform: uppercase; }
-        .tool-group button { padding: 7px; background: #3d3d3d; border: none; color: #bbb; cursor: pointer; text-align: left; border-radius: 4px; font-size: 0.8rem; }
-        .tool-group button.active { background: #00aaff; color: white; }
-        .char-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 8px; }
-        .char-btn { padding: 4px 8px !important; font-size: 0.7rem !important; background: #333 !important; text-align: center !important; }
-        .char-btn.active { background: #555 !important; box-shadow: inset 0 0 5px rgba(255,255,255,0.2); }
-        .export-btn { background: #f39c12 !important; color: white !important; font-weight: bold; padding: 10px !important; margin-top: auto; border: none; border-radius: 4px; cursor: pointer; text-align: center; }
-        .file-ops { display: flex; flex-direction: column; gap: 5px; margin-top: auto; }
-        .import-label { background: #3498db; color: white; font-weight: bold; padding: 10px; border-radius: 4px; cursor: pointer; text-align: center; font-size: 0.8rem; }
-        .import-label:hover { background: #2980b9; }
+        .export-btn { background: #c87800; color: white; font-weight: bold; padding: 7px; border: none; border-radius: 3px; cursor: pointer; font-size: 0.75rem; width: 100%; }
+        .export-btn:hover { background: #e08800; }
+        .import-label { background: #2a6099; color: white; font-weight: bold; padding: 7px; border-radius: 3px; cursor: pointer; text-align: center; font-size: 0.75rem; display: block; }
+        .import-label:hover { background: #3479b5; }
         .editor-main { flex: 1; display: flex; flex-direction: row; overflow: hidden; position: relative; background: #111; }
         .timeline-labels { width: 70px; display: flex; flex-direction: column; background: #1a1a1a; border-right: 1px solid #333; z-index: 10; }
         .timeline-labels .label { height: 100px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: #555; border-bottom: 1px solid #252525; }
@@ -562,6 +741,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         .timeline-scroll { flex: 1; overflow-x: auto; overflow-y: hidden; position: relative; }
         .timeline-grid { height: 100%; position: relative; }
         .timeline-header { position: absolute; top: 0; left: 0; right: 0; height: 40px; background: #222; border-bottom: 1px solid #333; cursor: ew-resize; }
+        .lead-in-zone { position: absolute; top: 40px; bottom: 0; left: 0; background: rgba(255,255,255,0.025); border-right: 2px solid rgba(255,200,0,0.4); pointer-events: none; z-index: 1; }
         .playback-seeker { position: absolute; top: 0; bottom: 0; width: 2px; background: #ff4444; z-index: 20; box-shadow: 0 0 8px rgba(255,0,0,0.6); pointer-events: none; will-change: transform; }
         .grid-line { position: absolute; top: 0; bottom: 0; width: 1px; background: #222; pointer-events: none; }
         .grid-line.beat { background: #333; width: 1px; }
@@ -583,6 +763,7 @@ const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {
         .note-marker.switch_up { background: #00ff00; top: 178px; color: black; border-radius: 50% 50% 0 0; }
         .note-marker.switch_down { background: #ff00ff; top: 178px; color: white; border-radius: 0 0 50% 50%; }
         .note-marker.erasable:hover { opacity: 0.5; outline: 2px solid #e74c3c; }
+        .erase-selection { position: absolute; background: rgba(255,50,50,0.15); border: 1px solid rgba(255,80,80,0.55); pointer-events: none; z-index: 10; }
       `}</style>
     </div>
   );
