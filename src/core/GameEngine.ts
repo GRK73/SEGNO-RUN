@@ -16,6 +16,7 @@ export interface GameStats {
   maxCombo: number;
   totalDeviation: number;
   totalHits: number;
+  totalScore: number;
 }
 
 export class GameEngine {
@@ -149,7 +150,7 @@ export class GameEngine {
       }
 
       // Preload note images
-      for (let i = 0; i <= 4; i++) {
+      for (let i = 0; i <= 1; i++) {
         assetPromises.push(Assets.load(`${baseUrl}assets/images/note_${i}.png`));
         assetPromises.push(Assets.load(`${baseUrl}assets/images/long_note_${i}.png`));
       }
@@ -158,6 +159,18 @@ export class GameEngine {
 
       this.chart = await ChartLoader.load(chartUrl);
       this.noteManager?.setBpm(this.chart.meta.bpm);
+      this.judgmentSystem?.setBpm(this.chart.meta.bpm);
+
+      if (this.judgmentSystem) {
+        this.judgmentSystem.onFeverStart = () => {
+          this.hudManager?.startFever();
+          this.noteManager?.setFever(true);
+        };
+        this.judgmentSystem.onFeverEnd = () => {
+          this.hudManager?.endFever();
+          this.noteManager?.setFever(false);
+        };
+      }
       
       try {
         await this.audioManager.loadAudio(songUrl);
@@ -232,12 +245,10 @@ export class GameEngine {
   }
 
   private updateScoreHUD() {
-    if (!this.judgmentSystem || !this.hudManager || !this.chart) return;
+    if (!this.judgmentSystem || !this.hudManager) return;
     this.hudManager.updateCombo(this.judgmentSystem.getCombo());
-    const { perfect, great } = this.judgmentSystem.stats;
-    const total = this.chart.notes.length;
-    const score = total > 0 ? Math.floor((perfect + great * 0.5) / total * 300000) : 0;
-    this.hudManager.updateScore(score);
+    this.hudManager.updateScore(this.judgmentSystem.stats.totalScore);
+    this.hudManager.updateFeverGauge(this.judgmentSystem.feverGauge);
   }
 
   private gameLoop(delta: number) {

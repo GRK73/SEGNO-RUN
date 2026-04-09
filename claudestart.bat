@@ -1,2 +1,2 @@
 @echo off
-claude --dangerously-skip-permissions --resume f6306ffd-8c24-4511-8352-73c65dadf449
+claude --dangerously-skip-permissions --resume fce4798c-ebf6-4bbb-bcc9-21e0cec35fee

@@ -16,6 +16,7 @@ interface GameStats {
   maxCombo: number;
   totalDeviation: number;
   totalHits: number;
+  totalScore: number;
 }
 
 function App() {

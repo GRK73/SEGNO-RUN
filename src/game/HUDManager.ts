@@ -1,6 +1,28 @@
 import { Container, Graphics, Text, TextStyle, AnimatedSprite, Texture, Assets, Sprite } from 'pixi.js';
 import { CharacterManager } from './CharacterManager';
 
+interface FeverStar {
+  g: Graphics;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  rotation: number;
+  rotSpeed: number;
+  alpha: number;
+}
+
+interface FeverNoteItem {
+  t: Text;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  rotation: number;
+  rotSpeed: number;
+  alpha: number;
+}
+
 export class HUDManager {
   private container: Container;
   private gearGraphics: Graphics;
@@ -46,6 +68,18 @@ export class HUDManager {
   private floorTileW: number = 0;
   private floorContainer: Container;
 
+  // Fever
+  private feverGfx: Graphics;           // background panel (added to gameLayer, below arc/gear/notes)
+  private feverParticleLayer: Container; // stars + notes (inside HUDContainer, above game notes)
+  private feverGaugeGfx: Graphics;
+  private feverStars: FeverStar[] = [];
+  private feverNoteItems: FeverNoteItem[] = [];
+  private feverBgX: number = 0;                                // current x of the sliding bg panel
+  private feverBgState: 'off' | 'entering' | 'on' | 'exiting' = 'off';
+  private feverParticleAlpha: number = 0;                       // controls star/note visibility
+  private feverGaugeValue: number = 0;
+  private feverPulse: number = 0;
+
   // Intro text
   private introText: Text | null = null;
   private introTextHiding: boolean = false;
@@ -57,15 +91,26 @@ export class HUDManager {
     this.floorContainer = new Container();
     this.container.addChildAt(this.floorContainer, 0); // behind everything
 
-    // 판정 원은 노트보다 아래 레이어에 추가
+    // 판정 원은 노트보다 아래 레이어에 추가 (먼저 삽입 → 나중에 feverGfx가 index 0에 끼어들면 자연히 feverGfx 위로 올라감)
     this.gearGraphics = new Graphics();
     parent.addChildAt(this.gearGraphics, 0);
 
     this.arcGraphics = new Graphics();
     parent.addChildAt(this.arcGraphics, 0);
 
+    // feverGfx를 arc/gear 삽입 이후 index 0으로 추가
+    // → BackgroundManager가 bgContainer를 [0]에 넣으면
+    // 최종 순서: [bg(0), feverGfx(1), arc(2), gear(3), ...notes..., HUDContainer]
+    // → feverGfx가 arc/gear보다 아래에 렌더링됨 (판정 원 가려지지 않음)
+    this.feverGfx = new Graphics();
+    parent.addChildAt(this.feverGfx, 0);
+
     // HUD 메인 컨테이너(아바타, 텍스트 등)는 노트 위에 추가
     parent.addChild(this.container);
+
+    // feverParticleLayer: HUDContainer 안에서 floor 바로 위 (아바타 아래)
+    this.feverParticleLayer = new Container();
+    this.container.addChild(this.feverParticleLayer);
 
     this.avatarSprite = new AnimatedSprite([Texture.EMPTY]);
     this.avatarSprite.anchor.set(0.5);
@@ -98,6 +143,9 @@ export class HUDManager {
     this.scoreText.x = window.innerWidth - 30;
     this.scoreText.y = 30;
     this.container.addChild(this.scoreText);
+
+    this.feverGaugeGfx = new Graphics();
+    this.container.addChild(this.feverGaugeGfx); // topmost in HUD
 
     this.initGear();
   }
@@ -310,20 +358,141 @@ export class HUDManager {
       }
     }
 
+    // === Fever overlay ===
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+
+    // === Fever bg slide state machine ===
+    if (this.feverBgState === 'entering') {
+      // Eased slide-in from right → 0  (빠르게 날아옴)
+      this.feverBgX += (0 - this.feverBgX) * 0.20 * _delta;
+      if (this.feverBgX <= 2) { this.feverBgX = 0; this.feverBgState = 'on'; } // ← 양수에서 0으로 수렴하므로 <= 2
+    } else if (this.feverBgState === 'exiting') {
+      // Linear slide-out to left  (스르륵 사라짐)
+      this.feverBgX -= 22 * _delta;
+      if (this.feverBgX <= -screenW) { this.feverBgX = -screenW; this.feverBgState = 'off'; }
+    }
+
+    const feverVisible = this.feverBgState !== 'off';
+    const isSpawning  = this.feverBgState === 'entering' || this.feverBgState === 'on';
+
+    // Particle alpha: fade in when active, fade out when exiting/off
+    if (isSpawning) {
+      this.feverParticleAlpha = Math.min(1, this.feverParticleAlpha + 0.09 * _delta);
+      if (Math.random() < 0.40 * _delta && this.feverStars.length < 28) this.spawnFeverStar();
+      if (Math.random() < 0.10 * _delta && this.feverNoteItems.length < 14) this.spawnFeverNote();
+    } else {
+      this.feverParticleAlpha = Math.max(0, this.feverParticleAlpha - 0.012 * _delta);
+    }
+
+    // Update stars
+    for (let i = this.feverStars.length - 1; i >= 0; i--) {
+      const fs = this.feverStars[i];
+      fs.x += fs.vx * _delta;
+      fs.y += fs.vy * _delta;
+      fs.rotation += fs.rotSpeed * _delta;
+      fs.alpha -= 0.006 * _delta;
+      fs.g.x = fs.x;
+      fs.g.y = fs.y;
+      fs.g.rotation = fs.rotation;
+      fs.g.alpha = Math.max(0, fs.alpha) * this.feverParticleAlpha;
+      if (fs.x < -80 || fs.alpha <= 0) {
+        this.feverParticleLayer.removeChild(fs.g);
+        fs.g.destroy();
+        this.feverStars.splice(i, 1);
+      }
+    }
+
+    // Update note texts
+    for (let i = this.feverNoteItems.length - 1; i >= 0; i--) {
+      const fn = this.feverNoteItems[i];
+      fn.x += fn.vx * _delta;
+      fn.y += fn.vy * _delta;
+      fn.rotation += fn.rotSpeed * _delta;
+      fn.alpha -= 0.005 * _delta;
+      fn.t.x = fn.x;
+      fn.t.y = fn.y;
+      fn.t.rotation = fn.rotation;
+      fn.t.alpha = Math.max(0, fn.alpha) * this.feverParticleAlpha;
+      if (fn.x < -80 || fn.alpha <= 0) {
+        this.feverParticleLayer.removeChild(fn.t);
+        fn.t.destroy();
+        this.feverNoteItems.splice(i, 1);
+      }
+    }
+
+    // Draw fever bg (slides in/out as a panel, with edge gradient fade)
+    this.feverGfx.clear();
+    if (feverVisible) {
+      const bx    = this.feverBgX;
+      const fadeW = 220;           // fade zone width on each side
+      const cSteps = 8;            // vertical color steps
+      const fSteps = 10;           // horizontal steps per fade zone
+      const colW   = fadeW / fSteps;
+
+      // Helper: compute theme color at vertical position t (0=top, 1=bottom)
+      const themeColor = (t: number) => {
+        const r = Math.round(0x99 + (0xa0 - 0x99) * t);
+        const g = Math.round(0x80 + (0xcf - 0x80) * t);
+        const b = Math.round(0xa5 + (0xe5 - 0xa5) * t);
+        return (r << 16) | (g << 8) | b;
+      };
+
+      // Helper: draw one vertical column (x, w) with full vertical color gradient and given alpha
+      const drawCol = (x: number, w: number, alpha: number) => {
+        if (alpha <= 0 || w <= 0) return;
+        for (let ci = 0; ci < cSteps; ci++) {
+          const t  = ci / (cSteps - 1);
+          const yy = screenH * ci / cSteps;
+          const hh = screenH / cSteps + 1;
+          this.feverGfx.rect(x, yy, w, hh);
+          this.feverGfx.fill({ color: themeColor(t), alpha });
+        }
+      };
+
+      // Left fade zone (leading edge): alpha 0 → 1
+      for (let fi = 0; fi < fSteps; fi++) {
+        const raw = fi / fSteps;
+        const a = raw * raw; // quadratic ease-in
+        drawCol(bx + fi * colW, colW + 1, a);
+      }
+
+      // Center solid strip
+      const cx0 = bx + fadeW;
+      const cx1 = bx + screenW - fadeW;
+      if (cx1 > cx0) drawCol(cx0, cx1 - cx0, 1);
+
+      // Right fade zone (trailing edge): alpha 1 → 0
+      for (let fi = 0; fi < fSteps; fi++) {
+        const raw = (fSteps - 1 - fi) / fSteps;
+        const a = raw * raw;
+        drawCol(bx + screenW - fadeW + fi * colW, colW + 1, a);
+      }
+    }
+
+    // === Fever gauge bar (bottom) ===
+    const barY = screenH - 10;
+    this.feverGaugeGfx.clear();
+    this.feverGaugeGfx.rect(0, barY, screenW, 10);
+    this.feverGaugeGfx.fill({ color: 0x220000, alpha: 0.7 });
+    if (this.feverBgState === 'entering' || this.feverBgState === 'on') {
+      this.feverPulse = (this.feverPulse + 0.1 * _delta) % (Math.PI * 2);
+      const pulseAlpha = 0.7 + 0.3 * Math.sin(this.feverPulse);
+      this.feverGaugeGfx.rect(0, barY, screenW, 10);
+      this.feverGaugeGfx.fill({ color: 0xff4444, alpha: pulseAlpha });
+    } else if (this.feverGaugeValue > 0) {
+      this.feverGaugeGfx.rect(0, barY, this.feverGaugeValue * screenW, 10);
+      this.feverGaugeGfx.fill({ color: 0xff2222, alpha: 0.9 });
+    }
+
     // Scroll floor
     if (this.floorTileW > 0) {
       const scrollDelta = this.floorScrollSpeed * 16.6 * _delta;
+      const totalW = this.floorSprites.length * this.floorTileW;
       for (const fs of this.floorSprites) {
         fs.x -= scrollDelta;
         if (fs.x + this.floorTileW <= 0) {
-          let maxX = -Infinity;
-          for (const other of this.floorSprites) {
-            if (other !== fs) {
-              const rightEdge = other.x + this.floorTileW;
-              if (rightEdge > maxX) maxX = rightEdge;
-            }
-          }
-          fs.x = maxX;
+          fs.x += totalW;
         }
       }
     }
@@ -465,6 +634,93 @@ export class HUDManager {
         this.floorSprites.push(fs);
       }
     }
+  }
+
+  public startFever() {
+    // Clear any stale particles from previous fever
+    for (const fs of this.feverStars) { this.feverParticleLayer.removeChild(fs.g); fs.g.destroy(); }
+    for (const fn of this.feverNoteItems) { this.feverParticleLayer.removeChild(fn.t); fn.t.destroy(); }
+    this.feverStars = [];
+    this.feverNoteItems = [];
+    // Start slide-in from right
+    this.feverBgX = window.innerWidth;
+    this.feverBgState = 'entering';
+  }
+
+  public endFever() {
+    // Start slide-out to left
+    this.feverBgState = 'exiting';
+  }
+
+  public updateFeverGauge(value: number) {
+    this.feverGaugeValue = value;
+  }
+
+  private spawnFeverStar() {
+    const colors = [0xffffff, 0xD5BCE1, 0xDCFFFF, 0xFFFFAA, 0xFFD6F5];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const size = 7 + Math.random() * 20;
+    const sW = window.innerWidth;
+    const sH = window.innerHeight;
+
+    const g = new Graphics();
+    const pts: number[] = [];
+    const numPoints = 5;
+    for (let i = 0; i < numPoints * 2; i++) {
+      const angle = (i * Math.PI) / numPoints - Math.PI / 2;
+      const r = i % 2 === 0 ? size : size * 0.42;
+      pts.push(Math.cos(angle) * r, Math.sin(angle) * r);
+    }
+    g.poly(pts);
+    g.fill(color);
+
+    const x = sW + 30 + Math.random() * 200;
+    const y = 10 + Math.random() * (sH - 20);
+    g.x = x;
+    g.y = y;
+    this.feverParticleLayer.addChild(g);
+
+    this.feverStars.push({
+      g, x, y,
+      vx: -(5 + Math.random() * 12),
+      vy: (Math.random() - 0.5) * 2.5,
+      rotation: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.18,
+      alpha: 0.65 + Math.random() * 0.35,
+    });
+  }
+
+  private spawnFeverNote() {
+    const chars = ['♩', '♪', '♫', '♬'];
+    const colors = ['#ffffff', '#D5BCE1', '#DCFFFF', '#FFD700', '#FFB3F5'];
+    const char = chars[Math.floor(Math.random() * chars.length)];
+    const colorStr = colors[Math.floor(Math.random() * colors.length)];
+    const fontSize = 22 + Math.floor(Math.random() * 32);
+    const sW = window.innerWidth;
+    const sH = window.innerHeight;
+
+    const t = new Text({ text: char, style: new TextStyle({
+      fontSize,
+      fill: colorStr,
+      fontFamily: 'Arial',
+      stroke: { color: '#00000044', width: 2 },
+    })});
+    t.anchor.set(0.5);
+
+    const x = sW + 40 + Math.random() * 200;
+    const y = 15 + Math.random() * (sH - 30);
+    t.x = x;
+    t.y = y;
+    this.feverParticleLayer.addChild(t);
+
+    this.feverNoteItems.push({
+      t, x, y,
+      vx: -(4 + Math.random() * 10),
+      vy: (Math.random() - 0.5) * 2,
+      rotation: (Math.random() - 0.5) * 0.6,
+      rotSpeed: (Math.random() - 0.5) * 0.10,
+      alpha: 0.72 + Math.random() * 0.28,
+    });
   }
 
   public pauseAvatar() {

@@ -49,11 +49,15 @@ export class BackgroundManager {
     this.screenW = window.innerWidth;
     this.screenH = window.innerHeight;
 
-    // 1. Fixed background
+    // 1. Fixed background (cover 방식 중앙 정렬)
     const bgTex = await Assets.load(`${baseUrl}assets/images/ingamebg/ingamebackground.png`);
     this.bgSprite = new Sprite(bgTex);
-    this.bgSprite.width = this.screenW;
-    this.bgSprite.height = this.screenH;
+    const scaleX = this.screenW / bgTex.width;
+    const scaleY = this.screenH / bgTex.height;
+    const bgScale = Math.max(scaleX, scaleY);
+    this.bgSprite.scale.set(bgScale);
+    this.bgSprite.x = Math.round((this.screenW - bgTex.width * bgScale) / 2);
+    this.bgSprite.y = Math.round((this.screenH - bgTex.height * bgScale) / 2);
     this.bgContainer.addChildAt(this.bgSprite, 0);
 
     // 2. Building textures
@@ -154,19 +158,11 @@ export class BackgroundManager {
     // Bottom tiles
     if (this.bottomTileW > 0) {
       const scrollDelta = this.bottomScrollSpeed * frameFactor;
+      const totalW = this.bottomSprites.length * this.bottomTileW;
       for (const sp of this.bottomSprites) {
         sp.x -= scrollDelta;
-      }
-      for (const sp of this.bottomSprites) {
         if (sp.x + this.bottomTileW <= 0) {
-          let maxX = -Infinity;
-          for (const other of this.bottomSprites) {
-            if (other !== sp) {
-              const rightEdge = other.x + this.bottomTileW;
-              if (rightEdge > maxX) maxX = rightEdge;
-            }
-          }
-          sp.x = maxX;
+          sp.x += totalW;
         }
       }
     }

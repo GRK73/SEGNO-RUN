@@ -118,10 +118,14 @@ export class NoteManager {
   private texturesLoaded: boolean = false;
 
   private holdBurstInterval: number = 125; // ms, BPM에 따라 설정됨
+  private feverActive: boolean = false;
 
   public setBpm(bpm: number) {
-    // 1/4 비트 간격
     this.holdBurstInterval = 60000 / bpm / 4;
+  }
+
+  public setFever(active: boolean) {
+    this.feverActive = active;
   }
 
   constructor(parent: Container) {
@@ -152,11 +156,11 @@ export class NoteManager {
   private async loadNoteTextures() {
     const baseUrl = import.meta.env.BASE_URL;
     try {
-      for (let i = 0; i <= 4; i++) {
+      for (let i = 0; i <= 1; i++) {
         const tex = await Assets.load(`${baseUrl}assets/images/note_${i}.png`);
         this.noteTextures.set(i, tex);
       }
-      for (let i = 0; i <= 4; i++) {
+      for (let i = 0; i <= 1; i++) {
         const tex = await Assets.load(`${baseUrl}assets/images/long_note_${i}.png`);
         this.longNoteTextures.set(i, tex);
       }
@@ -584,9 +588,9 @@ export class NoteManager {
 
   private spawnStarEffect(x: number, y: number, color: number) {
     const g = new Graphics();
-    const outerR = 38;
-    const innerR = 16;
-    const points = 6;
+    const outerR = this.feverActive ? 56 : 38;
+    const innerR = this.feverActive ? 24 : 16;
+    const points = this.feverActive ? 8 : 6;
     const totalPts = points * 2;
     const baseRotation = Math.random() * Math.PI * 2;
     const pts: number[] = [];
@@ -613,16 +617,16 @@ export class NoteManager {
 
   private spawnRayBurst(x: number, y: number, color: number) {
     const g = new Graphics();
-    const count = 8;
+    const count = this.feverActive ? 12 : 8;
     const innerR = 30;
-    const outerR = 46;
+    const outerR = this.feverActive ? 65 : 46;
     for (let i = 0; i < count; i++) {
       const angle = (i / count) * Math.PI * 2 + Math.random() * 0.4;
       const cos = Math.cos(angle);
       const sin = Math.sin(angle);
       g.moveTo(cos * innerR, sin * innerR);
       g.lineTo(cos * outerR, sin * outerR);
-      g.stroke({ width: 2.5, color });
+      g.stroke({ width: this.feverActive ? 3.5 : 2.5, color });
     }
     g.x = x;
     g.y = y;
@@ -633,7 +637,7 @@ export class NoteManager {
   }
 
   private spawnMiniStars(x: number, y: number, color: number) {
-    const count = 7 + Math.floor(Math.random() * 4); // 7~10개
+    const count = this.feverActive ? 14 + Math.floor(Math.random() * 6) : 7 + Math.floor(Math.random() * 4); // fever: 14~19개, normal: 7~10개
     const r = (color >> 16) & 0xff;
     const g = (color >> 8) & 0xff;
     const b = color & 0xff;
@@ -682,7 +686,7 @@ export class NoteManager {
     if (isFlash) {
       // 흰 빛 플래시: 적당한 크기에서 빠르게 퍼지며 사라짐
       const g = new Graphics();
-      g.circle(0, 0, 35);
+      g.circle(0, 0, this.feverActive ? 55 : 35);
       g.fill(0xffffff);
       g.x = x;
       g.y = y;

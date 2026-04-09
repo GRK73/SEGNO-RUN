@@ -8,6 +8,7 @@ interface Stats {
   maxCombo: number;
   totalDeviation: number;
   totalHits: number;
+  totalScore: number;
 }
 
 interface Props {
@@ -25,20 +26,16 @@ const ResultScreen: React.FC<Props> = ({ stats, onMain, onRetry }) => {
   };
 
   const totalJudgments = stats.perfect + stats.great + stats.miss;
-  const score = totalJudgments > 0 
-    ? Math.floor(((stats.perfect * 1.0) + (stats.great * 0.5)) / totalJudgments * 300000)
-    : 0;
-  
   const avgDev = totalJudgments > 0 ? stats.totalDeviation / totalJudgments : 0;
-  
+
   let accuracy = 100 - (avgDev / 150) * 100;
   if (accuracy < 0) accuracy = 0;
   accuracy = Number(accuracy.toFixed(2));
 
   let grade = 'C';
-  if (score >= 280000) grade = 'S';
-  else if (score >= 250000) grade = 'A';
-  else if (score >= 200000) grade = 'B';
+  if (accuracy >= 95) grade = 'S';
+  else if (accuracy >= 85) grade = 'A';
+  else if (accuracy >= 70) grade = 'B';
 
   useEffect(() => {
     const bgm = new Audio(getAssetPath('assets/audio/OutSong.mp3'));
@@ -69,7 +66,7 @@ const ResultScreen: React.FC<Props> = ({ stats, onMain, onRetry }) => {
         <div className="stats-board">
           <div className="stat-row">
             <span className="stat-label">SCORE</span>
-            <span className="stat-value highlight">{score.toLocaleString()} / 300,000</span>
+            <span className="stat-value highlight">{stats.totalScore.toLocaleString()}</span>
           </div>
           <div className="stat-row">
             <span className="stat-label">ACCURACY</span>
