@@ -105,7 +105,7 @@ public/
 │   ├── charts/          # JSON 채보 데이터 (곡별 easy/hard)
 │   └── images/          # 캐릭터 스프라이트 시트, 노트 이미지(note_0~4, long_note_0~4), 배경, 바닥 타일
 │       └── coverimg/    # 앨범 커버 이미지 (20곡, PNG)
-└── planb.otf            # 커스텀 게임 폰트
+└── Griun_Mongtori-Rg.ttf  # 커스텀 게임 폰트
 ```
 
 ## 🚀 시작하기

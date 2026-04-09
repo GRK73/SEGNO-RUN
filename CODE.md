@@ -15,7 +15,7 @@
 
 ### `GameEngine.ts`
 게임의 라이프사이클을 관리하는 싱글톤 엔진입니다.
-- **`init()`:** PixiJS `Application` 생성, `InputManager`/`CharacterManager`/`NoteManager`/`JudgmentSystem`/`HUDManager`/`BackgroundManager` 초기화. 판정 → HUD 콜백 배선. `planb` 폰트 사전 로드.
+- **`init()`:** PixiJS `Application` 생성, `InputManager`/`CharacterManager`/`NoteManager`/`JudgmentSystem`/`HUDManager`/`BackgroundManager` 초기화. 판정 → HUD 콜백 배선. `griun` 폰트 사전 로드.
 - **`startSong()`:** 캐릭터 스프라이트 시트(run, hit 1~3, hold) 및 노트 이미지(`note_0~4.png`, `long_note_0~4.png`) 프리로드, 채보 JSON 파싱, 오디오 로딩(메인곡 + 인트로곡 + SFX), 로스터 설정, 초기 캐릭터 결정. `AudioContext` 상태를 `resume()`으로 명시적 복구한 후 인트로 재생을 시작하여 일시정지 상태에서의 RETRY 안정성을 보장. `backgroundManager.init()`으로 배경 에셋 로드 및 레이어 초기화. `noteManager.setBpm()`으로 BPM 전달.
 - **`gameLoop()`:** 델타 타임 기반 인트로 시퀀스 스테이트 머신(`WAITING` → `READY` → `GO` → `DONE`) 및 인게임 로직(노트 스폰, 판정 업데이트, HUD 업데이트, 게임 종료 감지) 스케줄링. READY 단계 시작 시 `gameStartScheduledTime`(오디오 시작 예정 시각)을 미리 계산하여, 이후 `performance.now() - gameStartScheduledTime`의 음수 시간으로 노트를 미리 스폰·렌더링함으로써 채보가 우측에서 자연스럽게 날아드는 프리뷰 구현. GO! 텍스트는 500ms 후 소멸, 1500ms 후(소멸 1초 뒤) 오디오 시작·판정 활성화. introPhase 중에도 노트 렌더는 수행하되, audioStarted 플래그로 판정 처리 시점을 분리.
 - **`pause()/resume()`:** `AudioContext.suspend()/resume()` 연동. `isPaused` 플래그로 게임 루프 진행 제어.
@@ -111,7 +111,7 @@ PixiJS 기반의 인게임 UI 렌더링. 가장 큰 단일 모듈(~540줄).
 - **공격 애니메이션:** `triggerAttack()` 시 랜덤 Hit 프레임 표시 + 300ms 후 Run 복귀. 레인 간 이동 시 슬라이드 효과(`attackSlideY`).
 - **홀드 애니메이션:** `startHold()` 시 Hold 프레임 고정 + 사인파 보빙 효과.
 - **스위치 애니메이션:** `triggerSwitch()` 시 캐릭터가 위/아래에서 등장하는 바운스 효과(`switchOffsetY ±150px`).
-- **콤보 텍스트:** 바운스 스케일 애니메이션(1.3 → 1.0). `planb` 폰트 사용.
+- **콤보 텍스트:** 바운스 스케일 애니메이션(1.3 → 1.0). `griun` 폰트 사용.
 - **점수 텍스트:** 화면 우측 상단 고정. 6자리 포맷.
 - **판정 텍스트:** PERFECT(노랑), GREAT(시안), MISS(빨강) 색상. 등장 시 scale 1.5에서 시작해 감쇠 진동(`1.0 + 0.55 * e^(-t/55) * cos(t/32)`)으로 바운스 수렴. 위로 이동하며 500ms 후 소멸.
 - **판정선:** 상단/하단 레인에 원형 히트 서클 표시.
