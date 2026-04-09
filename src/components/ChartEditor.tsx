@@ -2,36 +2,14 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import type { ChartData, NoteData } from '../game/ChartLoader';
 
 const SONG_LIST = [
-  { id: 'planb',       title: 'Plan B',           artist: 'Plan B(한세긴, 나비, 송밤)', roster: '1, 3, 2', audio: 'assets/audio/Plan B.mp3' },
-  { id: 'snaptime',    title: 'SNAP TIME',         artist: 'Plan B(한세긴, 나비, 송밤)', roster: '1, 3, 2', audio: 'assets/audio/SNAP TIME.mp3' },
-  { id: 'mvp',         title: 'MVP',               artist: 'Plan B(한세긴, 나비, 송밤)', roster: '1, 3, 2', audio: 'assets/audio/MVP.mp3' },
-  { id: 'monthly1',    title: '월간싸이퍼 Vol.1',  artist: '빕어, 한세긴, 나비, 송밤',   roster: '0, 1, 3, 2', audio: 'assets/audio/월간싸이퍼 Vol.1.mp3' },
-  { id: 'monthly2',    title: '월간싸이퍼 Vol.2',  artist: '빕어, 한세긴, 나비, 송밤',   roster: '0, 1, 3, 2', audio: 'assets/audio/월간싸이퍼 Vol.2.mp3' },
-  { id: 'monthly3',    title: '월간싸이퍼 Vol.3',  artist: '빕어, 한세긴, 나비, 송밤',   roster: '0, 1, 3, 2', audio: 'assets/audio/월간싸이퍼 Vol.3.mp3' },
-  { id: 'monthly4',    title: '월간싸이퍼 Vol.4',  artist: '빕어, 한세긴, 나비, 크앙희', roster: '0, 1, 3, 4', audio: 'assets/audio/월간싸이퍼 Vol.4.mp3' },
-  { id: 'monthly5',    title: '월간싸이퍼 Vol.5',  artist: '빕어, 한세긴, 나비, 크앙희', roster: '0, 1, 3, 4', audio: 'assets/audio/월간싸이퍼 Vol.5.mp3' },
-  { id: 'saynomore',   title: 'Say No More',       artist: '나비',                       roster: '3',          audio: 'assets/audio/Say No More.mp3' },
-  { id: 'switch',      title: 'SWITCH',            artist: '한세긴',                     roster: '1',          audio: 'assets/audio/SWITCH.mp3' },
-  { id: 'convergence', title: '수렴',              artist: '빕어',                       roster: '0',          audio: 'assets/audio/수렴.mp3' },
-  { id: 'stamp',       title: '찍어내',            artist: '빕어',                       roster: '0',          audio: 'assets/audio/찍어내.mp3' },
-  { id: 'objective',   title: '객관',              artist: '빕어',                       roster: '0',          audio: 'assets/audio/객관.mp3' },
-  { id: 'finally',     title: '이제야',            artist: '빕어',                       roster: '0',          audio: 'assets/audio/이제야.mp3' },
-  { id: 'ramble',      title: '주절',              artist: '빕어',                       roster: '0',          audio: 'assets/audio/주절.mp3' },
-  { id: 'turning',     title: '전환점',            artist: '빕어',                       roster: '0',          audio: 'assets/audio/전환점.mp3' },
-  { id: 'worthy',      title: '마땅한가',          artist: '빕어',                       roster: '0',          audio: 'assets/audio/마땅한가.mp3' },
-  { id: 'jump',        title: '뛰어',              artist: '빕어',                       roster: '0',          audio: 'assets/audio/뛰어.mp3' },
-  { id: 'miserable',   title: '궁상',              artist: '빕어',                       roster: '0',          audio: 'assets/audio/궁상.mp3' },
-  { id: 'mainwork',    title: '본업행동',          artist: '빕어',                       roster: '0',          audio: 'assets/audio/본업행동.mp3' },
+  { id: 'serapic-magic', title: 'Serapic Magic', artist: '코롯, 하노코', roster: '0, 1', audio: 'assets/audio/serapic-magic.mp3' },
 ];
 
 const LEAD_IN_MS = 1000;
 
 const CHAR_DATA = [
-  { id: 0, name: '빕어', color: '#cacdd1' },
-  { id: 1, name: '한세긴', color: '#4abeff' },
-  { id: 2, name: '송밤', color: '#bec8fd' },
-  { id: 3, name: '나비', color: '#ffa670' },
-  { id: 4, name: '크앙희', color: '#c296e8' },
+  { id: 0, name: '코롯', color: '#9980a5' },
+  { id: 1, name: '하노코', color: '#a0cfe5' },
 ];
 
 const ChartEditor: React.FC<{ onBack: () => void }> = ({ onBack }) => {

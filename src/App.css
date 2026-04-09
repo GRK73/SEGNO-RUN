@@ -124,7 +124,7 @@
 }
 
 .loading-screen h1 {
-  font-family: 'planb', sans-serif;
+  font-family: 'griun', sans-serif;
   font-size: 4rem;
   color: #fff;
   text-shadow: 0 0 20px rgba(255,255,255,0.5);
@@ -156,7 +156,7 @@
 }
 
 .pause-content h1 {
-  font-family: 'planb', sans-serif;
+  font-family: 'griun', sans-serif;
   font-size: 4rem;
   color: #4abeff;
   margin-bottom: 2rem;
@@ -170,7 +170,7 @@
 }
 
 .pause-buttons button {
-  font-family: 'planb', sans-serif;
+  font-family: 'griun', sans-serif;
   font-size: 1.8rem;
   padding: 1rem 3rem;
   border: none;

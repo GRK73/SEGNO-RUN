@@ -74,7 +74,7 @@ export class HUDManager {
     this.container.addChild(this.avatarSprite);
 
     const style = new TextStyle({
-      fontFamily: '"planb", sans-serif',
+      fontFamily: '"griun", sans-serif',
       fontSize: 40,
       fill: '#ffffff',
       fontWeight: 'bold',
@@ -87,7 +87,7 @@ export class HUDManager {
     this.container.addChild(this.comboText);
 
     const scoreStyle = new TextStyle({
-      fontFamily: '"planb", sans-serif',
+      fontFamily: '"griun", sans-serif',
       fontSize: 36,
       fill: '#ffffff',
       fontWeight: 'bold',
@@ -146,7 +146,7 @@ export class HUDManager {
     else if (judgment === 'MISS') color = '#e2290a';
 
     const style = new TextStyle({
-      fontFamily: '"planb", sans-serif',
+      fontFamily: '"griun", sans-serif',
       fontSize: 32,
       fill: color,
       fontWeight: 'bold',
@@ -171,7 +171,7 @@ export class HUDManager {
 
     if (!this.introText) {
       const style = new TextStyle({
-        fontFamily: '"planb", sans-serif',
+        fontFamily: '"griun", sans-serif',
         fontSize: 90,
         fill: textColor,
         fontWeight: 'bold',
@@ -343,7 +343,7 @@ export class HUDManager {
 
   public async initAvatar() {
     const baseUrl = import.meta.env.BASE_URL;
-    const prefixes = ['bver', 'segin', 'songbam', 'navi', 'kanghee'];
+    const prefixes = ['colot', 'hanoko'];
     const baseW = 960;
     const baseH = 960;
 

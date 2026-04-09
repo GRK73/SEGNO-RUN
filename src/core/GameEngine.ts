@@ -89,7 +89,7 @@ export class GameEngine {
       app.stage.addChild(this.gameLayer);
 
       // Force font preload before HUDManager creation
-      await document.fonts.load('36px "planb"').catch(() => null);
+      await document.fonts.load('36px "griun"').catch(() => null);
 
       InputManager.getInstance().init();
       this.characterManager.init(); // 캐릭터 매니저 초기화 및 입력 리스너 등록
@@ -134,11 +134,11 @@ export class GameEngine {
     try {
       // Preload animation assets
       const baseUrl = import.meta.env.BASE_URL;
-      const prefixes = ['bver', 'segin', 'songbam', 'navi', 'kanghee'];
+      const prefixes = ['colot', 'hanoko'];
       const assetPromises: Promise<unknown>[] = [];
       
       // Force font preload so READY? renders correctly in Canvas
-      assetPromises.push(document.fonts.load('120px "planb"').catch(() => null));
+      assetPromises.push(document.fonts.load('120px "griun"').catch(() => null));
       
       for (const p of prefixes) {
         assetPromises.push(Assets.load(`${baseUrl}assets/images/${p}_run.png`));
