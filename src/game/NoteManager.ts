@@ -124,6 +124,12 @@ export class NoteManager {
     this.holdBurstInterval = 60000 / bpm / 4;
   }
 
+  public setScrollSpeed(pxPerMs: number) {
+    this.scrollSpeed = pxPerMs;
+  }
+
+  public getScrollSpeed(): number { return this.scrollSpeed; }
+
   public setFever(active: boolean) {
     this.feverActive = active;
   }

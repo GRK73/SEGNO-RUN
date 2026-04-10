@@ -1,0 +1,4303 @@
+{
+  "meta": {
+    "title": "Serapic Magic",
+    "artist": "코롯, 하노코",
+    "bpm": 150,
+    "offset": 0,
+    "roster": [
+      0,
+      1
+    ]
+  },
+  "notes": [
+    {
+      "time": 1600,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 2200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 2400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 3200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 3400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 3600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 3800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 4200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 4400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 4600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 5000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 5200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 5400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 5800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 6000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 6200,
+      "lane": 1,
+      "type": "long",
+      "duration": 1000,
+      "characterId": 0
+    },
+    {
+      "time": 7800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 8000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 8300,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 8400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 8600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 9000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 9400,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 9800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 10000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 10200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 11200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 11400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 11600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 11800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 12200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 12400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 12600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 13000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 13200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 13400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 13600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 14000,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 14400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 14600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 14800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 15000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 15400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 15600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 15800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 16200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 16400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 16600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 17000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 17200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 17400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 17800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 18000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 18200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 18600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 18800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 19000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 19400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 19600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 19800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 20200,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 20800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 21200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 21400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 21800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 22000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 22200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 22600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 22800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 23000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 23400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 23600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 23800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 24200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 24400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 24600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 24800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 25000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 25200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 25400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 25800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 26000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 26200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 26400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 27000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 27200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 27800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 28000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 28400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 28600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 29000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 29200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 29400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 29800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 30000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 30200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 30600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 30800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 31000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 31400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 32000,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 32400,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 32800,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 33200,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 33600,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 34600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 34800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 35000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 35400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 35600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 35800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 36600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 36800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 37000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 37200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 37400,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 37800,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 38400,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 38800,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 39200,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 39600,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 40000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 40100,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 40200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 40300,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 40400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 40600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 40700,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 40800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 40900,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 41000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 41100,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 41200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 41400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 41500,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 41600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 41800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 42000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 42200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 42400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 42600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 42800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 43000,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 43200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 43300,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 43400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 43500,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 43600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 43800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 43900,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 44000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 44100,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 44200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 44300,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 44400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 44600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 44700,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 44800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 45000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 45200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 45400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 45600,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 46200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 46400,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 46800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 47000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 47200,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 47200,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 47600,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 47800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 48000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 48000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 48400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 48600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 48600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 49000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 49200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 49400,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 49400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 49800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 50200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 50400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 50800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 51200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 51400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 51600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 51800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 52200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 52400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 52600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 53000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 53200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 53400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 53600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 53600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 54000,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 54400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 55000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 55200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 55600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 55800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 56200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 56400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 56600,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 57400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 57600,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 58000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 58200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 58600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 58800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 59000,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 59400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 59600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 59800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 60000,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 60000,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 60400,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 60600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 60800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 61200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 61400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 61800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 62000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 62200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 62600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 62800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 63000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 63400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 63800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 64000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 64200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 64400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 64600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 65000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 65200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 65400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 65800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 66000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 66200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 66400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 66800,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 67200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 67600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 67800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 68200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 68400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 68600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 69000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 69200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 69400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 69800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 70000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 70200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 70400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 70600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 70800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 71000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 71400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 71600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 71800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 72200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 72400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 72600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 72800,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 73200,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 73400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 73600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 73900,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 74000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 74200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 74600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 75000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 75400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 75600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 75800,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 76400,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 76800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 77000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 77200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 77400,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 77800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 78000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 78200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 78600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 78800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 79000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 79200,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 79600,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 80000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 80200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 80400,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 80600,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 81000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 81400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 81800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 82000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 82200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 82600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 82800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 83000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 83400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 83600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 83800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 84200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 84400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 84600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 85000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 85200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 85400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 85800,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 86400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 86800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 87000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 87400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 87600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 87800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 88200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 88400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 88600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 89000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 89200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 89400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 89800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 90000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 90200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 90400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 90600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 90800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 91000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 91400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 91600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 91800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 92200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 92200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 92600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 92800,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 93400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 93600,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 94000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 94200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 94600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 94800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 95000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 95400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 95600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 95800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 96200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 96400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 96600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 97000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 97600,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 98000,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 98400,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 98800,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 99000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 99200,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 99800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 100000,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 100400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 100600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 101000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 101200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 101400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 101800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 102000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 102200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 102600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 102800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 103000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 103400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 103600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 103800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 104000,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 104400,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 104800,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 105200,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 105600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 105700,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 105800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 105900,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 106000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 106100,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 106200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 106300,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 106400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 106500,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 106600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 106700,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 106800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 107000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 107100,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 107200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 107400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 107600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 107800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 108000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 108200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 108400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 108600,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 108800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 108900,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 109000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 109100,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 109200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 109300,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 109400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 109500,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 109600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 109700,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 109800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 109900,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 110000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 110200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 110400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 110600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 110800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 111000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 111200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 111800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 112000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 112000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 112400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 112400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 112600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 112600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 112800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 112800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 113200,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 113400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 113600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 114000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 114200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 114600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 114800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 115000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 115400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 115800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 116000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 116400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 116800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 117000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 117200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 117400,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 117800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 118000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 118200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 118600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 118800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 119000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 119200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 119600,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 119800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 120000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 120600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 120800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 121200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 121400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 121800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 122000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 122200,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 123000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 123200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 123600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 123800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 124200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 124400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 124600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 125000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 125200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 125400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 125600,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 126000,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 126400,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 127000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 127200,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 128000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 128200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 128400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 128600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 129000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 129200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 129400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 129800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 130000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 130200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 130600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 130800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 131000,
+      "lane": 1,
+      "type": "long",
+      "duration": 1000,
+      "characterId": 1
+    },
+    {
+      "time": 132400,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 132800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 133200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 133400,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 133800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 134000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 134200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 134600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 134800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 135000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 135400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 135600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 135800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 136200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 136400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 136600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 137000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 137200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 137400,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 137800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 138000,
+      "lane": 1,
+      "type": "long",
+      "duration": 800,
+      "characterId": 0
+    },
+    {
+      "time": 138800,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 139000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 139200,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 139600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 139800,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 140200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 140400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 140600,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 141000,
+      "lane": 0,
+      "type": "long",
+      "duration": 800,
+      "characterId": 1
+    },
+    {
+      "time": 142000,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 142400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 142600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 142800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 143000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 143400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 143600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 143800,
+      "lane": 0,
+      "type": "long",
+      "duration": 1000,
+      "characterId": 0
+    },
+    {
+      "time": 145200,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 145400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 145600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 145900,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 146000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 146200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 146600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 147000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 147400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 147600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 147800,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 148600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 148800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 149000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 149200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 149400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 149800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 150000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 150200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 150200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 150600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 150800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 151000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 151200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 151600,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 151800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 152000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 152400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 152600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 153000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 153200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 153400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 153800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 154200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 154400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 154800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 155200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 155400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 155600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 155800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 156200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 156400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 156600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 156600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 157000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 157200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 157400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 157600,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 158000,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 158200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 158400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 159000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 159200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 159600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 159800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 160200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 160400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 160600,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 161400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 161600,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 162000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 162200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 162600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 162800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 163000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 163000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 163400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 163600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 163800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 164000,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 164400,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 164600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 164800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 165200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 165400,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 165800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 166000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 166200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 166600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 166800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 167000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 167400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 167800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 168000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 168200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 168400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 168600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 169000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 169200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 169400,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 169400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 169800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 170000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 170200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 170400,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 170800,
+      "lane": "any",
+      "type": "switch_up"
+    },
+    {
+      "time": 171200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 171600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 171800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 172200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 172400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 172600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 173000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 173200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 173400,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 173800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 174000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 174200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 174400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 174600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 174800,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 175000,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 175400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 175600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 175800,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 1
+    },
+    {
+      "time": 176200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 176400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 176600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 1
+    },
+    {
+      "time": 176800,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 1
+    },
+    {
+      "time": 177200,
+      "lane": "any",
+      "type": "switch_down"
+    },
+    {
+      "time": 177400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 177600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 177900,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 178000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 178200,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 178600,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 179000,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 179400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 179600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 179800,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 180800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 181000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 181200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 181400,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 181800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 182000,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 182200,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 182200,
+      "lane": 0,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 182600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 182800,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 183000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 183200,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 184000,
+      "lane": 1,
+      "type": "long",
+      "duration": 800,
+      "characterId": 0
+    },
+    {
+      "time": 185600,
+      "lane": 0,
+      "type": "long",
+      "duration": 800,
+      "characterId": 0
+    },
+    {
+      "time": 187000,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 187200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 187400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 187600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 187800,
+      "lane": 1,
+      "type": "long",
+      "duration": 200,
+      "characterId": 0
+    },
+    {
+      "time": 188200,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 188400,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 188600,
+      "lane": 1,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 188600,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    },
+    {
+      "time": 189200,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 189600,
+      "lane": 0,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 190000,
+      "lane": 1,
+      "type": "long",
+      "duration": 400,
+      "characterId": 0
+    },
+    {
+      "time": 190400,
+      "lane": 0,
+      "type": "normal",
+      "characterId": 0
+    }
+  ]
+}

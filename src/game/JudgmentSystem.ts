@@ -39,6 +39,7 @@ export class JudgmentSystem {
   public onHoldEnd: ((lane: number) => void) | null = null;
   public onFeverStart: (() => void) | null = null;
   public onFeverEnd: (() => void) | null = null;
+  public onHealthDepleted: (() => void) | null = null;
 
   constructor(characterManager: CharacterManager, audioManager: AudioManager, noteManager: NoteManager) {
     this.characterManager = characterManager;
@@ -46,6 +47,8 @@ export class JudgmentSystem {
     this.noteManager = noteManager;
     InputManager.getInstance().onInput(this.handleInput);
   }
+
+  public static readonly MAX_HEALTH = 200;
 
   public stats = {
     perfect: 0,
@@ -55,6 +58,7 @@ export class JudgmentSystem {
     totalDeviation: 0,
     totalHits: 0,
     totalScore: 0,
+    health: JudgmentSystem.MAX_HEALTH,
   };
 
   public setBpm(bpm: number) {
@@ -96,6 +100,8 @@ export class JudgmentSystem {
       this.stats.miss++;
       this.stats.totalHits++;
       this.stats.totalDeviation += 150;
+      this.stats.health = Math.max(0, this.stats.health - 40);
+      if (this.stats.health === 0 && this.onHealthDepleted) this.onHealthDepleted();
     }
     this.stats.maxCombo = Math.max(this.stats.maxCombo, this.combo);
   }

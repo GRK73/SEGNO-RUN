@@ -8,7 +8,7 @@ export interface CharacterInfo {
 }
 
 export const CHARACTERS: CharacterInfo[] = [
-  { id: 0, name: '코롯', color: 0x9980a5, assetPrefix: 'colot' },
+  { id: 0, name: '코롯', color: 0x9955cc, assetPrefix: 'colot' },
   { id: 1, name: '하노코', color: 0xa0cfe5, assetPrefix: 'hanoko' },
 ];
 

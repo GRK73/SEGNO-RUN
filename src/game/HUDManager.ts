@@ -69,7 +69,8 @@ export class HUDManager {
   private floorContainer: Container;
 
   // Fever
-  private feverGfx: Graphics;           // background panel (added to gameLayer, below arc/gear/notes)
+  private feverGfx: Graphics;           // placeholder kept for z-order slot (not drawn into)
+  private feverBgSprite: Sprite | null = null; // pre-rendered background panel
   private feverParticleLayer: Container; // stars + notes (inside HUDContainer, above game notes)
   private feverGaugeGfx: Graphics;
   private feverStars: FeverStar[] = [];
@@ -79,6 +80,9 @@ export class HUDManager {
   private feverParticleAlpha: number = 0;                       // controls star/note visibility
   private feverGaugeValue: number = 0;
   private feverPulse: number = 0;
+
+  // Health
+  private healthValue: number = 1; // 0~1 ratio
 
   // Intro text
   private introText: Text | null = null;
@@ -148,6 +152,10 @@ export class HUDManager {
     this.container.addChild(this.feverGaugeGfx); // topmost in HUD
 
     this.initGear();
+  }
+
+  public updateHealth(hp: number) {
+    this.healthValue = Math.max(0, Math.min(1, hp / 200));
   }
 
   public updateScore(score: number) {
@@ -421,69 +429,69 @@ export class HUDManager {
       }
     }
 
-    // Draw fever bg (slides in/out as a panel, with edge gradient fade)
-    this.feverGfx.clear();
-    if (feverVisible) {
-      const bx    = this.feverBgX;
-      const fadeW = 220;           // fade zone width on each side
-      const cSteps = 8;            // vertical color steps
-      const fSteps = 10;           // horizontal steps per fade zone
-      const colW   = fadeW / fSteps;
-
-      // Helper: compute theme color at vertical position t (0=top, 1=bottom)
-      const themeColor = (t: number) => {
-        const r = Math.round(0x99 + (0xa0 - 0x99) * t);
-        const g = Math.round(0x80 + (0xcf - 0x80) * t);
-        const b = Math.round(0xa5 + (0xe5 - 0xa5) * t);
-        return (r << 16) | (g << 8) | b;
-      };
-
-      // Helper: draw one vertical column (x, w) with full vertical color gradient and given alpha
-      const drawCol = (x: number, w: number, alpha: number) => {
-        if (alpha <= 0 || w <= 0) return;
-        for (let ci = 0; ci < cSteps; ci++) {
-          const t  = ci / (cSteps - 1);
-          const yy = screenH * ci / cSteps;
-          const hh = screenH / cSteps + 1;
-          this.feverGfx.rect(x, yy, w, hh);
-          this.feverGfx.fill({ color: themeColor(t), alpha });
-        }
-      };
-
-      // Left fade zone (leading edge): alpha 0 → 1
-      for (let fi = 0; fi < fSteps; fi++) {
-        const raw = fi / fSteps;
-        const a = raw * raw; // quadratic ease-in
-        drawCol(bx + fi * colW, colW + 1, a);
-      }
-
-      // Center solid strip
-      const cx0 = bx + fadeW;
-      const cx1 = bx + screenW - fadeW;
-      if (cx1 > cx0) drawCol(cx0, cx1 - cx0, 1);
-
-      // Right fade zone (trailing edge): alpha 1 → 0
-      for (let fi = 0; fi < fSteps; fi++) {
-        const raw = (fSteps - 1 - fi) / fSteps;
-        const a = raw * raw;
-        drawCol(bx + screenW - fadeW + fi * colW, colW + 1, a);
-      }
+    // Fever bg sprite: just update position (texture pre-rendered in startFever)
+    this.feverGfx.clear(); // kept empty; only used for z-order slot
+    if (this.feverBgSprite) {
+      const fadeW = 220;
+      this.feverBgSprite.x = this.feverBgX - fadeW;
+      this.feverBgSprite.visible = feverVisible;
     }
 
-    // === Fever gauge bar (bottom) ===
-    const barY = screenH - 10;
+    // === Trapezoid gauge (bottom center) ===
+    // Shape: 600px wide at bottom, inset 35px per side at top, 60px tall
+    const trapCX    = screenW / 2;
+    const trapW     = 600;
+    const trapH     = 60;
+    const trapInset = 35;                       // narrower per side at top
+    const bY  = screenH;                         // bottom edge y
+    const tY  = bY - trapH;                     // top edge y
+    const mY  = (bY + tY) / 2;                  // center line y
+    const bL  = trapCX - trapW / 2;             // bottom-left x
+    const bR  = trapCX + trapW / 2;             // bottom-right x
+    const tL  = bL + trapInset;                 // top-left x
+    const tR  = bR - trapInset;                 // top-right x
+    const mL  = bL + trapInset / 2;             // center-line left x
+    const mR  = bR - trapInset / 2;             // center-line right x
+
     this.feverGaugeGfx.clear();
-    this.feverGaugeGfx.rect(0, barY, screenW, 10);
-    this.feverGaugeGfx.fill({ color: 0x220000, alpha: 0.7 });
-    if (this.feverBgState === 'entering' || this.feverBgState === 'on') {
+
+    // Background
+    this.feverGaugeGfx.poly([bL, bY, bR, bY, tR, tY, tL, tY]);
+    this.feverGaugeGfx.fill({ color: 0x000000, alpha: 0.6 });
+
+    // --- Fever fill (top half: tY ~ mY) ---
+    const isFeverActive = this.feverBgState === 'entering' || this.feverBgState === 'on';
+    const feverRatio = isFeverActive ? 1.0 : this.feverGaugeValue;
+    if (isFeverActive) {
       this.feverPulse = (this.feverPulse + 0.1 * _delta) % (Math.PI * 2);
-      const pulseAlpha = 0.7 + 0.3 * Math.sin(this.feverPulse);
-      this.feverGaugeGfx.rect(0, barY, screenW, 10);
-      this.feverGaugeGfx.fill({ color: 0xff4444, alpha: pulseAlpha });
-    } else if (this.feverGaugeValue > 0) {
-      this.feverGaugeGfx.rect(0, barY, this.feverGaugeValue * screenW, 10);
-      this.feverGaugeGfx.fill({ color: 0xff2222, alpha: 0.9 });
     }
+    const feverAlpha = isFeverActive ? 0.7 + 0.3 * Math.sin(this.feverPulse) : 0.9;
+    if (feverRatio > 0) {
+      const rxMid = mL + feverRatio * (mR - mL);
+      const rxTop = tL + feverRatio * (tR - tL);
+      this.feverGaugeGfx.poly([tL, tY, mL, mY, rxMid, mY, rxTop, tY]);
+      this.feverGaugeGfx.fill({ color: 0x2288ff, alpha: feverAlpha });
+    }
+
+    // --- Health fill (bottom half: mY ~ bY) ---
+    if (this.healthValue > 0) {
+      const rr = Math.min(255, Math.round(0xff * (1 - this.healthValue) * 2));
+      const gg = Math.min(255, Math.round(0xff * Math.min(1, this.healthValue * 2)));
+      const hpColor = (rr << 16) | (gg << 8);
+      const rxMidH = mL + this.healthValue * (mR - mL);
+      const rxBot  = bL + this.healthValue * trapW;
+      this.feverGaugeGfx.poly([mL, mY, rxMidH, mY, rxBot, bY, bL, bY]);
+      this.feverGaugeGfx.fill({ color: hpColor, alpha: 0.9 });
+    }
+
+    // Center dividing line
+    this.feverGaugeGfx.moveTo(mL, mY);
+    this.feverGaugeGfx.lineTo(mR, mY);
+    this.feverGaugeGfx.stroke({ color: 0xffffff, width: 2, alpha: 0.7 });
+
+    // Outer border (drawn last so it sits on top)
+    this.feverGaugeGfx.poly([bL, bY, bR, bY, tR, tY, tL, tY]);
+    this.feverGaugeGfx.stroke({ color: 0xffffff, width: 6, alpha: 0.9 });
 
     // Scroll floor
     if (this.floorTileW > 0) {
@@ -636,13 +644,74 @@ export class HUDManager {
     }
   }
 
+  private buildFeverBgSprite() {
+    // Destroy previous if exists
+    if (this.feverBgSprite) {
+      const tex = this.feverBgSprite.texture;
+      this.feverBgSprite.parent?.removeChild(this.feverBgSprite);
+      this.feverBgSprite.destroy();
+      tex.destroy(true);
+      this.feverBgSprite = null;
+    }
+
+    const sw = window.innerWidth;
+    const sh = window.innerHeight;
+    const fadeW = 220;
+    const totalW = sw + fadeW * 2;
+
+    // Pre-render gradient + horizontal fade onto a canvas (done once per fever start)
+    const canvas = document.createElement('canvas');
+    canvas.width  = totalW;
+    canvas.height = sh;
+    const ctx = canvas.getContext('2d')!;
+
+    // Vertical color gradient: sky-blue top → violet center → sky-blue bottom
+    const vGrad = ctx.createLinearGradient(0, 0, 0, sh);
+    vGrad.addColorStop(0,   '#40c4ff');
+    vGrad.addColorStop(0.5, '#e040fb');
+    vGrad.addColorStop(1,   '#40c4ff');
+    ctx.fillStyle = vGrad;
+    ctx.fillRect(0, 0, totalW, sh);
+
+    // Horizontal alpha fade using destination-out (erase alpha at edges)
+    ctx.globalCompositeOperation = 'destination-out';
+    const leftGrad = ctx.createLinearGradient(0, 0, fadeW, 0);
+    leftGrad.addColorStop(0, 'rgba(0,0,0,1)');
+    leftGrad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = leftGrad;
+    ctx.fillRect(0, 0, fadeW, sh);
+
+    const rightGrad = ctx.createLinearGradient(totalW - fadeW, 0, totalW, 0);
+    rightGrad.addColorStop(0, 'rgba(0,0,0,0)');
+    rightGrad.addColorStop(1, 'rgba(0,0,0,1)');
+    ctx.fillStyle = rightGrad;
+    ctx.fillRect(totalW - fadeW, 0, fadeW, sh);
+    ctx.globalCompositeOperation = 'source-over';
+
+    const tex = Texture.from(canvas);
+    const sprite = new Sprite(tex);
+    sprite.width  = totalW;
+    sprite.height = sh;
+    sprite.visible = false;
+
+    // Insert at same z-slot as feverGfx (just above it)
+    const parent = this.feverGfx.parent;
+    if (parent) {
+      const idx = parent.getChildIndex(this.feverGfx);
+      parent.addChildAt(sprite, idx + 1);
+    }
+
+    this.feverBgSprite = sprite;
+  }
+
   public startFever() {
     // Clear any stale particles from previous fever
     for (const fs of this.feverStars) { this.feverParticleLayer.removeChild(fs.g); fs.g.destroy(); }
     for (const fn of this.feverNoteItems) { this.feverParticleLayer.removeChild(fn.t); fn.t.destroy(); }
     this.feverStars = [];
     this.feverNoteItems = [];
-    // Start slide-in from right
+    // Pre-render background texture and start slide-in from right
+    this.buildFeverBgSprite();
     this.feverBgX = window.innerWidth;
     this.feverBgState = 'entering';
   }

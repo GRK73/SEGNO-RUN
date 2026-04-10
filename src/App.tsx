@@ -17,6 +17,7 @@ interface GameStats {
   totalDeviation: number;
   totalHits: number;
   totalScore: number;
+  health: number;
 }
 
 function App() {
@@ -76,9 +77,12 @@ function App() {
     if (gameState === 'LOADING') {
       const loadGame = async () => {
         const offset = parseInt(localStorage.getItem('audioOffset') || '0', 10);
+        const noteSpeed = parseInt(localStorage.getItem('noteSpeed') || '3', 10);
+        const masterVolume = parseFloat(localStorage.getItem('masterVolume') || '1');
         const engine = GameEngine.getInstance();
         engine.setOffset(offset);
-        
+        engine.setVolume(masterVolume);
+
         engine.onGameEnd = (stats: GameStats) => {
           setGameStats(stats);
           setGameState('RESULT');
@@ -88,6 +92,9 @@ function App() {
         while (!engine.initialized) {
           await new Promise(r => setTimeout(r, 50));
         }
+
+        // Apply note speed after engine (and noteManager) is initialized
+        engine.setNoteSpeed(noteSpeed);
 
         // Show the loading screen for at least 2.5 seconds to feel natural
         await new Promise(r => setTimeout(r, 2500));

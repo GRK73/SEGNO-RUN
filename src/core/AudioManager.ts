@@ -9,6 +9,8 @@ export class AudioManager {
   
   private sfxBuffers: Map<string, AudioBuffer> = new Map();
   private sfxVolume: number = 0.8;
+  private masterGain: GainNode | null = null;
+  private masterVolume: number = parseFloat(localStorage.getItem('masterVolume') ?? '1');
   private offset: number = 0;
   private fadeInterval: ReturnType<typeof setInterval> | null = null;
 
@@ -28,9 +30,22 @@ export class AudioManager {
 
   public init() {
     this.audioContext = new AudioContext({ latencyHint: 'interactive' });
+    this.masterGain = this.audioContext.createGain();
+    this.masterGain.gain.value = this.masterVolume;
+    this.masterGain.connect(this.audioContext.destination);
     this.mainGain = this.audioContext.createGain();
-    this.mainGain.connect(this.audioContext.destination);
+    this.mainGain.connect(this.masterGain);
   }
+
+  public setMasterVolume(vol: number) {
+    this.masterVolume = Math.max(0, Math.min(1, vol));
+    localStorage.setItem('masterVolume', String(this.masterVolume));
+    if (this.masterGain && this.audioContext) {
+      this.masterGain.gain.setValueAtTime(this.masterVolume, this.audioContext.currentTime);
+    }
+  }
+
+  public getMasterVolume(): number { return this.masterVolume; }
 
   public async loadAudio(url: string) {
     if (!this.audioContext) this.init();
@@ -86,7 +101,7 @@ export class AudioManager {
 
     if (!this.mainGain) {
       this.mainGain = this.audioContext.createGain();
-      this.mainGain.connect(this.audioContext.destination);
+      this.mainGain.connect(this.masterGain ?? this.audioContext.destination);
     }
 
     const now = this.audioContext.currentTime;

@@ -17,6 +17,7 @@ export interface GameStats {
   totalDeviation: number;
   totalHits: number;
   totalScore: number;
+  health: number;
 }
 
 export class GameEngine {
@@ -50,6 +51,8 @@ export class GameEngine {
   public onGameEnd: ((stats: GameStats) => void) | null = null;
   private gameEnded: boolean = false;
   private isFadingOut: boolean = false;
+  private healthGameOverPending: boolean = false;
+  private healthGameOverTime: number = 0;
 
   private constructor() {
     this.characterManager = new CharacterManager();
@@ -66,6 +69,15 @@ export class GameEngine {
 
   public setOffset(offset: number) {
     this.audioManager.setOffset(offset);
+  }
+
+  public setNoteSpeed(level: number) {
+    const spd = GameEngine.SPEED_TABLE[Math.max(0, Math.min(4, level - 1))];
+    this.noteManager?.setScrollSpeed(spd);
+  }
+
+  public setVolume(vol: number) {
+    this.audioManager.setMasterVolume(vol);
   }
 
   public async init(container: HTMLElement) {
@@ -176,10 +188,11 @@ export class GameEngine {
         await this.audioManager.loadAudio(songUrl);
         // Will play main audio at 'GO!'
         
-        // Load Ready/Go SFX
+        // Load Ready/Go/F SFX
         await Promise.all([
           this.audioManager.loadSFX('ready', `${baseUrl}assets/audio/ready.mp3`),
-          this.audioManager.loadSFX('go', `${baseUrl}assets/audio/go.mp3`)
+          this.audioManager.loadSFX('go', `${baseUrl}assets/audio/go.mp3`),
+          this.audioManager.loadSFX('f_result', `${baseUrl}assets/audio/F.mp3`),
         ]);
       } catch {
         console.warn('Audio failed, starting in silent mode.');
@@ -192,8 +205,10 @@ export class GameEngine {
         this.characterManager.setInitialCharacter(firstNote.characterId);
       }
 
-      this.hudManager?.initAvatar();
-      await this.backgroundManager?.init();
+      await Promise.all([
+        this.hudManager?.initAvatar() ?? Promise.resolve(),
+        this.backgroundManager?.init() ?? Promise.resolve(),
+      ]);
 
       // Stop any previous audio & fade before restarting
       this.audioManager.stop();
@@ -202,6 +217,16 @@ export class GameEngine {
       this.isPlaying = true;
       this.gameEnded = false;
       this.isFadingOut = false;
+      this.healthGameOverPending = false;
+
+      if (this.judgmentSystem) {
+        this.judgmentSystem.onHealthDepleted = () => {
+          if (this.gameEnded || this.healthGameOverPending) return;
+          this.healthGameOverPending = true;
+          this.healthGameOverTime = performance.now();
+          this.audioManager.fadeOutMain(2500);
+        };
+      }
       
       // Begin Intro Phase
       this.introPhase = true;
@@ -231,7 +256,11 @@ export class GameEngine {
     this.hudManager?.resumeAvatar();
   }
 
-  private readonly NOTE_LOOKAHEAD = Math.ceil((window.innerWidth - 150) / 0.5);
+  private static readonly SPEED_TABLE = [0.3, 0.4, 0.5, 0.65, 0.8]; // level 1-5
+  private get NOTE_LOOKAHEAD() {
+    const spd = this.noteManager?.getScrollSpeed() ?? 0.5;
+    return Math.ceil((window.innerWidth - 150) / spd);
+  }
 
   private spawnAndUpdate(currentTime: number, delta: number) {
     while (
@@ -249,6 +278,7 @@ export class GameEngine {
     this.hudManager.updateCombo(this.judgmentSystem.getCombo());
     this.hudManager.updateScore(this.judgmentSystem.stats.totalScore);
     this.hudManager.updateFeverGauge(this.judgmentSystem.feverGauge);
+    this.hudManager.updateHealth(this.judgmentSystem.stats.health);
   }
 
   private gameLoop(delta: number) {
@@ -308,6 +338,20 @@ export class GameEngine {
       currentTime = performance.now() - this.startTime;
     }
 
+    // Health game over: stop spawning/judging, wait for fade then end
+    if (this.healthGameOverPending) {
+      this.hudManager?.update(delta);
+      if (performance.now() - this.healthGameOverTime >= 2500) {
+        this.gameEnded = true;
+        this.isPlaying = false;
+        this.healthGameOverPending = false;
+        if (this.onGameEnd && this.judgmentSystem) {
+          this.onGameEnd(this.judgmentSystem.stats);
+        }
+      }
+      return;
+    }
+
     this.spawnAndUpdate(currentTime, delta);
     this.judgmentSystem?.update();
     this.updateScoreHUD();
@@ -362,6 +406,7 @@ export class GameEngine {
     this.initializing = false;
     this.isPlaying = false;
     this.isPaused = false;
+    this.healthGameOverPending = false;
     this.introPhase = false;
     this.introState = 'DONE';
     this.introStartTime = 0;

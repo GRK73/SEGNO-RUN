@@ -9,6 +9,7 @@ interface Stats {
   totalDeviation: number;
   totalHits: number;
   totalScore: number;
+  health: number;
 }
 
 interface Props {
@@ -25,17 +26,19 @@ const ResultScreen: React.FC<Props> = ({ stats, onMain, onRetry }) => {
     return `${base}${path.startsWith('/') ? path.slice(1) : path}`;
   };
 
-  const totalJudgments = stats.perfect + stats.great + stats.miss;
-  const avgDev = totalJudgments > 0 ? stats.totalDeviation / totalJudgments : 0;
+  const total = stats.perfect + stats.great + stats.miss;
+  const avgDev = total > 0 ? stats.totalDeviation / total : 0;
+  const accuracy = Number(Math.max(0, 100 - (avgDev / 150) * 100).toFixed(2));
 
-  let accuracy = 100 - (avgDev / 150) * 100;
-  if (accuracy < 0) accuracy = 0;
-  accuracy = Number(accuracy.toFixed(2));
+  // Grade based on note ratio: Perfect=1pt, Great=0.5pt, Miss=0pt
+  // Great = 200pt, Perfect = 300pt → Great weight = 2/3
+  const noteScore = total > 0 ? (stats.perfect + stats.great * (2 / 3)) / total : 0;
 
   let grade = 'C';
-  if (accuracy >= 95) grade = 'S';
-  else if (accuracy >= 85) grade = 'A';
-  else if (accuracy >= 70) grade = 'B';
+  if (stats.health === 0) grade = 'F';
+  else if (noteScore >= 0.94) grade = 'S';
+  else if (noteScore >= 0.85) grade = 'A';
+  else if (noteScore >= 0.70) grade = 'B';
 
   useEffect(() => {
     const bgm = new Audio(getAssetPath('assets/audio/OutSong.mp3'));
@@ -58,7 +61,7 @@ const ResultScreen: React.FC<Props> = ({ stats, onMain, onRetry }) => {
   return (
     <div className="result-screen">
       <div className="result-container">
-        <h1 className="result-title">STAGE CLEAR</h1>
+        <h1 className="result-title">{grade === 'F' ? 'GAME OVER' : 'STAGE CLEAR'}</h1>
         <div className="grade-circle">
           {grade}
         </div>
