@@ -31,13 +31,12 @@ export class GameEngine {
   
   private static instance: GameEngine;
   private container: HTMLElement | null = null;
-  private gameLayer: Container;
+  private gameLayer: Container = new Container();
 
   private chart: ChartData | null = null;
   private currentNoteIndex: number = 0;
   private isPlaying: boolean = false;
   private isPaused: boolean = false;
-  private startTime: number = 0;
 
   public initialized: boolean = false;
   private initializing: boolean = false;
@@ -57,7 +56,6 @@ export class GameEngine {
   private constructor() {
     this.characterManager = new CharacterManager();
     this.audioManager = AudioManager.getInstance();
-    this.gameLayer = new Container();
   }
 
   public static getInstance(): GameEngine {
@@ -94,11 +92,12 @@ export class GameEngine {
       });
       
       this.app = app;
-      
+
       if (app.canvas && this.container) {
         this.container.appendChild(app.canvas);
       }
 
+      this.gameLayer = new Container();
       app.stage.addChild(this.gameLayer);
 
       // Force font preload before HUDManager creation
@@ -333,10 +332,7 @@ export class GameEngine {
     }
 
     // 메인 게임 루프
-    let currentTime = this.audioManager.getCurrentTimeMS();
-    if (currentTime === 0 && this.isPlaying) {
-      currentTime = performance.now() - this.startTime;
-    }
+    const currentTime = this.audioManager.getCurrentTimeMS();
 
     // Health game over: stop spawning/judging, wait for fade then end
     if (this.healthGameOverPending) {
