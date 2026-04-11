@@ -165,8 +165,10 @@ export class GameEngine {
         assetPromises.push(Assets.load(`${baseUrl}assets/images/note_${i}.png`));
         assetPromises.push(Assets.load(`${baseUrl}assets/images/long_note_${i}.png`));
       }
+      assetPromises.push(Assets.load(`${baseUrl}assets/images/floor.png`));
       
       await Promise.all(assetPromises);
+      await this.noteManager?.loadNoteTextures();
 
       this.chart = await ChartLoader.load(chartUrl);
       this.noteManager?.setBpm(this.chart.meta.bpm);
@@ -204,10 +206,14 @@ export class GameEngine {
         this.characterManager.setInitialCharacter(firstNote.characterId);
       }
 
-      await Promise.all([
-        this.hudManager?.initAvatar() ?? Promise.resolve(),
-        this.backgroundManager?.init() ?? Promise.resolve(),
-      ]);
+      try {
+        await Promise.all([
+          this.hudManager?.initAvatar() ?? Promise.resolve(),
+          this.backgroundManager?.init() ?? Promise.resolve(),
+        ]);
+      } catch (e) {
+        console.warn('Asset init partially failed, continuing:', e);
+      }
 
       // Stop any previous audio & fade before restarting
       this.audioManager.stop();
@@ -410,5 +416,9 @@ export class GameEngine {
     this.container = null;
     this.chart = null;
     this.currentNoteIndex = 0;
+    this.noteManager = null;
+    this.judgmentSystem = null;
+    this.hudManager = null;
+    this.backgroundManager = null;
   }
 }

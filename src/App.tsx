@@ -102,8 +102,14 @@ function App() {
         await new Promise(r => setTimeout(r, 2500));
 
         // Start song: This will download assets, initialize textures, decode audio, and play.
-        await engine.startSong(selectedSongRef.current, selectedChartRef.current);
-        
+        try {
+          await engine.startSong(selectedSongRef.current, selectedChartRef.current);
+        } catch (e) {
+          console.error('Failed to start song:', e);
+          setGameState('LOBBY');
+          return;
+        }
+
         // Once everything is loaded and game has started, hide the loading screen
         setGameState('INGAME');
       };

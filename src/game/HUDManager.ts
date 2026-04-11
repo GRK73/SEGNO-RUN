@@ -61,6 +61,7 @@ export class HUDManager {
 
   private judgmentLineX: number = 250;
   private characterManager: CharacterManager;
+  private lastKnownWidth: number = 0;
 
   // Floor scrolling
   private floorSprites: Sprite[] = [];
@@ -270,7 +271,17 @@ export class HUDManager {
      this.introOffsetX = startOffset + (targetOffset - startOffset) * Math.min(1, easeOut);
   }
 
+  private updateTextPositions() {
+    const w = window.innerWidth;
+    if (w === this.lastKnownWidth) return;
+    this.lastKnownWidth = w;
+    this.comboText.x = w / 2;
+    this.scoreText.x = w - 30;
+    if (this.introText) this.introText.x = w / 2;
+  }
+
   public update(_delta: number) {
+    this.updateTextPositions();
     this.arcRotation += 0.025 * _delta;
     this.drawArcs();
 
@@ -629,7 +640,7 @@ export class HUDManager {
       const trimmedFrameW = floorFrameTextures[0].width;
       const trimmedFrameH = floorFrameTextures[0].height;
       this.floorTileW = Math.round(floorH * (trimmedFrameW / trimmedFrameH));
-      const totalFloorTiles = Math.ceil(2400 / this.floorTileW) + 2;
+      const totalFloorTiles = Math.ceil(window.innerWidth / this.floorTileW) + 2;
       
       for (let ti = 0; ti < totalFloorTiles; ti++) {
         const ftex = floorFrameTextures[ti % floorFrameTextures.length];

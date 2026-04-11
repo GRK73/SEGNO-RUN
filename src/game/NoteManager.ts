@@ -155,11 +155,9 @@ export class NoteManager {
       (g) => { g.clear(); g.visible = false; g.alpha = 1; },
       20
     );
-
-    this.loadNoteTextures();
   }
 
-  private async loadNoteTextures() {
+  public async loadNoteTextures() {
     const baseUrl = import.meta.env.BASE_URL;
     try {
       for (let i = 0; i <= 1; i++) {

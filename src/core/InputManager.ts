@@ -26,21 +26,24 @@ export class InputManager {
     return InputManager.instance;
   }
 
+  private handleContextMenu = (e: Event) => e.preventDefault();
+
   public init() {
     window.addEventListener('keydown', this.handleKeyDown);
     window.addEventListener('keyup', this.handleKeyUp);
     window.addEventListener('mousedown', this.handleMouseDown);
     window.addEventListener('mouseup', this.handleMouseUp);
     window.addEventListener('wheel', this.handleWheel, { passive: false });
-    window.addEventListener('contextmenu', (e) => e.preventDefault());
+    window.addEventListener('contextmenu', this.handleContextMenu);
   }
 
   private handleKeyDown = (e: KeyboardEvent) => {
-    if (['Alt', 'Control', 'Shift', 'Meta'].includes(e.key)) return;
+    if (['Alt', 'Control', 'Shift', 'Meta', 'Escape'].includes(e.key)) return;
     this.trigger(InputType.KEYBOARD_ANY);
   };
 
-  private handleKeyUp = () => {
+  private handleKeyUp = (e: KeyboardEvent) => {
+    if (['Alt', 'Control', 'Shift', 'Meta', 'Escape'].includes(e.key)) return;
     this.trigger(InputType.KEYBOARD_UP);
   };
 
@@ -75,6 +78,7 @@ export class InputManager {
     window.removeEventListener('mousedown', this.handleMouseDown);
     window.removeEventListener('mouseup', this.handleMouseUp);
     window.removeEventListener('wheel', this.handleWheel);
+    window.removeEventListener('contextmenu', this.handleContextMenu);
     this.callbacks = [];
   }
 }

@@ -84,7 +84,7 @@ export class AudioManager {
     
     this.introGain.gain.setValueAtTime(1, this.audioContext.currentTime);
     this.introSource.connect(this.introGain);
-    this.introGain.connect(this.audioContext.destination);
+    this.introGain.connect(this.masterGain ?? this.audioContext.destination);
     
     this.introSource.start(0);
   }
