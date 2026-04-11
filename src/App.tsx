@@ -31,6 +31,7 @@ function App() {
   const selectedChartRef = useRef<string>('');
 
   const handleStartSong = async (songUrl: string, chartUrl: string) => {
+    GameEngine.getInstance().audioManager.warmup();
     selectedSongRef.current = songUrl;
     selectedChartRef.current = chartUrl;
     setGameSessionId(prev => prev + 1);
@@ -39,6 +40,7 @@ function App() {
   };
 
   const handleRetry = () => {
+    GameEngine.getInstance().audioManager.warmup();
     setIsPaused(false);
     setGameSessionId(prev => prev + 1);
     setGameState('LOADING');

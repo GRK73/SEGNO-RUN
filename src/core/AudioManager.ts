@@ -37,6 +37,13 @@ export class AudioManager {
     this.mainGain.connect(this.masterGain);
   }
 
+  public warmup() {
+    if (!this.audioContext) this.init();
+    if (this.audioContext!.state === 'suspended') {
+      this.audioContext!.resume();
+    }
+  }
+
   public setMasterVolume(vol: number) {
     this.masterVolume = Math.max(0, Math.min(1, vol));
     localStorage.setItem('masterVolume', String(this.masterVolume));
