@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { GameEngine } from '../core/GameEngine';
 
 interface SettingsModalProps {
   onClose: () => void;
@@ -94,16 +95,19 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
   const handleOffsetChange = (val: number) => {
     setOffset(val);
     localStorage.setItem('audioOffset', String(val));
+    GameEngine.getInstance().setOffset(val);
   };
 
   const handleVolumeChange = (val: number) => {
     setVolume(val);
     localStorage.setItem('masterVolume', String(val));
+    GameEngine.getInstance().setVolume(val);
   };
 
   const handleNoteSpeedChange = (level: number) => {
     setNoteSpeed(level);
     localStorage.setItem('noteSpeed', String(level));
+    GameEngine.getInstance().setNoteSpeed(level);
   };
 
   const SPEED_LABELS = ['느림', '보통-', '보통', '빠름', '매우 빠름'];

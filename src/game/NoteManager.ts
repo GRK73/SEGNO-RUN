@@ -106,11 +106,7 @@ export class NoteManager {
   
   private scrollSpeed: number = 0.5;
   private judgmentLineX: number = 250;
-  private laneY: { [key: number | string]: number } = {
-    0: 450, // Lower (Mouse)
-    1: 250, // Upper (Keyboard)
-    'any': 350,
-  };
+  private laneY: { [key: number | string]: number } = {};
 
   // Pre-cached note textures
   private noteTextures: Map<number, Texture> = new Map();
@@ -135,6 +131,12 @@ export class NoteManager {
   }
 
   constructor(parent: Container) {
+    this.laneY = {
+      0: 450,
+      1: 250,
+      'any': 350,
+    };
+
     this.container = new Container();
     this.connectionGraphics = new Graphics();
     this.effectLayer = new Container();

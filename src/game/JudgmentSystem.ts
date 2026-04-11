@@ -100,8 +100,9 @@ export class JudgmentSystem {
       this.stats.miss++;
       this.stats.totalHits++;
       this.stats.totalDeviation += 150;
+      const wasAlive = this.stats.health > 0;
       this.stats.health = Math.max(0, this.stats.health - 40);
-      if (this.stats.health === 0 && this.onHealthDepleted) this.onHealthDepleted();
+      if (wasAlive && this.stats.health === 0 && this.onHealthDepleted) this.onHealthDepleted();
     }
     this.stats.maxCombo = Math.max(this.stats.maxCombo, this.combo);
   }
@@ -129,6 +130,7 @@ export class JudgmentSystem {
 
         if (currentTime - this.lastTickTime[type] >= this.holdTickInterval) {
           this.combo++;
+          this.stats.maxCombo = Math.max(this.stats.maxCombo, this.combo);
           this.stats.totalScore += Math.round(JudgmentSystem.SCORE_PERFECT * this.getScoreMultiplier());
           this.addFeverGauge(JudgmentSystem.FEVER_FILL_PERFECT);
           this.lastTickTime[type] = currentTime;

@@ -1,38 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './SongSelect.css';
+import { SONGS } from '../data/songs';
+import type { SongDef } from '../data/songs';
 
 interface SongSelectProps {
   onStart: (songUrl: string, chartUrl: string) => void;
 }
 
-interface Song {
-  id: string;
-  title: string;
-  artist: string;
-  audio: string;
-  cover: string;
-  charts: {
-    easy: string;
-    hard: string;
-  };
-}
-
-const SONGS: Song[] = [
-  {
-    id: 'serapic-magic',
-    title: 'Serapic Magic',
-    artist: '코롯, 하노코',
-    audio: 'assets/audio/serapic-magic.mp3',
-    cover: 'assets/images/coverimg/serapic-magic.png',
-    charts: {
-      easy: 'assets/charts/serapic-magic_easy.json',
-      hard: 'assets/charts/serapic-magic_hard.json'
-    }
-  },
-];
-
 const SongSelect: React.FC<SongSelectProps> = ({ onStart }) => {
-  const [selectedSong, setSelectedSong] = useState<Song>(SONGS[0]);
+  const [selectedSong, setSelectedSong] = useState<SongDef>(SONGS[0]);
   const [selectedDifficulty, setSelectedDifficulty] = useState<'easy' | 'hard' | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const targetAudioRef = useRef<string | null>(null);

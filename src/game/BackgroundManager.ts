@@ -222,7 +222,7 @@ export class BackgroundManager {
         item.sprite.texture = newTex;
         item.sprite.scale.set(newScale);
         item.sprite.tint = config.tint;
-        item.sprite.x = Math.max(this.screenW + 100, maxRight + gap);
+        item.sprite.x = Math.max(window.innerWidth + 100, maxRight + gap);
         item.sprite.y = this.screenH - config.yOffset;
         item.speed = this.randomRange(config.minSpeed, config.maxSpeed);
       }

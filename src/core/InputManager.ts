@@ -51,7 +51,8 @@ export class InputManager {
     this.trigger(InputType.MOUSE_CLICK);
   };
 
-  private handleMouseUp = () => {
+  private handleMouseUp = (e: MouseEvent) => {
+    if (e.button !== 0) return;
     this.trigger(InputType.MOUSE_UP);
   };
 

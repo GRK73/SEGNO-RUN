@@ -53,7 +53,7 @@ export class HUDManager {
 
   // Render Offsets
   private baseAvatarX: number = 155;
-  private baseAvatarY: number = 450; 
+  private baseAvatarY: number = 450;
   private introOffsetX: number = 0;
   private attackSlideX: number = 0;
   private attackSlideY: number = 0;
@@ -91,6 +91,7 @@ export class HUDManager {
 
   constructor(parent: Container, characterManager: CharacterManager) {
     this.characterManager = characterManager;
+
     this.container = new Container();
 
     this.floorContainer = new Container();
@@ -242,9 +243,14 @@ export class HUDManager {
       this.container.addChild(this.introText);
     } else {
       this.introText.text = textStr;
-      if (this.introText.style) {
-        this.introText.style.fill = textColor;
-      }
+      this.introText.style = new TextStyle({
+        fontFamily: '"griun", sans-serif',
+        fontSize: 90,
+        fill: textColor,
+        fontWeight: 'bold',
+        stroke: { color: '#2b2b2b', width: 12 },
+        dropShadow: { color: '#000000', alpha: 0.8, blur: 4, distance: 5 }
+      });
       this.introText.alpha = 1;
       this.introText.scale.set(1.2); // slight pop on creation
       this.introText.visible = true;
@@ -822,7 +828,7 @@ export class HUDManager {
     const prevY = this.baseAvatarY;
     const newY = (lane === 1) ? 250 : 450;
     this.baseAvatarY = newY;
-    
+
     if (prevY === 450 && newY === 250) {
       this.attackSlideY = 7;   // Starts lower, slides UP
     } else if (prevY === 250 && newY === 450) {

@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import type { ChartData, NoteData } from '../game/ChartLoader';
+import { SONGS } from '../data/songs';
 
-const SONG_LIST = [
-  { id: 'serapic-magic', title: 'Serapic Magic', artist: '코롯, 하노코', roster: '0, 1', audio: 'assets/audio/serapic-magic.mp3' },
-];
+const SONG_LIST = SONGS.map(s => ({ id: s.id, title: s.title, artist: s.artist, roster: s.roster, audio: s.audio }));
 
 const LEAD_IN_MS = 1000;
 
